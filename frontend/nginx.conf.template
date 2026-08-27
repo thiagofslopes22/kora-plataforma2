@@ -57,12 +57,16 @@ server {
     }
 
     # CONCILIADOR — REMOVE o prefixo /conc: as rotas dele sao /auth/login,
-    # /prefeituras... Com proxy_pass literal a barra final faria isso sozinha,
-    # mas com variavel e preciso reescrever a URI explicitamente.
-    location /conc/ {
+    # /prefeituras...
+    #
+    # O caminho e capturado na PROPRIA location (conc_rest) em vez de via
+    # `rewrite ... break`. Motivo: quando proxy_pass usa variavel e nao traz
+    # URI, o nginx repassa a URI ORIGINAL e ignora o rewrite — o conciliador
+    # receberia /conc/auth/login e responderia 404. Com a captura, montamos a
+    # URI de destino explicitamente.
+    location ~ ^/conc/(?<conc_rest>.*)$ {
         set $upstream_conciliador ${CONCILIADOR_URL};
-        rewrite ^/conc/(.*)$ /$1 break;
-        proxy_pass $upstream_conciliador;
+        proxy_pass $upstream_conciliador/$conc_rest$is_args$args;
         proxy_set_header Host $proxy_host;   # casa com o upstream (interno ou publico)
     }
 
