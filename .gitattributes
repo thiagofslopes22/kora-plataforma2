@@ -1,0 +1,7 @@
+# Scripts shell e Dockerfiles DEVEM ir com LF: o checkout do Railway e Linux, e
+# um  no fim da linha quebra o sh com erros ininteligiveis ("not found").
+*.sh      text eol=lf
+*.envsh   text eol=lf
+Dockerfile text eol=lf
+*.conf    text eol=lf
+*.template text eol=lf
