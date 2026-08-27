@@ -371,7 +371,19 @@ def delete_prefeitura(
 ):
     """Soft delete. O historico de analises da entidade permanece auditavel —
     apagar de verdade destruiria a trilha exigida em contexto de prestacao de
-    contas."""
+    contas.
+
+    O `set_config` antes do UPDATE nao e detalhe: a politica de RLS `p_iso` tem
+    `deleted_at IS NULL OR app.incluir_excluidos()` no USING, e o Postgres avalia
+    esse predicado tambem contra a linha RESULTANTE. Ao gravar `deleted_at`, a
+    linha deixa de satisfazer a politica que a protegia e o UPDATE e recusado com
+    "new row violates row-level security policy" — mesmo sendo admin do
+    escritorio. Ligar `app.incluir_excluidos` declara que esta transacao opera
+    sobre a linha independentemente do estado de exclusao, que e exatamente a
+    semantica de excluir (e de restaurar). O escopo e a transacao (3o argumento
+    = true), entao nao vaza para o resto da sessao.
+    """
+    db.execute(text("SELECT set_config('app.incluir_excluidos', 'on', true)"))
     afetadas = db.execute(
         text("UPDATE entidades SET deleted_at = now() WHERE id = :id AND deleted_at IS NULL"),
         {"id": prefeitura_id},
