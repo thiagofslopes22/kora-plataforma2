@@ -37,6 +37,13 @@ server {
     proxy_send_timeout    300s;
     proxy_read_timeout    300s;
 
+    # Permite que AUDITOR_URL/CONCILIADOR_URL apontem para uma URL https
+    # (dominio publico do Railway) e nao so para a rede privada. Sem SNI o
+    # handshake TLS falha; sem o Host correto o roteador do Railway nao sabe
+    # para qual servico entregar. Isso transforma "trocar de rede privada para
+    # publica" numa mudanca de VARIAVEL, sem rebuild.
+    proxy_ssl_server_name on;
+
     proxy_set_header Host              $host;
     proxy_set_header X-Real-IP         $remote_addr;
     proxy_set_header X-Forwarded-For   $proxy_add_x_forwarded_for;
@@ -46,6 +53,7 @@ server {
     location /api/ {
         set $upstream_auditor ${AUDITOR_URL};
         proxy_pass $upstream_auditor;
+        proxy_set_header Host $proxy_host;   # casa com o upstream (interno ou publico)
     }
 
     # CONCILIADOR — REMOVE o prefixo /conc: as rotas dele sao /auth/login,
@@ -55,6 +63,7 @@ server {
         set $upstream_conciliador ${CONCILIADOR_URL};
         rewrite ^/conc/(.*)$ /$1 break;
         proxy_pass $upstream_conciliador;
+        proxy_set_header Host $proxy_host;   # casa com o upstream (interno ou publico)
     }
 
     # Diagnostico: responde sem depender de backend nenhum.
