@@ -30,10 +30,14 @@ COPY backend-conciliador/ /app/
 # proprio /app ja e a raiz, entao kora_db resolve direto.
 ENV PYTHONPATH=/app
 
-EXPOSE 8000
-# Railway injeta $PORT; localmente cai em 8000.
+# EXPOSE precisa BATER com a PORT do ambiente: o Railway usa este valor para
+# configurar a porta-alvo do dominio publico. Declarar 8000 e rodar em 8001 faz
+# o build passar, o servico ficar "Online" e mesmo assim responder 502 — o
+# roteador bate numa porta onde ninguem escuta.
+EXPOSE 8001
+# Railway injeta $PORT; sem ele (docker local) cai em 8001.
 # Bind em `::` (IPv6) e nao 0.0.0.0: a rede privada do Railway e IPv6-only,
 # entao um servico preso a IPv4 fica inalcancavel pelos outros — o frontend
 # nao conseguiria fazer proxy para ca. Em dual-stack o `::` tambem aceita
 # conexoes IPv4, entao isso nao quebra o acesso publico nem o docker local.
-CMD ["sh", "-c", "uvicorn main:app --host :: --port ${PORT:-8000}"]
+CMD ["sh", "-c", "uvicorn main:app --host :: --port ${PORT:-8001}"]
