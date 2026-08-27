@@ -23,6 +23,8 @@ FROM nginx:alpine
 COPY --from=builder /app/dist /usr/share/nginx/html
 # nginx:alpine roda envsubst nos arquivos de /etc/nginx/templates no boot,
 # gerando /etc/nginx/conf.d/default.conf com PORT/AUDITOR_URL/CONCILIADOR_URL.
+# Garante um resolver DNS valido antes do envsubst (ver o proprio script).
+COPY frontend/16-kora-resolver.envsh /docker-entrypoint.d/16-kora-resolver.envsh
 COPY frontend/nginx.conf.template /etc/nginx/templates/default.conf.template
 ENV PORT=80
 EXPOSE 80
