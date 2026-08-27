@@ -1,23 +1,29 @@
 # Sourced pelo entrypoint do nginx ANTES do passo de envsubst (20-...).
-# Extensao .envsh e o numero 16 importam: o entrypoint SOURCEIA arquivos .envsh
-# em ordem numerica, entao isto roda depois do 15-local-resolvers.envsh da
-# imagem e antes do 20-envsubst-on-templates.sh.
 #
-# Objetivo: garantir que NGINX_LOCAL_RESOLVERS NUNCA chegue vazio ao template.
-# Se chegar, o envsubst gera `resolver  valid=10s ipv6=on;` (sem endereco) ou
-# deixa o literal `${NGINX_LOCAL_RESOLVERS}`, e o nginx ABORTA no boot. O efeito
-# e desproporcional: o site inteiro para de subir por causa do DNS de um proxy.
+# Numeracao e extensao importam: o entrypoint processa /docker-entrypoint.d/ em
+# ordem alfabetica e SOURCEIA arquivos .envsh (executa os .sh). O 16 garante que
+# isto rode depois do 15-local-resolvers.envsh da imagem e antes do 20-envsubst.
+#
+# ATENCAO: o entrypoint IGNORA arquivos sem bit de execucao ("Ignoring ...,
+# not executable"). O chmod +x e feito no Dockerfile, porque o Windows nao
+# preserva o modo do arquivo no git.
+#
+# Objetivo: NGINX_LOCAL_RESOLVERS nunca chegar vazio/indefinido ao template.
+# Se chegar, o envsubst deixa o literal `${NGINX_LOCAL_RESOLVERS}` na config e o
+# nginx aborta o boot inteiro ("host not found in resolver"), derrubando ate os
+# arquivos estaticos, que nao dependem de DNS algum. Nao dependemos do script
+# 15- da imagem: na pratica ele nem sempre exporta a variavel.
 
-if [ -z "${NGINX_LOCAL_RESOLVERS:-}" ]; then
-    # Le do resolv.conf do container. Enderecos IPv6 precisam ir entre colchetes
-    # na diretiva resolver do nginx.
-    NGINX_LOCAL_RESOLVERS=$(awk '/^[[:space:]]*nameserver/ {
-        if ($2 ~ /:/) printf "[%s] ", $2; else printf "%s ", $2
-    }' /etc/resolv.conf 2>/dev/null)
+# `|| true` porque este arquivo e SOURCEADO: com `set -e` ativo no entrypoint,
+# um awk que falhe abortaria o boot em vez de cair no fallback.
+if [ -z "${NGINX_LOCAL_RESOLVERS:-}" ] && [ -r /etc/resolv.conf ]; then
+    NGINX_LOCAL_RESOLVERS=$(awk 'BEGIN { ORS=" " }
+        $1 == "nameserver" { if ($2 ~ /:/) print "[" $2 "]"; else print $2 }' \
+        /etc/resolv.conf 2>/dev/null) || true
 fi
 
+# Ultimo recurso: DNS embutido do runtime de container.
 if [ -z "${NGINX_LOCAL_RESOLVERS:-}" ]; then
-    # Ultimo recurso: DNS embutido do runtime de container.
     NGINX_LOCAL_RESOLVERS="127.0.0.11"
 fi
 
