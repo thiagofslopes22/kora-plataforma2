@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Kora — Teste</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: sans-serif; background: #f8fafc; padding: 32px 20px; }
+    h2 { color: #1E3A5F; margin-bottom: 4px; }
+    .subtitle { color: #666; margin-bottom: 24px; font-size: 14px; }
+
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 12px; margin-bottom: 24px; }
+
+    .slot {
+      background: white;
+      border: 2px dashed #cbd5e1;
+      border-radius: 10px;
+      padding: 14px;
+      cursor: pointer;
+      transition: border-color .15s, background .15s;
+      position: relative;
+    }
+    .slot:hover { border-color: #2E86AB; background: #f0f9ff; }
+    .slot.filled { border-style: solid; border-color: #2E86AB; background: #f0f9ff; }
+    .slot input[type=file] { display: none; }
+
+    .slot-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 6px; }
+    .slot-label { font-weight: 600; font-size: 13px; color: #1E3A5F; }
+    .badge {
+      font-size: 10px; padding: 2px 6px; border-radius: 4px; font-weight: 600;
+      white-space: nowrap;
+    }
+    .badge-camelot { background: #dbeafe; color: #1d4ed8; }
+    .badge-pymupdf  { background: #dcfce7; color: #166534; }
+
+    .slot-file { font-size: 12px; color: #475569; margin-top: 4px; min-height: 16px; }
+    .slot-hint { font-size: 11px; color: #94a3b8; margin-top: 2px; }
+
+    .slot-clear {
+      position: absolute; top: 8px; right: 36px;
+      background: none; border: none; cursor: pointer;
+      color: #94a3b8; font-size: 16px; line-height: 1;
+      display: none;
+    }
+    .slot.filled .slot-clear { display: block; }
+
+    .actions { display: flex; gap: 12px; align-items: center; margin-bottom: 16px; }
+    .btn-gerar {
+      background: #1E3A5F; color: white; border: none;
+      padding: 12px 28px; border-radius: 8px; cursor: pointer;
+      font-size: 15px; font-weight: 600;
+    }
+    .btn-gerar:disabled { opacity: 0.5; cursor: not-allowed; }
+    .counter { color: #64748b; font-size: 14px; }
+
+    #status { padding: 12px 16px; border-radius: 8px; font-size: 14px; display: none; }
+    .ok      { background: #C6EFCE; color: #1a4731; display: block !important; }
+    .err     { background: #FFC7CE; color: #7b1e1e; display: block !important; }
+    .loading { background: #FFEB9C; color: #6b4c00; display: block !important; }
+  </style>
+</head>
+<body>
+  <h2>Kora</h2>
+  <p class="subtitle">Selecione cada PDF no slot correspondente</p>
+
+  <div class="grid" id="grid"></div>
+
+  <div class="actions">
+    <button class="btn-gerar" id="btn" onclick="gerar()">🚀 Gerar Relatório RIT</button>
+    <span class="counter" id="counter">0 documento(s) selecionado(s)</span>
+  </div>
+
+  <div id="status"></div>
+
+  <!-- ═══ PASSO 2 — Gerar Relatório RIT ══════════════════════════ -->
+  <hr style="border:none;border-top:2px dashed #cbd5e1;margin:36px 0 28px">
+  <h2>Passo 2 — Gerar Relatório RIT</h2>
+  <p class="subtitle">Preencha a aba <strong>"Dados Manuais"</strong> no Excel gerado acima e faça o upload abaixo para gerar o relatório final em HTML.</p>
+
+  <div style="background:white;border:2px dashed #cbd5e1;border-radius:10px;padding:20px;max-width:500px;margin-bottom:20px;cursor:pointer;"
+       id="slot-excel" onclick="document.getElementById('input-excel').click()">
+    <input type="file" id="input-excel" accept=".xlsx" style="display:none" onchange="onExcel(this)">
+    <div style="font-weight:600;font-size:13px;color:#1E3A5F;margin-bottom:6px">📊 Excel Preenchido</div>
+    <div id="excel-label" style="font-size:12px;color:#475569">Clique para selecionar o arquivo .xlsx</div>
+  </div>
+
+  <div class="actions">
+    <button class="btn-gerar" id="btn-rit" onclick="gerarRIT()">📄 Gerar Relatório RIT</button>
+  </div>
+  <div id="status-rit" style="padding:12px 16px;border-radius:8px;font-size:14px;display:none"></div>
+
+  <script>
+    const DOCS = [
+      { chave: "anx_10_atual",    label: "Anexo 10 — Receita (Ano Atual)",    extrator: "pymupdf"  },
+      { chave: "anx_10_anterior", label: "Anexo 10 — Receita (Ano Anterior)", extrator: "pymupdf"  },
+      { chave: "anx_12",          label: "Anexo 12 — Balanço Orçamentário",   extrator: "camelot"  },
+      { chave: "anx_06",          label: "Anexo 06 — Programa de Trabalho",   extrator: "pymupdf"  },
+      { chave: "anx_02",          label: "Anexo 02 — Natureza da Despesa",    extrator: "pymupdf"  },
+      { chave: "anx_13",          label: "Anexo 13 — Balanço Financeiro",     extrator: "pymupdf"  },
+      { chave: "anx_14",          label: "Anexo 14 — Balanço Patrimonial",    extrator: "pymupdf"  },
+      { chave: "dfc",             label: "DFC — Fluxos de Caixa",             extrator: "pymupdf"  },
+      { chave: "loa",             label: "LOA — Lei Orçamentária Anual",      extrator: "pymupdf"  },
+      { chave: "rgf2semestre",    label: "RGF 2º Semestre — Despesa c/ Pessoal", extrator: "pymupdf"  },
+      { chave: "rgf1semestre",    label: "RGF 1º Semestre — Despesa c/ Pessoal", extrator: "pymupdf"  },
+      { chave: "bo_fundeb",       label: "Balanço Orçamentário — FUNDEB (Isolado)", extrator: "pymupdf"  },
+      { chave: "ff_saude",        label: "Fundo a Fundo — Saúde (Excel FNS)", extrator: "excel", accept: ".xlsx" },
+    ];
+
+    const grid = document.getElementById('grid');
+
+    DOCS.forEach(doc => {
+      const slot = document.createElement('div');
+      slot.className = 'slot';
+      slot.id = 'slot-' + doc.chave;
+      slot.onclick = (e) => { if (e.target.classList.contains('slot-clear')) return; slot.querySelector('input').click(); };
+
+      const badgeClass = doc.extrator === 'camelot' ? 'badge-camelot' : 'badge-pymupdf';
+      const badgeLabel = doc.extrator === 'camelot' ? 'Camelot'
+                        : doc.extrator === 'excel'   ? 'Excel'
+                        : 'PyMuPDF';
+      const accept = doc.accept || '.pdf';
+
+      slot.innerHTML = `
+        <input type="file" accept="${accept}" onchange="onFile('${doc.chave}', this)">
+        <div class="slot-header">
+          <span class="slot-label">${doc.label}</span>
+          <span class="badge ${badgeClass}">${badgeLabel}</span>
+        </div>
+        <div class="slot-file" id="file-${doc.chave}">Clique para selecionar ${accept === '.xlsx' ? 'Excel' : 'PDF'}</div>
+        <button class="slot-clear" onclick="clearSlot('${doc.chave}')">✕</button>
+      `;
+      grid.appendChild(slot);
+    });
+
+    function onFile(chave, input) {
+      const slot = document.getElementById('slot-' + chave);
+      const label = document.getElementById('file-' + chave);
+      if (input.files[0]) {
+        slot.classList.add('filled');
+        label.textContent = '📄 ' + input.files[0].name;
+      }
+      updateCounter();
+    }
+
+    function clearSlot(chave) {
+      const slot = document.getElementById('slot-' + chave);
+      const input = slot.querySelector('input');
+      const label = document.getElementById('file-' + chave);
+      input.value = '';
+      slot.classList.remove('filled');
+      label.textContent = input.accept === '.xlsx' ? 'Clique para selecionar Excel' : 'Clique para selecionar PDF';
+      updateCounter();
+    }
+
+    function updateCounter() {
+      const count = document.querySelectorAll('.slot.filled').length;
+      document.getElementById('counter').textContent = count + ' documento(s) selecionado(s)';
+    }
+
+    async function gerar() {
+      const btn = document.getElementById('btn');
+      const status = document.getElementById('status');
+
+      const form = new FormData();
+      let total = 0;
+      DOCS.forEach(doc => {
+        const input = document.getElementById('slot-' + doc.chave).querySelector('input');
+        if (input.files[0]) { form.append(doc.chave, input.files[0]); total++; }
+      });
+
+      if (total === 0) {
+        status.className = 'err';
+        status.textContent = '❌ Selecione pelo menos um documento.';
+        return;
+      }
+
+      btn.disabled = true;
+      status.className = 'loading';
+      status.textContent = '⏳ Gerando relatório... aguarde (pode levar 1-2 minutos)';
+
+      try {
+        const res = await fetch('http://localhost:8000/api/gerar', { method: 'POST', body: form });
+
+        if (!res.ok) {
+          const err = await res.json();
+          throw new Error(err.detail || res.statusText);
+        }
+
+        const tabelas  = res.headers.get('X-Tabelas-Geradas') || '?';
+        const municipio = res.headers.get('X-Municipio') || '';
+
+        const blob = await res.blob();
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url; a.download = 'relatorio_rit.xlsx'; a.click();
+        URL.revokeObjectURL(url);
+
+        status.className = 'ok';
+        status.textContent = `✅ Gerado com sucesso! ${tabelas} tabela(s) — ${municipio}`;
+      } catch (e) {
+        status.className = 'err';
+        status.textContent = '❌ Erro: ' + e.message;
+      } finally {
+        btn.disabled = false;
+      }
+    }
+    function onExcel(input) {
+      const slot = document.getElementById('slot-excel');
+      const label = document.getElementById('excel-label');
+      if (input.files[0]) {
+        slot.style.borderColor = '#2E86AB';
+        slot.style.borderStyle = 'solid';
+        slot.style.background = '#f0f9ff';
+        label.textContent = '📄 ' + input.files[0].name;
+      }
+    }
+
+    async function gerarRIT() {
+      const btn = document.getElementById('btn-rit');
+      const status = document.getElementById('status-rit');
+      const input = document.getElementById('input-excel');
+
+      if (!input.files[0]) {
+        status.className = 'err';
+        status.style.display = 'block';
+        status.textContent = '❌ Selecione o arquivo Excel preenchido.';
+        return;
+      }
+
+      btn.disabled = true;
+      status.className = 'loading';
+      status.style.display = 'block';
+      status.textContent = '⏳ Gerando relatório RIT... aguarde (a IA está analisando os dados)';
+
+      try {
+        const form = new FormData();
+        form.append('excel', input.files[0]);
+
+        const res = await fetch('http://localhost:8000/api/relatorio', { method: 'POST', body: form });
+
+        if (!res.ok) {
+          const txt = await res.text();
+          throw new Error(txt);
+        }
+
+        const blob = await res.blob();
+        const url = URL.createObjectURL(blob);
+        const novaAba = window.open(url, '_blank');
+
+        status.className = 'ok';
+        status.style.display = 'block';
+        if (novaAba) {
+          status.innerHTML = '✅ Relatório gerado! Uma nova aba foi aberta com o RIT. ' +
+            '<a href="' + url + '" target="_blank" style="color:#1E3A5F;font-weight:600">(abrir de novo)</a>';
+        } else {
+          // Pop-up bloqueado pelo navegador — mostra link manual em vez de assumir que abriu.
+          status.innerHTML = '✅ Relatório gerado, mas o navegador bloqueou a nova aba. ' +
+            '<a href="' + url + '" target="_blank" style="color:#1E3A5F;font-weight:700;text-decoration:underline">Clique aqui para abrir o RIT</a>.';
+        }
+      } catch (e) {
+        status.className = 'err';
+        status.style.display = 'block';
+        status.textContent = '❌ Erro: ' + e.message;
+      } finally {
+        btn.disabled = false;
+      }
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,120 @@
+# PROMPT OTIMIZADO - JSON ANÁLISE DEPÓSITOS RESTITUÍVEIS E VALORES VINCULADOS (BF vs BP)
+
+Extraia dos Anexos 13 e 14 e gere JSON:
+
+json {   "municipio": "[extrair cabeçalho]",   "exercicio": "[extrair ano]",   "analise_depositos_restituiveis": {     "balanco_financeiro": {       "recebimentos_depositos_bf": 0.00,       "pagamentos_depositos_bf": 0.00,       "saldo_c_bf": 0.00,       "depositos_restituiveis_saldo_seguinte_bf": 0.00,       "saldo_e_bf": 0.00     },     "balanco_patrimonial": {       "valores_restituiveis_exercicio_anterior": 0.00,       "valores_restituiveis_exercicio_atual": 0.00,       "saldo_c_bp": 0.00     },     "diferenca": 0.00,     "situacao": ""   } } 
+
+---
+
+## EXTRAÇÃO DETALHADA:
+
+### BALANÇO FINANCEIRO — ITEM (A): RECEBIMENTOS
+
+| FONTE | LOCALIZAÇÃO | OPERAÇÃO |
+|-------|-------------|----------|
+| Anexo 13 | INGRESSOS → RECEBIMENTOS EXTRA-ORÇAMENTÁRIOS → DEPÓSITOS RESTITUÍVEIS E VALORES VINCULADOS | somar todos os subitens |
+
+Somar todos os itens listados sob "DEPÓSITOS RESTITUÍVEIS E VALORES VINCULADOS" no lado dos INGRESSOS:
+- Contribuição ao RGPS (todas as ocorrências)
+- IRRF (todas as ocorrências)
+- ISS (todas as ocorrências)
+- Pensão alimentícia
+- Retenções — entidades representativas de classes
+- Retenções — planos de seguros
+- Retenções — empréstimos e financiamentos
+- Outros consignatários
+- Depósitos recebidos por determinação judicial
+- Outros valores restituíveis
+- Outras consignações
+- Qualquer outro subitem listado sob o mesmo grupo
+
+---
+
+### BALANÇO FINANCEIRO — ITEM (B): PAGAMENTOS
+
+| FONTE | LOCALIZAÇÃO | OPERAÇÃO |
+|-------|-------------|----------|
+| Anexo 13 | DISPÊNDIOS → PAGAMENTOS EXTRA-ORÇAMENTÁRIOS → DEPÓSITOS RESTITUÍVEIS E VALORES VINCULADOS | somar todos os subitens |
+
+Somar todos os itens listados sob "DEPÓSITOS RESTITUÍVEIS E VALORES VINCULADOS" no lado dos DISPÊNDIOS (mesma lógica do item A).
+
+---
+
+### BALANÇO FINANCEIRO — ITEM (C): SALDO BF
+
+javascript saldo_c_bf = recebimentos_depositos_bf - pagamentos_depositos_bf // Pode ser positivo ou negativo — preservar o sinal 
+
+---
+
+### BALANÇO FINANCEIRO — ITEM (D): DEPÓSITOS RESTITUÍVEIS — SALDOS P/ EXERCÍCIO SEGUINTE
+
+| FONTE | LOCALIZAÇÃO | OPERAÇÃO |
+|-------|-------------|----------|
+| Anexo 13 | SALDOS P/ EXERC. SEGUINTE → DEPÓSITOS RESTITUÍVEIS E VALORES VINCULADOS | extrair total ou 0.00 |
+
+Crítico: este valor aparece nos "Saldos p/ exercício seguinte" do BF, NÃO nos recebimentos/pagamentos. Se a linha não existir ou estiver zerada: 0.00
+
+---
+
+### BALANÇO FINANCEIRO — ITEM (E): SALDO FINAL BF
+
+javascript saldo_e_bf = saldo_c_bf - depositos_restituiveis_saldo_seguinte_bf 
+
+---
+
+### BALANÇO PATRIMONIAL — VALORES RESTITUÍVEIS
+
+| FONTE | LOCALIZAÇÃO | OPERAÇÃO |
+|-------|-------------|----------|
+| Anexo 14 | Passivo Circulante → VALORES RESTITUÍVEIS | extrair exercício anterior e atual |
+
+javascript valores_restituiveis_exercicio_anterior = [coluna Exercício Anterior] valores_restituiveis_exercicio_atual    = [coluna Exercício Atual] saldo_c_bp = valores_restituiveis_exercicio_atual - valores_restituiveis_exercicio_anterior 
+
+---
+
+### DIFERENÇA FINAL
+
+javascript diferenca = saldo_e_bf - saldo_c_bp // Se 0.00 → RECONCILIADO // Se ≠ 0.00 → DIVERGÊNCIA (alerta de auditoria) 
+
+---
+
+### SITUAÇÃO
+
+javascript if (diferenca == 0.00) {   situacao = "Reconciliado" } else {   situacao = "Divergência" } 
+
+---
+
+## CÁLCULOS COMPLETOS:
+
+javascript // BF saldo_c_bf  = recebimentos_depositos_bf - pagamentos_depositos_bf saldo_e_bf  = saldo_c_bf - depositos_restituiveis_saldo_seguinte_bf  // BP saldo_c_bp  = valores_restituiveis_exercicio_atual - valores_restituiveis_exercicio_anterior  // Diferença diferenca   = saldo_e_bf - saldo_c_bp 
+
+---
+
+## REGRAS:
+
+1. Somar todos os subitens de "Depósitos Restituíveis e Valores Vinculados" — não usar o total agregado
+2. Preservar sinais negativos
+3. Item (D) vem dos Saldos p/ exercício seguinte, não dos recebimentos/pagamentos
+4. Se item (D) não encontrado ou zerado: 0.00
+5. Valores: decimal 2 casas
+6. Situação: "Reconciliado" se diferença = 0,00 | "Divergência" se ≠ 0,00
+
+---
+
+## VALIDAÇÕES:
+
+javascript ✓ recebimentos_depositos_bf > 0 ✓ pagamentos_depositos_bf > 0 ✓ saldo_c_bf = recebimentos - pagamentos ✓ saldo_e_bf = saldo_c_bf - depositos_saldo_seguinte ✓ saldo_c_bp = atual - anterior ✓ diferenca = saldo_e_bf - saldo_c_bp ✓ situacao = "Reconciliado" OU "Divergência" ✓ todos os valores com 2 casas decimais 
+
+---
+
+## EXEMPLO — PINHEIRO 2025 (reconciliado com D ≠ 0):
+
+json {   "municipio": "Pinheiro",   "exercicio": "2025",   "analise_depositos_restituiveis": {     "balanco_financeiro": {       "recebimentos_depositos_bf": 40036661.46,       "pagamentos_depositos_bf": 32366251.29,       "saldo_c_bf": 7670410.17,       "depositos_restituiveis_saldo_seguinte_bf": 7670410.17,       "saldo_e_bf": 0.00     },     "balanco_patrimonial": {       "valores_restituiveis_exercicio_anterior": 7871.45,       "valores_restituiveis_exercicio_atual": 7678281.62,       "saldo_c_bp": 7670410.17     },     "diferenca": 0.00,     "situacao": "Reconciliado"   } } 
+
+## EXEMPLO — ITAPECURU MIRIM 2025 (reconciliado com D = 0):
+
+json {   "municipio": "Itapecuru Mirim",   "exercicio": "2025",   "analise_depositos_restituiveis": {     "balanco_financeiro": {       "recebimentos_depositos_bf": 43425780.06,       "pagamentos_depositos_bf": 34943401.77,       "saldo_c_bf": 8482378.29,       "depositos_restituiveis_saldo_seguinte_bf": 0.00,       "saldo_e_bf": 8482378.29     },     "balanco_patrimonial": {       "valores_restituiveis_exercicio_anterior": 9778.83,       "valores_restituiveis_exercicio_atual": 8492157.12,       "saldo_c_bp": 8482378.29     },     "diferenca": 0.00,     "situacao": "Reconciliado"   } } 
+
+---
+
+OUTPUT: analise_depositos_restituiveis_[municipio]_[ano].json (UTF-8, indent 2)

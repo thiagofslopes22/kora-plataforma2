@@ -1,0 +1,113 @@
+--- TABELA 1 PÁGINA 1 ---
+                                                                       0               1               2               3                4
+0                                                                               PREVISÃO        PREVISÃO        RECEITAS                 
+1                                                                                                                                   SALDO
+2                                                 RECEITAS ORÇAMENTÁRIAS         INICIAL      ATUALIZADA      REALIZADAS                 
+3                                                                                    (a)             (b)             (c)        d = (c-b)
+4                                                  RECEITAS CORRENTES(I)  452.118.820,36  452.118.820,36  381.892.579,12   -70.226.241,24
+5                            Impostos, Taxas e Contribuições de Melhoria   23.188.343,45   23.188.343,45   24.533.893,68     1.345.550,23
+6                                                               Impostos   20.724.774,51   20.724.774,51   21.481.867,41       757.092,90
+7                                                                  Taxas    2.089.398,50    2.089.398,50    2.690.714,11       601.315,61
+8                                               Contribuição de Melhoria      374.170,44      374.170,44      361.312,16       -12.858,28
+9                                               RECEITA DE CONTRIBUIÇÕES   17.174.262,67   17.174.262,67   11.368.359,02    -5.805.903,65
+10          Contribuição para o Custeio do Serviço de Iluminação Pública   17.174.262,67   17.174.262,67   11.368.359,02    -5.805.903,65
+11                                                   RECEITA PATRIMONIAL    2.406.633,54    2.406.633,54    3.813.189,07     1.406.555,53
+12                                                   Valores Mobiliários    1.689.081,85    1.689.081,85    3.750.156,28     2.061.074,43
+13                                          Outras Receitas Patrimoniais      717.551,69      717.551,69       63.032,79      -654.518,90
+14                                                   RECEITA DE SERVIÇOS    2.747.301,26    2.747.301,26            0,00    -2.747.301,26
+15                          Serviços Administrativos e Comerciais Gerais    1.345.468,21    1.345.468,21            0,00    -1.345.468,21
+16                                                       Outros Serviços    1.401.833,05    1.401.833,05            0,00    -1.401.833,05
+17                                              TRANSFERENCIAS CORRENTES  406.602.279,44  406.602.279,44  342.097.872,78   -64.504.406,66
+18                           Transferências da União e de suas Entidades  326.170.382,80  326.170.382,80  250.372.979,08   -75.797.403,72
+19                          Transferências do Estado e de suas Entidades   19.945.320,55   19.945.320,55   22.250.642,94     2.305.322,39
+20                          Transferências do Municipio e suas Entidades       17.940,79       17.940,79       95.436,91        77.496,12
+21                        Transferências de Outras Instituições Públicas   60.468.635,30   60.468.635,30   69.378.813,85     8.910.178,55
+22                                             OUTRAS RECEITAS CORRENTES            0,00            0,00       79.264,57        79.264,57
+23                           Indenizações, Restituições e ressarcimentos            0,00            0,00       79.264,57        79.264,57
+24                                              RECEITAS DE CAPITAL (II)   76.782.246,90   76.782.246,90    7.663.492,79   -69.118.754,11
+25                                                  OPERAÇÕES DE CRÉDITO   54.272.850,00   54.272.850,00            0,00   -54.272.850,00
+26                                                  Operações de Crédito   54.272.850,00   54.272.850,00            0,00   -54.272.850,00
+27                                                     ALIENAÇÃO DE BENS      504.580,59      504.580,59            0,00      -504.580,59
+28                                              Alienação de Bens Móveis      504.580,59      504.580,59            0,00      -504.580,59
+29                                             TRANSFERENCIAS DE CAPITAL   22.004.816,31   22.004.816,31    7.663.492,79   -14.341.323,52
+30                              Transferências da União e suas Entidades   18.609.313,51   18.609.313,51    7.637.838,39   -10.971.475,12
+31  Transferências dos Estados e do Distrito Federal e de suas Entidades    3.395.502,80    3.395.502,80       25.654,40    -3.369.848,40
+32                                    SUBTOTAL DAS RECEITAS (III)=(I+II)  528.901.067,26  528.901.067,26  389.556.071,91  -139.344.995,35
+33                                                  REFINANCIAMENTO (IV)            0,00            0,00            0,00             0,00
+34                                         Operações de Crédito Internas            0,00            0,00            0,00             0,00
+35                                                            Mobiliária            0,00            0,00            0,00             0,00
+36                                                            Contratual            0,00            0,00            0,00             0,00
+37                                         Operações de Crédito Externas            0,00            0,00            0,00             0,00
+38                                                            Mobiliária            0,00            0,00            0,00             0,00
+39                                                            Contratual            0,00            0,00            0,00             0,00
+40                           SUBTOTAL COM REFINANCIAMENTO (V) = (III+IV)  528.901.067,26  528.901.067,26  389.556.071,91  -139.344.995,35
+41                                                          DÉFICIT (VI)            0,00            0,00            0,00             0,00
+42                                                  TOTAL (VII) = (V+VI)  528.901.067,26  528.901.067,26  389.556.071,91  -139.344.995,35
+43                                       SALDOS DE EXERCÍCIOS ANTERIORES            0,00            0,00            0,00             0,00
+44                                  (UTILIZADOS PARA CRÉDITO ADICIONAIS)            0,00            0,00            0,00             0,00
+45                         Recursos Arrecadados em Exercícios Anteriores            0,00            0,00            0,00             0,00
+46                                                  Superávit Financeiro            0,00            0,00            0,00             0,00
+47                                     Reabertura de Créditos Adicionais            0,00            0,00            0,00             0,00
+
+--- TABELA 2 PÁGINA 2 ---
+                                                0               1               2               3               4               5               6
+0                                                         DOTACAO         DOTAÇÃO        DESPESAS        DESPESAS        DESPESAS           SALDO
+1                          DESPESAS ORÇAMENTÁRIAS         INICIAL      ATUALIZADA      EMPENHADAS      LIQUIDADAS           PAGAS      DA DOTAÇÃO
+2                                                             (e)             (f)             (g)             (h)             (i)       (j)=(f-g)
+3                       DESPESAS CORRENTES (VIII)  402.505.855,61  458.797.101,53  356.764.187,14  356.763.707,14  353.331.438,69  102.032.914,39
+4                      PESSOAL E ENCARGOS SOCIAIS  185.687.494,52  231.887.977,82  193.946.884,85  193.946.884,85  193.918.435,16   37.941.092,97
+5                      JUROS E ENCARGOS DA DíVIDA      477.160,16        6.000,00            0,00            0,00            0,00        6.000,00
+6                       OUTRAS DESPESAS CORRENTES  216.341.200,93  226.903.123,71  162.817.302,29  162.816.822,29  159.413.003,53   64.085.821,42
+7                        DESPESAS DE CAPITAL (IX)  122.191.848,65   69.261.871,36   32.155.529,27   32.155.529,27   30.654.729,62   37.106.342,09
+8                                   INVESTIMENTOS  121.010.823,65   64.518.360,23   27.849.288,11   27.849.288,11   26.348.488,46   36.669.072,12
+9                           INVERSÕES FINANCEIRAS            0,00            0,00            0,00            0,00            0,00            0,00
+10                          AMORTIZAÇÃO DA DÍVIDA    1.181.025,00    4.743.511,13    4.306.241,16    4.306.241,16    4.306.241,16      437.269,97
+11                     RESERVA DE CONTINGÊNCIA(X)    4.203.363,00      339.090,31            0,00            0,00            0,00      339.090,31
+12         SUBTOTAL DAS DESPESAS (XI)=(VIII+IV+X)  528.901.067,26  528.398.063,20  388.919.716,41  388.919.236,41  383.986.168,31  139.478.346,79
+13  AMORTIZAÇÃO DA DÍVIDA - REFINANCIAMENTO (XII)            0,00      503.004,06      407.253,62      407.253,62      407.253,62       95.750,44
+14                  Amortização da Dívida Interna            0,00      503.004,06      407.253,62      407.253,62      407.253,62       95.750,44
+15                              DÍVIDA MOBILIÁRIA            0,00      483.004,06      407.253,62      407.253,62      407.253,62       75.750,44
+16                                 OUTRAS DÍVIDAS            0,00       20.000,00            0,00            0,00            0,00       20.000,00
+17                  Amortização da Dívida Externa            0,00            0,00            0,00            0,00            0,00            0,00
+18                              DÍVIDA MOBILIÁRIA            0,00            0,00            0,00            0,00            0,00            0,00
+19                                 OUTRAS DÍVIDAS            0,00            0,00            0,00            0,00            0,00            0,00
+20   SUBTOTAL COM REFINANCIAMENTO (XIII)=(XI+XII)  528.901.067,26  528.901.067,26  389.326.970,03  389.326.490,03  384.393.421,93  139.574.097,23
+21                                SUPERÁVIT (XIV)            0,00            0,00      229.101,88            0,00            0,00            0,00
+22                        TOTAL (XV)=(XIII + XIV)  528.901.067,26  528.901.067,26  389.556.071,91  389.326.490,03  384.393.421,93  139.574.097,23
+23                                RESERVA DO RPPS            0,00            0,00            0,00            0,00            0,00            0,00
+
+--- TABELA 3 PÁGINA 2 ---
+                                                        0              1            2           3      4     5           6              7
+0   QUADRO DA EXECUÇÃO DOS RESTOS A PAGAR NÃO PROCESSADOS                                                                                
+1                                                              INSCRITOS                                                                 
+2                          RESTOS A PAGAR NÃO PROCESSADOS  EM EXERCÍCIOS     EM 31 DE  LIQUIDADOS  PAGOS        CANCELADOS          SALDO
+3                                                             ANTERIORES  DEZEMBRO DO                                                    
+4                                                                           EXERCÍCIO                                                    
+5                                                                    (a)          (b)         (c)    (d)               (e)  (f)=(a+b-d-e)
+6                                      DESPESAS CORRENTES           0,00       480,00        0,00         0,00        0,00         480,00
+7                              PESSOAL E ENCARGOS SOCIAIS           0,00         0,00        0,00         0,00        0,00           0,00
+8                              JUROS E ENCARGOS DA DíVIDA           0,00         0,00        0,00         0,00        0,00           0,00
+9                               OUTRAS DESPESAS CORRENTES           0,00       480,00        0,00         0,00        0,00         480,00
+10                                    DESPESAS DE CAPITAL           0,00         0,00        0,00         0,00        0,00           0,00
+11                                          INVESTIMENTOS           0,00         0,00        0,00         0,00        0,00           0,00
+12                                  INVERSÕES FINANCEIRAS           0,00         0,00        0,00         0,00        0,00           0,00
+13                                  AMORTIZAÇÃO DA DÍVIDA           0,00         0,00        0,00         0,00        0,00           0,00
+14                                                  TOTAL           0,00       480,00        0,00         0,00        0,00         480,00
+
+--- TABELA 4 PÁGINA 2 ---
+                                                    0              1             2      3     4           5              6
+0   QUADRO DA EXECUÇÃO DOS RESTOS A PAGAR PROCESSADOS                                                                     
+1                                                          INSCRITOS                                                      
+2                          RESTOS A PAGAR PROCESSADOS  EM EXERCÍCIOS      EM 31 DE  PAGOS        CANCELADOS          SALDO
+3                                                         ANTERIORES   DEZEMBRO DO                                        
+4                                                                        EXERCÍCIO                                        
+5                                                                (a)           (b)    (C)               (d)  (e)=(a+b-c-d)
+6                                  DESPESAS CORRENTES           0,00  3.432.268,45         0,00        0,00   3.432.268,45
+7                          PESSOAL E ENCARGOS SOCIAIS           0,00     28.449,69         0,00        0,00      28.449,69
+8                          JUROS E ENCARGOS DA DíVIDA           0,00          0,00         0,00        0,00           0,00
+9                           OUTRAS DESPESAS CORRENTES           0,00  3.403.818,76         0,00        0,00   3.403.818,76
+10                                DESPESAS DE CAPITAL           0,00  1.500.799,65         0,00        0,00   1.500.799,65
+11                                      INVESTIMENTOS           0,00  1.500.799,65         0,00        0,00   1.500.799,65
+12                              INVERSÕES FINANCEIRAS           0,00          0,00         0,00        0,00           0,00
+13                              AMORTIZAÇÃO DA DÍVIDA           0,00          0,00         0,00        0,00           0,00
+14                                              TOTAL           0,00  4.933.068,10         0,00        0,00   4.933.068,10

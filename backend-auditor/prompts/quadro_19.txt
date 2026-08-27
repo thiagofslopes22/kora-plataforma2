@@ -1,0 +1,160 @@
+# PROMPT COMPLETO - EXTRAÇÃO JSON RECEITA IMPOSTOS E TRANSFERÊNCIAS (EDUCAÇÃO - MDE)
+
+Extraia dos Anexos 1, 2, 10 e 13 da Lei nº 4.320/1964 os valores da apuração da receita proveniente de impostos e transferências utilizada no cálculo do percentual constitucional destinado à Manutenção e Desenvolvimento do Ensino (MDE - 25%) e gere JSON no formato abaixo:
+json {   "municipio": "[extrair do cabeçalho]",   "exercicio": "[extrair do cabeçalho]",   "apuracao_receita_impostos_transferencias_educacao": {     "receita_impostos": [       {         "descricao": "Imposto Predial e Territorial Urbano - IPTU",         "valor": 0.00,         "codigo": "1112.50.0.1.00.00",         "fonte": "Anexo 10 - Coluna ARRECADADA"       },       {         "descricao": "Multas, Juros de Mora, Dívida Ativa e Outros Encargos do IPTU",         "valor": 0.00,         "codigos_relacionados": "1112.50.x.x.xx.xx",         "fonte": "Anexo 10 - Somar todos os códigos 1112.50.x"       },       {         "descricao": "Imposto Sobre a Transmissão de Bens Intervivos - ITBI",         "valor": 0.00,         "codigo": "1112.53.0.1.00.00",         "fonte": "Anexo 10 - Coluna ARRECADADA"       },       {         "descricao": "Multas, Juros de Mora, Dívida Ativa e Outros Encargos do ITBI",         "valor": 0.00,         "codigos_relacionados": "1112.53.x.x.xx.xx",         "fonte": "Anexo 10 - Somar todos os códigos 1112.53.x"       },       {         "descricao": "Imposto sobre Serviços de Qualquer Natureza - ISS",         "valor": 0.00,         "codigo": "1114.51.1.1.00.00",         "fonte": "Anexo 10 - Coluna ARRECADADA"       },       {         "descricao": "Multas, Juros de Mora, Dívida Ativa e Outros Encargos do ISS",         "valor": 0.00,         "codigos_relacionados": "1114.51.x.x.xx.xx",         "fonte": "Anexo 10 - Somar todos os códigos 1114.51.x"       },       {         "descricao": "Imposto de Renda Retido na Fonte - IRRF",         "valor": 0.00,         "codigo": "1113.03.1.1.00.00",         "fonte": "Anexo 10 - Coluna ARRECADADA"       },       {         "descricao": "Imposto Territorial Rural - ITR",         "valor": 0.00,         "observacao": "ITR classificado como transferência, deixar 0.00"       },       {         "descricao": "Multas, Juros de Mora, Dívida Ativa e Outros Encargos do ITR",         "valor": 0.00,         "fonte": "Anexo 10 - Buscar códigos 1113.xx relacionados ao ITR"       },       {         "descricao": "Multas, Juros de Mora e Outros e Encargos dos Impostos",         "valor": 0.00,         "observacao": "Multas não classificadas acima"       },       {         "descricao": "Dívida Ativa dos Impostos",         "valor": 0.00,         "codigos_relacionados": "1911.xx",         "fonte": "Anexo 10 - Dívida ativa de impostos"       },       {         "descricao": "Multa, Juros de Mora e Outros Encargos da Dívida Ativa",         "valor": 0.00,         "codigos_relacionados": "1911.xx.x.2 ou 1911.xx.x.3",         "fonte": "Anexo 10 - Multas sobre dívida ativa"       },       {         "descricao": "TOTAL DA RECEITA DE IMPOSTOS",         "valor": 0.00,         "destaque": true,         "formula": "somar todos os itens acima"       }     ],     "receita_transferencias": [       {         "descricao": "Cota-parte FPM",         "valor": 0.00,         "codigo": "1711.51.1.1.00.00",         "fonte": "Anexo 10 - SOMENTE FPM Regular (Cota Mensal)",         "observacao": "NÃO incluir FPM Extraordinário aqui"       },       {         "descricao": "Cota-parte ITR",         "valor": 0.00,         "codigo": "1711.52.0.1.00.00",         "fonte": "Anexo 10 - Coluna ARRECADADA"       },       {         "descricao": "Cota-parte IPVA",         "valor": 0.00,         "codigo": "1721.51.0.1.00.00",         "fonte": "Anexo 10 - Coluna ARRECADADA"       },       {         "descricao": "Cota-parte ICMS",         "valor": 0.00,         "codigo": "1721.50.0.1.00.00",         "fonte": "Anexo 10 - Coluna ARRECADADA"       },       {         "descricao": "ICMS-Desoneração – LC nº 87/1996",         "valor": 0.00,         "observacao": "Se não encontrado, deixar 0.00"       },       {         "descricao": "Cota-parte IPI-Exportação",         "valor": 0.00,         "codigo": "1721.52.0.1.00.00",         "fonte": "Anexo 10 - Coluna ARRECADADA"       },       {         "descricao": "Cota-parte IOF-Ouro",         "valor": 0.00,         "observacao": "Se não encontrado, deixar 0.00"       },       {         "descricao": "Outras",         "valor": 0.00,         "observacao": "Outras transferências constitucionais"       },       {         "descricao": "TOTAL DA RECEITA DE TRANSFERÊNCIAS CONSTITUCIONAIS E LEGAIS",         "valor": 0.00,         "destaque": true,         "formula": "somar todos os itens acima (SEM FPM Extra)"       }     ],     "fpm_extraordinario_incluido": {       "descricao": "FPM - Cotas Extraordinárias (INCLUÍDO na base de cálculo da educação)",       "valor": 0.00,       "codigo": "1711.51.2.1.00.00",       "fonte": "Anexo 10 - Coluna ARRECADADA",       "observacao": "DIFERENÇA CRÍTICA: Educação INCLUI, Saúde EXCLUI",       "impacto_base": 0.00     },     "total_receita_resultante_impostos_bruta": {       "descricao": "TOTAL DA RECEITA RESULTANTE DE IMPOSTOS (Base de cálculo BRUTA)",       "valor": 0.00,       "formula": "total_impostos + total_transferencias + fpm_extraordinario",       "destaque": true,       "observacao": "Base ANTES de deduzir FUNDEB"     },     "deducao_fundeb": {       "descricao": "(-) DEDUÇÃO DO FUNDEB (20%)",       "valor": 0.00,       "fonte": "Anexo 1 - (R) DEDUÇÕES DO FUNDEB",       "linha_anexo_1": "Buscar linha com '(R) DEDUÇÕES DO FUNDEB' ou similar",       "detalhamento": [         {           "descricao": "20% FPM Regular",           "valor": 0.00,           "codigo": "91711.51.1.1.00.00",           "fonte": "Anexo 10 - Coluna ARRECADADA (códigos 9xxxx)",           "calculo": "fpm_regular × 0.20"         },         {           "descricao": "20% FPM Extraordinário",           "valor": 0.00,           "observacao": "FPM Extraordinário NÃO sofre dedução FUNDEB",           "valor_esperado": 0.00         },         {           "descricao": "20% ITR",           "valor": 0.00,           "codigo": "91711.52.0.1.00.00",           "calculo": "itr × 0.20"         },         {           "descricao": "20% ICMS",           "valor": 0.00,           "codigo": "91721.50.0.1.00.00",           "calculo": "icms × 0.20"         },         {           "descricao": "20% IPVA",           "valor": 0.00,           "codigo": "91721.51.0.1.00.00",           "calculo": "ipva × 0.20"         },         {           "descricao": "20% IPI-Exportação",           "valor": 0.00,           "codigo": "91721.52.0.1.00.00",           "calculo": "ipi × 0.20"         }       ],       "total_deducao": 0.00,       "validacao": {         "anexo_1": 0.00,         "soma_detalhada": 0.00,         "diferenca": 0.00,         "status": ""       }     },     "total_receita_resultante_impostos_liquida": {       "descricao": "TOTAL DA RECEITA RESULTANTE DE IMPOSTOS (Base de cálculo LÍQUIDA para MDE)",       "valor": 0.00,       "formula": "base_bruta - deducao_fundeb",       "destaque": true,       "observacao": "Esta é a BASE para calcular os 25% da educação"     },     "calculo_minimo_educacao": {       "base_calculo": 0.00,       "percentual_minimo": 25.00,       "aplicacao_minima_obrigatoria": 0.00,       "formula": "base_calculo_liquida × 0.25",       "base_legal": "CF/88, art. 212 c/c EC 14/96"     }   } } 
+
+---
+
+## INSTRUÇÕES DETALHADAS DE EXTRAÇÃO:
+
+### PASSO 1: ANEXO 10 - RECEITA DE IMPOSTOS
+
+#### 1.1 IPTU - Principal
+BUSCAR: Código 1112.50.0.1.00.00 DESCRIÇÃO: "IPTU - PRINCIPAL" EXTRAIR: Coluna "ARRECADADA" VALOR: [extrair]
+
+#### 1.2 IPTU - Multas e Encargos
+BUSCAR: Códigos 1112.50.x.x.xx.xx (qualquer variação) EXEMPLOS:   - 1112.50.0.2.00.00 (Multas e Juros)   - 1112.50.0.3.00.00 (Dívida Ativa)   - 1112.50.0.4.00.00 (Multas Dívida Ativa) SOMAR: Todos os valores encontrados SE NÃO ENCONTRADO: 0.00
+
+#### 1.3 ITBI - Principal
+BUSCAR: Código 1112.53.0.1.00.00 DESCRIÇÃO: "ITBI-'INTER VIVOS'-PRINCIPAL" EXTRAIR: Coluna "ARRECADADA" VALOR: [extrair]
+
+#### 1.4 ITBI - Multas e Encargos
+BUSCAR: Códigos 1112.53.x.x.xx.xx SOMAR: Todos os valores encontrados SE NÃO ENCONTRADO: 0.00
+
+#### 1.5 ISS/ISSQN - Principal
+BUSCAR: Código 1114.51.1.1.00.00 DESCRIÇÃO: "ISSQN - PRINCIPAL" EXTRAIR: Coluna "ARRECADADA" VALOR: [extrair]
+
+#### 1.6 ISS - Multas e Encargos
+BUSCAR: Códigos 1114.51.x.x.xx.xx SOMAR: Todos os valores encontrados SE NÃO ENCONTRADO: 0.00
+
+#### 1.7 IRRF - Principal
+BUSCAR: Código 1113.03.1.1.00.00 DESCRIÇÃO: "IRRF-TRABALHO-PRINCIPAL" EXTRAIR: Coluna "ARRECADADA" VALOR: [extrair]
+
+#### 1.8 ITR nos Impostos
+VALOR: 0.00 OBSERVAÇÃO: ITR é classificado como TRANSFERÊNCIA
+
+#### 1.9 ITR - Multas e Encargos
+BUSCAR: Códigos 1113.xx relacionados a ITR SE ENCONTRADO: Extrair SE NÃO ENCONTRADO: 0.00
+
+#### 1.10 Outras Multas e Encargos
+BUSCAR: Códigos gerais de multas (111x.xx.x.2, 111x.xx.x.3) NÃO INCLUIR: Multas já contadas nos itens específicos acima SOMAR: Valores remanescentes SE NÃO ENCONTRADO: 0.00
+
+#### 1.11 Dívida Ativa dos Impostos
+BUSCAR: Códigos 1911.xx (Dívida Ativa) FILTRAR: Apenas dívida ativa de impostos municipais SOMAR: Todos os valores SE NÃO ENCONTRADO: 0.00
+
+#### 1.12 Multas da Dívida Ativa
+BUSCAR: Códigos 1911.xx.x.2 ou 1911.xx.x.3 SOMAR: Todos os valores SE NÃO ENCONTRADO: 0.00
+
+#### 1.13 TOTAL RECEITA DE IMPOSTOS
+javascript total_impostos = iptu + iptu_multas + itbi + itbi_multas +                   iss + iss_multas + irrf + itr_impostos +                   itr_multas + outras_multas + divida_ativa +                   multas_divida_ativa 
+
+---
+
+### PASSO 2: ANEXO 10 - TRANSFERÊNCIAS CONSTITUCIONAIS
+
+#### 2.1 FPM - Cota Mensal (Regular) SOMENTEBUSCAR: Código 1711.51.1.1.00.00 DESCRIÇÃO: "COTA-PARTE DO FPM- COTA MENSAL - PRINCIPAL" EXTRAIR: Coluna "ARRECADADA" CRÍTICO: NÃO incluir FPM Extraordinário aqui VALOR: [extrair]
+
+#### 2.2 ITR - Transferência
+BUSCAR: Código 1711.52.0.1.00.00 DESCRIÇÃO: "COTA-PARTE DO IMP. PROPRIED.TERRIT.RURAL - PRINCIPAL" EXTRAIR: Coluna "ARRECADADA" VALOR: [extrair]
+
+#### 2.3 IPVA
+BUSCAR: Código 1721.51.0.1.00.00 DESCRIÇÃO: "COTA-PARTE DO IPVA – PRINCIPAL" EXTRAIR: Coluna "ARRECADADA" VALOR: [extrair]
+
+#### 2.4 ICMS
+BUSCAR: Código 1721.50.0.1.00.00 DESCRIÇÃO: "COTA-PARTE DO ICMS – PRINCIPAL" EXTRAIR: Coluna "ARRECADADA" VALOR: [extrair]
+
+#### 2.5 ICMS-Desoneração
+BUSCAR: Código relacionado à LC 87/96 EXTRAIR: Coluna "ARRECADADA" SE NÃO ENCONTRADO: 0.00
+
+#### 2.6 IPI-Exportação
+BUSCAR: Código 1721.52.0.1.00.00 DESCRIÇÃO: "COTA-PARTE DO IPI – MUNICÍPIOS – PRINCIPAL" EXTRAIR: Coluna "ARRECADADA" VALOR: [extrair]
+
+#### 2.7 IOF-Ouro
+BUSCAR: Código relacionado a IOF-Ouro EXTRAIR: Coluna "ARRECADADA" SE NÃO ENCONTRADO: 0.00
+
+#### 2.8 Outras Transferências
+BUSCAR: Outras transferências constitucionais não listadas SOMAR: Valores encontrados SE NÃO ENCONTRADO: 0.00
+
+#### 2.9 TOTAL TRANSFERÊNCIAS
+javascript total_transferencias = fpm_regular + itr + ipva + icms +                         icms_desoneracao + ipi + iof_ouro + outras  // CRÍTICO: NÃO incluir FPM Extraordinário neste total 
+
+---
+
+### PASSO 3: FPM EXTRAORDINÁRIO (INCLUÍDO NA EDUCAÇÃO)
+BUSCAR: Código 1711.51.2.1.00.00 DESCRIÇÃO: "COTA-PARTE DO FPM- COTAS EXTRAORDINARIAS - PRINCIPAL" EXTRAIR: Coluna "ARRECADADA" VALOR: [extrair]  DIFERENÇA FUNDAMENTAL:   EDUCAÇÃO: INCLUIR este valor na base   SAÚDE: EXCLUIR este valor da base
+
+---
+
+### PASSO 4: BASE DE CÁLCULO BRUTA
+javascript base_bruta = total_impostos + total_transferencias + fpm_extraordinario  // Composição completa: // - Impostos próprios (IPTU, ITBI, ISS, IRRF) // - Transferências regulares (FPM, ITR, IPVA, ICMS, IPI) // - FPM Extraordinário (INCLUÍDO na educação) 
+
+---
+
+### PASSO 5: ANEXO 1 - DEDUÇÃO DO FUNDEB
+
+#### 5.1 Localizar Dedução Total
+BUSCAR NO ANEXO 1: Seção "RECEITAS CORRENTES" LOCALIZAR: Linha "(R) DEDUÇÕES DO FUNDEB" ou "(-) DEDUÇÕES DO FUNDEB" EXTRAIR: Valor (normalmente negativo) CONVERTER: Para positivo se necessário  EXEMPLO:   "(R) DEDUÇÕES DO FUNDEB    -6.846.310,24"   EXTRAIR: 6846310.24
+
+#### 5.2 Validar com Anexo 10 (Códigos 9xxxx)
+
+Códigos de Dedução no Anexo 10:91711.51.1.1.00.00 - Dedução FPM Regular (20%) 91711.52.0.1.00.00 - Dedução ITR (20%) 91721.50.0.1.00.00 - Dedução ICMS (20%) 91721.51.0.1.00.00 - Dedução IPVA (20%) 91721.52.0.1.00.00 - Dedução IPI (20%)Extração:PARA CADA código 9xxxx:   BUSCAR: Código no Anexo 10   EXTRAIR: Coluna "ARRECADADA" (valor negativo)   CONVERTER: Para positivo   SOMAR: Todas as deduções  IMPORTANTE: FPM Extraordinário NÃO tem código 9xxxx (não deduz FUNDEB)
+
+#### 5.3 Validação Cruzada
+javascript // Validação entre Anexo 1 e Anexo 10 deducao_anexo_1 = valor extraído do Anexo 1 deducao_anexo_10 = soma dos códigos 9xxxx do Anexo 10  diferenca = abs(deducao_anexo_1 - deducao_anexo_10)  if (diferenca < 100) {   status = "✓ CONFERIDO" } else {   status = "⚠ DIVERGÊNCIA - verificar" } 
+
+---
+
+### PASSO 6: BASE DE CÁLCULO LÍQUIDA
+javascript base_liquida = base_bruta - deducao_fundeb  // Esta é a BASE para calcular os 25% da educação 
+
+---
+
+### PASSO 7: APLICAÇÃO MÍNIMA EDUCAÇÃO
+javascript aplicacao_minima = base_liquida * 0.25  // Percentual constitucional: 25% (CF/88, art. 212) 
+
+---
+
+## REGRAS CRÍTICAS:
+
+### REGRA 1: FPM Extraordinário
+✓ EDUCAÇÃO: INCLUIR na base de cálculo ✗ SAÚDE: EXCLUIR da base de cálculo  Código: 1711.51.2.1.00.00 Local: Após "TOTAL TRANSFERÊNCIAS"
+
+### REGRA 2: Dedução FUNDEB
+✓ EDUCAÇÃO: DEDUZIR 20% (R$ 6,8 milhões) ✗ SAÚDE: NÃO DEDUZIR  Fonte primária: Anexo 1 - linha "(R) DEDUÇÕES DO FUNDEB" Validação: Anexo 10 - códigos 9xxxx
+
+### REGRA 3: Base de Cálculo
+EDUCAÇÃO:   Base = (Impostos + Transferências + FPM Extra) - FUNDEB   Base = LÍQUIDA (após dedução)    SAÚDE:   Base = (Impostos + Transferências) - FPM Extra   Base = BRUTA (sem dedução FUNDEB)
+
+### REGRA 4: Valores Zerados
+SE código não encontrado: 0.00 SE linha vazia: 0.00 SE descrição sem valor: 0.00
+
+### REGRA 5: Formatação
+Valores: decimal com 2 casas (0.00) Sem símbolo R$ no JSON Preservar negativos se necessário
+
+---
+
+## VALIDAÇÕES OBRIGATÓRIAS:
+javascript // Validação 1: Total Impostos assert(total_impostos > 0)  // Validação 2: Total Transferências (sem FPM Extra) assert(total_transferencias > 0)  // Validação 3: FPM Extraordinário presente assert(fpm_extraordinario >= 0)  // Validação 4: Base Bruta assert(base_bruta == total_impostos + total_transferencias + fpm_extraordinario)  // Validação 5: Dedução FUNDEB assert(deducao_fundeb > 0) assert(deducao_fundeb == deducao_anexo_1)  // Validação 6: Base Líquida assert(base_liquida == base_bruta - deducao_fundeb)  // Validação 7: Aplicação Mínima assert(aplicacao_minima == base_liquida * 0.25)  // Validação 8: Dedução FUNDEB = 20% das receitas sujeitas assert(abs(deducao_fundeb - (fpm_regular + itr + icms + ipva + ipi) * 0.20) < 100) 
+
+---
+
+## CHECKLIST FINAL:
+
+- [ ] Todos os impostos extraídos (IPTU, ITBI, ISS, IRRF)
+- [ ] ITR = 0.00 nos impostos (é transferência)
+- [ ] Multas e encargos verificados (podem ser 0.00)
+- [ ] Dívida ativa verificada (pode ser 0.00)
+- [ ] Transferências extraídas (FPM, ITR, IPVA, ICMS, IPI)
+- [ ] FPM: SOMENTE cota mensal (regular)
+- [ ] FPM Extraordinário INCLUÍDO separadamente
+- [ ] Base Bruta = Impostos + Transferências + FPM Extra
+- [ ] Dedução FUNDEB extraída do Anexo 1
+- [ ] Dedução validada com Anexo 10 (códigos 9xxxx)
+- [ ] FPM Extra NÃO tem dedução FUNDEB
+- [ ] Base Líquida = Base Bruta - FUNDEB
+- [ ] Aplicação Mínima = 25% da Base Líquida
+- [ ] Todas as validações passaram
+- [ ] Valores com 2 casas decimais
+- [ ] JSON bem formatado
+
+OUTPUT: receita_impostos_educacao_[municipio]_[ano].json

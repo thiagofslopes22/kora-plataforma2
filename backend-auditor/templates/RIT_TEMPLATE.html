@@ -1,0 +1,1148 @@
+<meta charset="utf-8">
+<!--
+============================================================================
+  TEMPLATE HTML — RELATÓRIO DE INSTRUÇÃO (RIT) — TCE/MA
+  Prestação de Contas Anual de Governo
+============================================================================
+
+  COMO USAR (para o seu sistema de geração automática):
+
+  1. VARIÁVEIS ESCALARES  →  {{nome_variavel}}
+     Substitua por string simples (texto, valor R$, percentual, etc.).
+     Ex.: {{municipio}} = "Presidente Dutra"
+
+  2. BLOCOS OPCIONAIS  →  {{#flag_bloco}} ... {{/flag_bloco}}
+     Renderize o conteúdo apenas quando a flag for verdadeira (padrão Mustache/Handlebars).
+     Se o seu sistema faz apenas replace de string, basta substituir a marcação
+     {{#flag}}/{{/flag}} por vazio quando quiser exibir, ou apagar o trecho inteiro
+     quando não quiser. Use esses blocos para os parágrafos que aparecem em alguns
+     municípios e não em outros (ex.: "Informações complementares").
+
+  3. LINHAS REPETÍVEIS (tabelas de ocorrências e duodécimo)  →  {{#lista}} ... {{/lista}}
+     Repita o bloco <tr>...</tr> uma vez para cada item do array JSON.
+
+  Convenção de nomes:
+     {{municipio}}       = nome do ente. Ex.: "Presidente Dutra"
+     {{municipio_uf}}    = nome do ente + "/MA". Ex.: "Presidente Dutra/MA"
+     {{exercicio}}       = exercício financeiro. Ex.: "2024"
+     Prefixo qN_ = célula do Quadro N (anexos).
+============================================================================
+-->
+
+<style>
+  :root {
+    --tinta: #111;
+    --linha: #000;
+    --cab-fundo: #d9d9d9;
+    --cab-fundo-2: #efefef;
+    /* Identidade KORA */
+    --kora-ouro: #B8860B;
+    --kora-ouro-escuro: #7d5c08;
+    --kora-ouro-claro: #f6efda;
+    --kora-ouro-borda: #e0cf9c;
+    /* Status de conformidade */
+    --ok-fundo: #e6f4ea;   --ok-tinta: #1b7f3b;
+    --alerta-fundo: #fbf1d5; --alerta-tinta: #8a6d00;
+    --erro-fundo: #f9e3e0;  --erro-tinta: #b03a2e;
+  }
+
+  * { box-sizing: border-box; }
+
+  .rit-doc {
+    font-family: "Times New Roman", Georgia, serif;
+    font-size: 11px;
+    line-height: 1.45;
+    color: var(--tinta);
+    max-width: 820px;
+    margin: 0 auto;
+    padding: 32px 40px 60px;
+    text-align: justify;
+    background: #fff;
+  }
+
+  .rit-doc p { margin: 0 0 9px; }
+
+  /* ---------- Cabeçalho / metadados do processo ---------- */
+  .rit-cabecalho { margin-bottom: 14px; }
+  .rit-cabecalho .linha { margin: 0; }
+  .rit-cabecalho .rotulo { font-weight: bold; }
+
+  .rit-titulo-relatorio {
+    text-align: center;
+    font-weight: bold;
+    font-size: 13px;
+    margin: 16px 0;
+    letter-spacing: .3px;
+  }
+
+  /* ---------- Títulos de seção ---------- */
+  h1.sec, h2.sec, h3.sec, h4.sec {
+    font-weight: bold;
+    text-align: left;
+    margin: 16px 0 8px;
+    line-height: 1.3;
+  }
+  h1.sec { font-size: 13px; text-transform: uppercase; }
+  h2.sec { font-size: 12px; }
+  h3.sec { font-size: 11.5px; }
+  h4.sec { font-size: 11px; font-style: italic; }
+
+  .sumario p { margin: 0; padding-left: 4px; }
+
+  /* ---------- Tabelas / Quadros ---------- */
+  .quadro-titulo { font-weight: bold; margin: 18px 0 4px; font-size: 11px; }
+  .quadro-desc { font-style: italic; margin: 0 0 6px; font-size: 10.5px; }
+
+  table.quadro {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 4px 0 6px;
+    font-size: 10px;
+    text-align: left;
+  }
+  table.quadro th, table.quadro td {
+    border: 1px solid var(--linha);
+    padding: 3px 5px;
+    vertical-align: top;
+  }
+  table.quadro thead th,
+  table.quadro th.cab {
+    background: var(--cab-fundo);
+    font-weight: bold;
+    text-align: center;
+  }
+  table.quadro td.valor,
+  table.quadro th.valor { text-align: right; white-space: nowrap; }
+  table.quadro td.centro { text-align: center; }
+  table.quadro tr.total td { font-weight: bold; background: var(--cab-fundo-2); }
+
+  .fonte { font-size: 9.5px; font-style: italic; margin: 2px 0 10px; }
+
+  /* ---------- Ocorrências ---------- */
+  table.ocorrencias { font-size: 10px; }
+  table.ocorrencias th { background: var(--cab-fundo); text-align: center; }
+  .sem-ocorrencia { text-align: center; font-style: italic; }
+
+  /* ---------- Assinatura ---------- */
+  .assinatura-bloco { margin: 26px 0; text-align: center; }
+
+  /* ---------- Rodapé de página ---------- */
+  .rodape-pagina {
+    text-align: right;
+    font-size: 9.5px;
+    color: #333;
+    border-top: 1px solid #999;
+    margin-top: 14px;
+    padding-top: 3px;
+  }
+
+  /* ================= TEMA KORA (dourado — apenas detalhes) ================= */
+  .kora-brand {
+    display: flex; align-items: baseline; justify-content: space-between;
+    gap: 12px; border-bottom: 2px solid var(--kora-ouro);
+    padding-bottom: 6px; margin-bottom: 16px;
+  }
+  .kora-logo {
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 24px; font-weight: bold; letter-spacing: 4px;
+    color: var(--kora-ouro); line-height: 1;
+  }
+  .kora-sub {
+    font-size: 9.5px; color: var(--kora-ouro-escuro);
+    text-transform: uppercase; letter-spacing: 1.5px; white-space: nowrap;
+  }
+
+  /* Título do relatório com filete dourado */
+  .rit-titulo-relatorio { color: var(--kora-ouro-escuro); }
+  .rit-titulo-relatorio::after {
+    content: ""; display: block; width: 90px; height: 2px;
+    background: var(--kora-ouro); margin: 7px auto 0;
+  }
+
+  /* Barrinha dourada nos títulos de seção principais */
+  h1.sec, h2.sec { border-left: 3px solid var(--kora-ouro); padding-left: 8px; }
+  h1.sec { color: var(--kora-ouro-escuro); }
+
+  /* Cabeçalhos e totais das tabelas em dourado claro */
+  table.quadro thead th,
+  table.quadro th.cab {
+    background: var(--kora-ouro-claro);
+    color: var(--kora-ouro-escuro);
+    border-color: var(--kora-ouro-borda);
+  }
+  table.quadro tr.total td { background: var(--kora-ouro-claro); }
+
+  /* ---- Status de conformidade (verde / amarelo / vermelho) ---- */
+  .badge {
+    display: inline-block; padding: 1px 8px; border-radius: 10px;
+    font-size: 9.5px; font-weight: bold; white-space: nowrap;
+  }
+  .badge-ok     { background: var(--ok-fundo);     color: var(--ok-tinta); }
+  .badge-alerta { background: var(--alerta-fundo); color: var(--alerta-tinta); }
+  .badge-erro   { background: var(--erro-fundo);   color: var(--erro-tinta); }
+  /* versões só-texto, para uso inline no corpo do relatório */
+  .st-ok     { color: var(--ok-tinta);     font-weight: bold; }
+  .st-alerta { color: var(--alerta-tinta); font-weight: bold; }
+  .st-erro   { color: var(--erro-tinta);   font-weight: bold; }
+
+  /* Ocorrências: "Sem Ocorrência" em verde; linhas de ocorrência com filete vermelho */
+  table.ocorrencias td.sem-ocorrencia {
+    background: var(--ok-fundo); color: var(--ok-tinta); font-weight: bold;
+  }
+  table.ocorrencias tr.linha-ocorrencia td:first-child {
+    border-left: 3px solid var(--erro-tinta);
+  }
+
+  @media print {
+    .rit-doc { max-width: none; padding: 0; }
+    .quebra-pagina { page-break-before: always; }
+    .badge, .kora-logo, .kora-sub, h1.sec { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  }
+</style>
+
+<div class="rit-doc">
+
+  <!-- ===================== MARCA KORA ===================== -->
+  <div class="kora-brand">
+    <span class="kora-logo">KORA</span>
+    <span class="kora-sub">Relatório de Instrução · TCE/MA</span>
+  </div>
+
+  <!-- ===================== CABEÇALHO DO PROCESSO ===================== -->
+  <div class="rit-cabecalho">
+    <p class="linha"><span class="rotulo">Processo TCE/MA nº:</span> {{processo_numero}}</p>
+    <p class="linha"><span class="rotulo">Natureza:</span> {{natureza}}</p>
+    <p class="linha"><span class="rotulo">Exercício financeiro:</span> {{exercicio}}</p>
+    <p class="linha"><span class="rotulo">Ente:</span> {{municipio}}</p>
+    <p class="linha"><span class="rotulo">Responsável:</span> {{responsavel}} (CPF {{cpf}})</p>
+    <p class="linha"><span class="rotulo">Relator:</span> {{relator}}</p>
+  </div>
+
+  <div class="rit-titulo-relatorio">RELATÓRIO DE INSTRUÇÃO {{relatorio_numero}}</div>
+
+  <!-- ===================== 1. SUMÁRIO ===================== -->
+  <h1 class="sec">1 - SUMÁRIO</h1>
+  <div class="sumario">
+    <p>2. INTRODUÇÃO</p>
+    <p>3. SUMÁRIO EXECUTIVO</p>
+    <p>4. PERFIL ECONÔMICO E SOCIAL DO MUNICÍPIO DE {{municipio_uf_maiusculo}}</p>
+    <p>4.1 População Estimada em {{exercicio}}</p>
+    <p>4.2 Área Territorial</p>
+    <p>4.3 Principais Atividades Econômicas</p>
+    <p>4.4 PIB per capita</p>
+    <p>4.5 Índice de Desenvolvimento Humano (IDH)</p>
+    <p>4.6 Índice de Desenvolvimento da Educação Básica (IDEB)</p>
+    <p>5. RESULTADO DA ANÁLISE DAS CONTAS</p>
+    <p>5.1 Processo Orçamentário e Financeiro</p>
+    <p>5.1.1 Dimensão Orçamentária</p>
+    <p>5.1.1.1 Orçamento Participativo</p>
+    <p>5.1.1.2 Dotação Câmara Municipal</p>
+    <p>5.1.1.3 O Processo Orçamentário</p>
+    <p>5.1.2 Dimensão Financeira</p>
+    <p>5.1.2.1 Despesa de Pessoal no Exercício</p>
+    <p>5.1.2.2 Despesa com Pessoal – Restrição Final de Mandato</p>
+    <p>5.1.2.3 Dívida Consolidada e Mobiliária</p>
+    <p>5.2 Sistema de Contabilidade Governamental e Gestão do Patrimônio Público</p>
+    <p>5.2.1 Dimensão Contábil</p>
+    <p>5.2.1.1 Escrituração</p>
+    <p>5.2.1.2 Demonstrativos Contábeis</p>
+    <p>5.2.1.3 Transparência Fiscal</p>
+    <p>5.2.2 Dimensão Patrimonial</p>
+    <p>5.2.2.1 Balanço Patrimonial</p>
+    <p>5.2.2.2 Apuração do Resultado Financeiro</p>
+    <p>5.2.2.3 Evolução do Patrimônio Líquido</p>
+    <p>5.2.2.4 Demonstração das Variações Patrimoniais</p>
+    <p>5.2.2.5 Demonstração dos Fluxos de Caixa</p>
+    <p>5.2.2.6 Restos a Pagar</p>
+    <p>5.3 Indicadores e Resultados do Governo</p>
+    <p>5.3.1 Dimensão Operacional</p>
+    <p>5.3.1.1 Saúde</p>
+    <p>5.3.1.2 MDE</p>
+    <p>5.3.1.3 FUNDEB</p>
+    <p>6. CONSIDERAÇÕES FINAIS</p>
+    <p>6.1 Resumo Integrado do Resultado das Dimensões</p>
+    <p>6.2 Síntese das Ocorrências (Desconformidades)</p>
+    <p>6.3 Proposta de Encaminhamento</p>
+    <p>Anexos</p>
+  </div>
+
+  <!-- ===================== 2. INTRODUÇÃO ===================== -->
+  <h1 class="sec">2. INTRODUÇÃO</h1>
+  <p>Apresenta-se o Relatório de Instrução referente à análise preliminar do Processo TCE/MA nº {{processo_numero_compacto}}, relativo à Prestação de Contas Anual de Governo do(a) Sr(a). {{responsavel}} (CPF {{cpf}}), Prefeito(a) Municipal de {{municipio}}, correspondente ao exercício financeiro de {{exercicio}}.</p>
+  <p>A análise concentrou-se na verificação do cumprimento dos limites constitucionais e das exigências legais aplicáveis, com destaque para a Lei de Responsabilidade Fiscal, especialmente no que se refere à aplicação dos recursos públicos em áreas essenciais, como saúde e educação. O objetivo foi avaliar a atuação do gestor na oferta de serviços públicos ao longo do exercício analisado.</p>
+  <p>As constatações apresentadas baseiam-se nos critérios estabelecidos no art. 70 da Constituição Federal de 1988 e nas competências atribuídas ao Tribunal de Contas do Estado do Maranhão, nos termos do art. 1º de sua Lei Orgânica.</p>
+  <p>Além disso, o conteúdo da análise foi estruturado conforme as dimensões da fiscalização, organizadas em capítulos específicos: Orçamentária, Financeira, Contábil, Patrimonial e Operacional.</p>
+
+  <!-- ===================== 3. SUMÁRIO EXECUTIVO ===================== -->
+  <h1 class="sec">3. SUMÁRIO EXECUTIVO</h1>
+  <p>O presente relatório apresenta a análise das dimensões econômicas, sociais, orçamentárias, financeiras, contábeis e patrimoniais do Município de {{municipio_uf}}, com base nos dados relativos ao exercício financeiro de {{exercicio}}, visando à verificação do cumprimento das normas legais, notadamente a Lei de Responsabilidade Fiscal (LRF), bem como à avaliação da gestão pública municipal.</p>
+  <p>No que se refere ao perfil Econômico e Social, o Município possui população estimada em {{populacao}} habitantes, distribuídos em área territorial de aproximadamente {{area_territorial}} km². O PIB per capita está estimado em R$ {{pib_per_capita}}, enquanto o Índice de Desenvolvimento Humano (IDH) é {{idh}}, situando o município na faixa de {{idh_faixa}} desenvolvimento humano. O Índice de Desenvolvimento da Educação Básica (IDEB) apresentou nota média de {{ideb_nota}} , indicando desempenho {{ideb_desempenho}}.</p>
+  <p>No âmbito da Dimensão Orçamentária e Financeira, a Lei Orçamentária Anual (LOA) de {{exercicio}} previu receita de R$ {{loa_receita_prevista}}, posteriormente atualizada para R$ {{loa_receita_atualizada}}, em razão de créditos adicionais. A receita realizada totalizou R$ {{receita_realizada}}. A despesa empenhada foi de R$ {{despesa_empenhada}}, enquanto a despesa paga alcançou R$ {{despesa_paga}}, evidenciando {{resultado_execucao_texto}} nas contas públicas.</p>
+  <p>Quanto aos Gastos com Pessoal, a despesa líquida atingiu R$ {{despesa_pessoal_liquida}}, representando {{pessoal_percentual_rcl}} da Receita Corrente Líquida (RCL), índice {{pessoal_situacao_limite}} do limite máximo de 54% estabelecido pela LRF, demonstrando conformidade com a legislação fiscal.</p>
+  <p>No que tange à Dívida Pública, constatou-se que a dívida consolidada líquida do Município permanece dentro dos limites legais, não havendo de emissão de alerta pelo Tribunal de Contas do Estado do Maranhão.</p>
+  <p>Na Dimensão Contábil e Patrimonial, as demonstrações contábeis foram apresentadas em conformidade com a legislação vigente, incluindo a Lei nº 4.320/64, o Manual de Contabilidade Aplicada ao Setor Público (MCASP) e o Decreto nº 10.540/2020 (SIAFIC).</p>
+  <p>O Patrimônio Líquido do Município alcançou R$ {{patrimonio_liquido}}, representando um crescimento de {{pl_crescimento_percentual}} em relação ao exercício anterior. O exercício de {{exercicio}} registrou superávit financeiro de R$ {{superavit_financeiro}}, enquanto o resultado patrimonial evidenciou superávit de R$ {{resultado_patrimonial}} . O saldo final de Caixa e Equivalentes de Caixa foi de R$ {{saldo_caixa_final}}, e o montante inscrito em Restos a Pagar totalizou R$ {{restos_a_pagar}}, com disponibilidade de caixa suficiente para sua cobertura.</p>
+  <p>No âmbito dos Indicadores Constitucionais, o Município aplicou {{saude_percentual}} da receita em ações e serviços públicos de saúde, atendendo ao mínimo constitucional de 15%. Na área de educação, a aplicação foi de {{mde_percentual}} dos recursos na Manutenção e Desenvolvimento do Ensino (MDE), cumprindo o mínimo exigido de 25%. Quanto às receitas do Fundo de Manutenção e Desenvolvimento da Educação Básica e de Valorização dos Profissionais da Educação (FUNDEB), o Município destinou {{fundeb_remuneracao_percentual}} à remuneração dos profissionais da educação básica em efetivo exercício, cumprindo as exigências legais, e utilizou {{fundeb_total_percentual}} dos recursos totais, {{fundeb_total_conformidade}} com o disposto na legislação vigente. Além disso, {{vaat_observacao}} os critérios mínimos exigidos relativos à complementação VAAT.</p>
+  <p>No que se refere à Transparência Fiscal, no exercício de {{exercicio}}, o município de {{municipio_uf}} foi enquadrado na faixa {{transparencia_faixa}}, o que indica bom desempenho no cumprimento das exigências legais relacionadas à publicidade e à transparência dos atos da administração pública. {{municipio_uf}}, foi {{transparencia_faixa}}</p>
+  <p>Diante dos resultados apurados, conclui-se que o Município de {{municipio_uf}} apresentou equilíbrio orçamentário e financeiro no exercício de {{exercicio}}, {{conclusao_conformidade}}, além de manter sua dívida consolidada dentro dos limites legais.</p>
+
+  <!-- ===================== 4. PERFIL ECONÔMICO E SOCIAL ===================== -->
+  <h1 class="sec">4. PERFIL ECONÔMICO E SOCIAL DO MUNICÍPIO DE {{municipio_uf_maiusculo}}</h1>
+  <p>O Município de {{municipio}}, localizado no estado do Maranhão, apresenta características econômicas e sociais importantes para compreender sua dinâmica e potencial de desenvolvimento.</p>
+
+  <h3 class="sec">4.1 População Estimada em {{exercicio}}</h3>
+  <p>De acordo com dados recentes, a população estimada para o ano de {{exercicio}} é de aproximadamente {{populacao}} habitantes, distribuídos em sua área territorial.</p>
+
+  <h3 class="sec">4.2 Área Territorial</h3>
+  <p>{{municipio}} possui uma área territorial de cerca de {{area_territorial}} km², composta por zonas urbanas e rurais.</p>
+
+  <h3 class="sec">4.3 Principais Atividades Econômicas</h3>
+  <p>A economia local é marcada pela agropecuária, além da criação de bovinos e suínos e pelo comércio e serviços, que, juntamente com eventuais atividades industriais, sustentam a geração de emprego e renda.</p>
+
+  <h3 class="sec">4.4 PIB per capita</h3>
+  <p>O Produto Interno Bruto (PIB) per capita do município reflete a renda média disponível por habitante, posicionando {{municipio}} em uma faixa compatível com municípios de perfil econômico similar na região Nordeste. Segundo dados oficiais recentes, o PIB per capita estimado situa-se em torno de R$ {{pib_per_capita}}.</p>
+
+  <h3 class="sec">4.5 Índice de Desenvolvimento Humano (IDH)</h3>
+  <p>O IDH do Município de {{municipio}}, que avalia indicadores de saúde, educação e renda, apresenta um valor médio de {{idh_extenso}}, situando-se na categoria {{idh_faixa}} desenvolvimento humano, conforme a última atualização divulgada pelo Programa das Nações Unidas para o Desenvolvimento (PNUD).</p>
+
+  <h3 class="sec">4.6 Índice de Desenvolvimento da Educação Básica (IDEB)</h3>
+  <p>O IDEB, indicador que mede a qualidade da educação básica, aponta para um desempenho {{ideb_desempenho}} nas redes municipal e estadual, com nota média de {{ideb_nota_extenso}} no último ciclo avaliado. Esse resultado reforça a importância dos investimentos em políticas educacionais e melhorias na infraestrutura escolar para a elevação da qualidade do ensino.</p>
+
+  <!-- ===================== 5. RESULTADO DA ANÁLISE DAS CONTAS ===================== -->
+  <h1 class="sec">5. RESULTADO DA ANÁLISE DAS CONTAS</h1>
+
+  <h2 class="sec">5.1 Processo Orçamentário e Financeiro</h2>
+  <p>O objetivo deste item é apresentar, de forma clara, como se estrutura o processo orçamentário e financeiro do município, destacando os principais mecanismos de planejamento, execução e controle.</p>
+  <p>Esse processo envolve a previsão, aplicação e fiscalização dos recursos públicos. Ele tem início com a elaboração do orçamento, passa pela execução das despesas e se encerra com a prestação de contas.</p>
+  <p>Entre as práticas que integram esse ciclo, destaca-se o orçamento participativo, que permite à população contribuir com sugestões sobre a destinação dos recursos, fortalecendo a transparência e a legitimidade das decisões públicas.</p>
+  <p>De modo geral, o processo orçamentário segue três etapas: elaboração da proposta, aprovação pelo Legislativo e execução pelo Executivo. Esse ciclo é orientado por instrumentos legais como o Plano Plurianual (PPA), a Lei de Diretrizes Orçamentárias (LDO) e a Lei Orçamentária Anual (LOA).</p>
+  <p>A Lei de Responsabilidade Fiscal (LRF) acrescentou controles rigorosos ao processo, exigindo equilíbrio entre receitas e despesas, limitando gastos com pessoal e endividamento, e impondo transparência na gestão fiscal. A LRF também prevê sanções para gestores que descumprirem suas determinações.</p>
+  <p>Durante a execução, são comuns os ajustes orçamentários, realizados por meio de créditos adicionais — suplementares, especiais ou extraordinários — que permitem corrigir distorções ou atender a novas demandas sem comprometer o equilíbrio fiscal.</p>
+  <p>Por fim, a gestão da dívida pública é uma etapa crítica do processo financeiro. Cabe ao governo buscar financiamento de forma responsável, respeitando os limites legais de endividamento e assegurando que os pagamentos não prejudiquem a oferta de serviços públicos essenciais.</p>
+
+  <h3 class="sec">5.1.1 Dimensão Orçamentária</h3>
+  <p>Este item tem como objetivo analisar a dimensão orçamentária, com foco no orçamento participativo, no processo orçamentário, nas dotações da câmara municipal e nos repasses financeiros efetuados.</p>
+
+  <h4 class="sec">5.1.1.1 Orçamento Participativo</h4>
+  <p>O Orçamento Participativo é um instrumento de gestão pública que permite à população influenciar diretamente a destinação de parte dos recursos orçamentários do município. Por meio desse processo democrático, os cidadãos deliberam, apresentam propostas e votam nas prioridades de investimentos públicos, contemplando áreas como obras de infraestrutura, serviços essenciais e políticas sociais. Essa participação costuma ocorrer em assembleias presenciais ou por meio de plataformas digitais.</p>
+  <p>Entretanto, como o Módulo I do Anexo I da Instrução nº 52/2017 não exige informações específicas sobre a participação popular na elaboração do Plano Plurianual (PPA), da Lei de Diretrizes Orçamentárias (LDO) e da Lei Orçamentária Anual (LOA) — instrumentos que refletem as ações resultantes desse processo —, não foi possível aferir se a Prefeitura adota mecanismos efetivos de participação popular no ciclo orçamentário.</p>
+
+  <h4 class="sec">5.1.1.2 Dotação Câmara Municipal</h4>
+  <p>A Constituição Federal, em seu art. 29-A, estabelece que o montante total da despesa do Poder Legislativo Municipal não poderá exceder os percentuais nela fixados, os quais variam conforme a população de cada município.</p>
+  <p>Considerando que o Município de {{municipio_uf}} possui uma população de {{populacao}} habitantes, o percentual máximo permitido sobre o somatório da receita tributária e das transferências previstas no § 5º do art. 153 e nos arts. 158 e 159 da Constituição Federal, efetivamente realizadas no exercício anterior, é de {{camara_percentual_maximo}}.</p>
+  <p>Conforme demonstrado nos Quadros 1 e 2 anexos a este relatório, a base de cálculo correspondeu a R$ {{camara_base_calculo}}, resultando em um limite máximo para repasse anual de R$ {{camara_limite_repasse}}. No exercício de {{exercicio}}, o valor efetivamente repassado ao Poder Legislativo foi de R$ {{camara_valor_repassado}}, equivalente a {{camara_percentual_apurado}}. Dessa forma, verifica-se o atendimento ao limite constitucional estabelecido. No que se refere ao repasse do duodécimo à Câmara Municipal até o dia 20 de cada mês, constatou-se que o Poder Executivo do Município de {{municipio_uf}} {{camara_duodecimo_situacao}} o disposto no inciso II do § 2º do art. 29-A da Constituição Federal.</p>
+
+  <h4 class="sec">5.1.1.3 O Processo Orçamentário</h4>
+  <p>O processo orçamentário tem seu início com a atuação do Poder Executivo, que, fundamentado nas diretrizes estabelecidas no Plano Plurianual (PPA) e na Lei de Diretrizes Orçamentárias (LDO), elabora a proposta da Lei Orçamentária Anual (LOA). Nessa etapa crucial, cada órgão e entidade da administração pública identifica suas necessidades de dispêndio para o exercício financeiro subsequente, visando à concretização dos objetivos e metas delineados nos planos de governo. As peças orçamentárias foram devidamente encaminhadas na prestação de contas, em conformidade com o Módulo I do Anexo I da Instrução nº 52/2017. No município em análise, as peças orçamentárias {{pecas_encaminhamento_situacao}} ao Poder Legislativo dentro do prazo estabelecido, retornando para sanção, e as seguintes leis {{pecas_publicacao_situacao}}: Plano Plurianual (PPA), Lei de Diretrizes Orçamentárias (LDO) e Lei Orçamentária Anual (LOA).</p>
+
+  <h4 class="sec">5.1.1.3.a. Orçamento Municipal</h4>
+  <p>A Lei Orçamentária Anual (LOA) é um instrumento fundamental para a gestão municipal, pois define a programação das receitas e despesas públicas para o exercício financeiro seguinte. Por meio dela, o Município estabelece suas prioridades de investimento em áreas essenciais, como educação, saúde, infraestrutura e segurança pública, assegurando a alocação responsável, transparente e eficiente dos recursos públicos. Além disso, a LOA exerce papel relevante como mecanismo de controle social, permitindo que a sociedade acompanhe e fiscalize a execução orçamentária, fortalecendo a transparência e contribuindo para uma gestão pública mais eficaz e alinhada ao interesse coletivo. Nesse contexto, de acordo com os valores constantes da Lei Orçamentária Anual encaminhada ao Tribunal de Contas do Estado do Maranhão (TCE/MA), o Município de {{municipio_uf}} previu uma receita no valor de R$ {{loa_receita_prevista}} e fixou a dotação inicial de R$ {{loa_dotacao_inicial}} , caracterizando situação de equilíbrio orçamentário, nos termos da alínea “a” do inciso I do art. 4º da Lei Complementar nº 101/2000 (Lei de Responsabilidade Fiscal), conforme demonstrado no Quadro 11 anexo a este relatório.</p>
+
+  <h3 class="sec">5.1.2 Dimensão Financeira</h3>
+  <p>O presente item tem por objetivo analisar a dimensão financeira, com foco nos mecanismos de controle previstos na Lei de Responsabilidade Fiscal (LRF), nos ajustes orçamentários realizados e na situação da Dívida Pública.</p>
+
+  <h4 class="sec">5.1.2.1 Comportamento da Despesa de Pessoal no Exercício</h4>
+  <p>Na análise do cumprimento do art. 169 da Constituição Federal e dos arts. 19 e 20 da Lei Complementar nº 101/2000 (LRF), observa-se que a despesa total com pessoal não pode superar 60% da Receita Corrente Líquida (RCL) do Município, sendo o limite para o Poder Executivo fixado em 54%. O art. 23 da LRF prevê que, caso esses limites sejam ultrapassados, o excedente deve ser eliminado nos dois quadrimestres seguintes, com pelo menos um terço da redução no primeiro quadrimestre, podendo ser adotadas as medidas previstas nos §§ 3º e 4º do art. 169 da Constituição. Persistindo o excesso, o ente fica impedido de receber transferências voluntárias, obter garantias ou contratar operações de crédito, salvo para pagamento da dívida mobiliária ou redução de despesas com pessoal. Destaca-se ainda a Lei Complementar nº 178/2021, que instituiu o Novo Regime de Recuperação Fiscal, cujo art. 15 estabelece limites e medidas corretivas para gastos com pessoal, visando à sustentabilidade fiscal.</p>
+  <p>Conforme demonstrado nos Quadros 4 e 5, anexos a este relatório, a Receita Corrente Líquida do Município de {{municipio_uf}} no exercício financeiro de {{exercicio}} foi apurada em R$ {{rcl_valor}}, enquanto a Despesa Líquida com Pessoal totalizou R$ {{despesa_pessoal_liquida}}. Assim, o Município comprometeu {{pessoal_percentual_rcl}} da RCL com despesas de pessoal, encontrando-se, portanto, em conformidade com o limite estabelecido no art. 20, inciso III, alínea “b”, da LRF.</p>
+  <p>Ainda, conforme demonstrado no Quadro 6, anexo a este relatório, a Despesa Líquida com Pessoal do Município de {{municipio_uf}} no exercício financeiro de {{exercicio}} alcançou {{pessoal_percentual_rcl}} da RCL, situando-se {{pessoal_situacao_prudencial}} do limite prudencial estabelecido em 51,30% da RCL.</p>
+  <p>No que se refere ao regime especial de controle das despesas com pessoal, verificou-se que, em 2021, a Despesa Líquida com Pessoal representou {{pessoal_percentual_2021}} % da RCL. Assim, {{regime_especial_necessidade}} necessidade de adoção do acompanhamento especial previsto no art. 15 da Lei Complementar nº 178, de 2021.</p>
+  <!-- BLOCO OPCIONAL: parágrafo adicional presente apenas quando houve enquadramento no regime especial -->
+  {{#tem_regime_especial_extra}}
+  <p>Em relação ao regime especial de controle das despesas com pessoal, apurou-se que, em 2021, o Município destinou {{pessoal_percentual_2021}}% da sua Receita Corrente Líquida (RCL) com gastos de pessoal, enquadrando-se nas condições previstas no art. 15 da Lei Complementar nº 178, de 2021.</p>
+  {{/tem_regime_especial_extra}}
+
+  <h4 class="sec">5.1.2.2 Despesa com Pessoal – Restrição Final de Mandato</h4>
+  <p>A Lei de Responsabilidade Fiscal (LRF), em seu art. 21, incisos II, III e IV, dispõe que são nulos de pleno direito os atos que impliquem aumento de despesa com pessoal nos 180 dias anteriores ao término do mandato do titular de Poder ou órgão referido no art. 20, bem como aqueles que resultem em aumento dessa despesa mediante parcelas programadas para vigorar após o término do mandato.</p>
+  <p>Conforme demonstrado no Quadro 6, anexo a este relatório, a Despesa Líquida com Pessoal do Município de {{municipio_uf}} alcançou {{pessoal_percentual_1sem}} da Receita Corrente Líquida (RCL) no início do primeiro Semestre de {{exercicio}}, no final do exercício financeiro de {{exercicio}} alcançou {{pessoal_percentual_rcl}}.</p>
+  <p>Dessa forma, conclui-se que o Município {{restricao_mandato_situacao}} aumento de despesa com pessoal nos 180 dias anteriores ao término do mandato, ao disposto no art. 21, incisos II, III e IV, da LRF.</p>
+
+  <h4 class="sec">5.1.2.3 Dívida Consolidada e Mobiliária</h4>
+  <p>O Tribunal de Contas do Estado do Maranhão possui, entre suas atribuições principais, a fiscalização do cumprimento da Lei Complementar nº 101/2000 (Lei de Responsabilidade Fiscal - LRF) pelos Poderes e órgãos do Estado e dos municípios.</p>
+  <p>Nesse sentido, nos termos do art. 59, § 1º, inciso III, da LRF, o Tribunal deve emitir alerta sempre que os montantes da dívida consolidada e mobiliária, das operações de crédito ou da concessão de garantias ultrapassarem 90% (noventa por cento) dos limites estabelecidos pela Resolução nº 40/2001 do Senado Federal, conforme previsto no art. 52, inciso IX, da Constituição Federal.</p>
+  <p>Conforme demonstrado no Quadro 7 anexo a este relatório, a dívida consolidada líquida do município encontra-se dentro do limite fixado no inciso II do art. 3º da referida Resolução nº 40/2001 do Senado Federal. Dessa forma, considerando que os limites relativos à dívida consolidada, às operações de crédito e à concessão de garantias permanecem abaixo de 90% dos valores definidos pela Resolução do Senado Federal, não se verificou a necessidade de emissão de alerta ao Chefe do Poder Executivo Municipal.</p>
+
+  <h2 class="sec">5.2 Sistema de Contabilidade Governamental e Gestão do Patrimônio Público</h2>
+  <p>O objetivo deste item é desvendar a estrutura e o funcionamento do Sistema de Contabilidade do Município de {{municipio_uf}}. Nosso foco é apresentar, de forma clara e acessível, como essa ferramenta essencial atua para registrar, analisar e representar fidedignamente o patrimônio público. Compreender a mecânica desse sistema é fundamental para garantir a transparência na gestão dos recursos e bens municipais, promovendo a prestação de contas e o fortalecimento do controle social.</p>
+
+  <h3 class="sec">5.2.1 Dimensão Contábil</h3>
+  <p>Contempla a elaboração do plano de contas da entidade pública, os registros dos fatos contábeis e o levantamento dos balancetes e das demonstrações contábeis exigidas pelas Normas Brasileiras de Contabilidade Aplicadas ao Setor Público (NBC/TSP).</p>
+
+  <h4 class="sec">5.2.1.1 Escrituração</h4>
+  <p>Na contabilidade aplicada ao setor público, a escrituração dos fatos contábeis segue as diretrizes dos artigos 86 a 89 da Lei nº 4.320/64 e do art. 50 da Lei de Responsabilidade Fiscal (LRF). Com base nesses dispositivos, os Tribunais de Contas e os sistemas de controle interno de cada poder são responsáveis por fiscalizar o cumprimento da LRF, considerando as normas de padronização metodológica estabelecidas pela própria Lei e, mais recentemente, pelo Decreto nº 10.540, de 5 de novembro de 2020, que instituiu o Sistema Único e Integrado de Execução Orçamentária, Administração Financeira e Controle (SIAFIC).</p>
+  <p>Nesse contexto, a Instrução Normativa TCE/MA nº 52/2017 estabeleceu a obrigatoriedade de o órgão de auditoria do município apresentar, por meio de relatório assinado por seu titular, manifestação expressa quanto à regularidade dos documentos e comprovantes que embasam os registros contábeis. Esse relatório deve abordar a execução orçamentária da despesa e da receita, os principais critérios contábeis adotados e demais aspectos relevantes que contribuam para a adequada compreensão das contas públicas. Adicionalmente, conforme o art. 4º, § 6º, da referida Instrução Normativa, o responsável pela prestação de contas do Poder Executivo Municipal deve assinar as Demonstrações Contábeis Aplicadas ao Setor Público e encaminhar a Certidão de Habilitação Profissional do contador responsável pela contabilidade do Poder Legislativo. Ressalta-se que o profissional da contabilidade deve ser servidor da Administração Pública do ente, podendo estar na condição de efetivo, comissionado ou cedido.</p>
+  <p>Dessa forma, ao examinar os documentos da prestação de contas da Prefeitura Municipal de {{municipio_uf}} verificou-se que o relatório do órgão de auditoria foi devidamente encaminhado, e que as demonstrações contábeis {{escrituracao_assinatura_situacao}} por profissional habilitado, em conformidade com a IN nº 52/2017 do TCE/MA.</p>
+  <!-- BLOCO OPCIONAL: "Informações complementares" da escrituração (presente apenas em alguns casos) -->
+  {{#tem_escrituracao_info_complementar}}
+  <p><strong>Informações complementares:</strong></p>
+  <p>{{escrituracao_info_complementar_texto}}</p>
+  {{/tem_escrituracao_info_complementar}}
+
+  <h4 class="sec">5.2.1.2 Demonstrativos Contábeis</h4>
+  <p>Com o objetivo de padronizar as contas dos entes federativos e alinhar as normas contábeis aos padrões internacionais, a Secretaria do Tesouro Nacional (STN) instituiu o Manual de Contabilidade Aplicada ao Setor Público (MCASP). Esse manual estabelece as diretrizes para a elaboração das Demonstrações Contábeis Aplicadas ao Setor Público (DCASP), com foco na transparência e no controle do patrimônio público. Essa padronização tem como finalidade unificar conceitos, regras e procedimentos contábeis em todo o território nacional, estabelecendo uma linguagem contábil comum entre a União, os Estados, o Distrito Federal e os Municípios. Com isso, busca-se garantir a transparência das informações produzidas pela contabilidade pública e evidenciar, de forma clara e comparável, os resultados orçamentários, financeiros, econômicos e patrimoniais.</p>
+  <p>Além disso, por meio do Decreto nº 10.540/2020, o Governo Federal, desde 2023, instituiu o Sistema Único e Integrado de Execução Orçamentária, Administração Financeira e Controle (SIAFIC). Trata-se de um sistema contábil unificado, de uso obrigatório por todos os Poderes (Executivo, Legislativo e Judiciário) e órgãos de cada ente federativo, operando com uma base de dados compartilhada e integrada a sistemas estruturantes, como os de gestão de pessoas e patrimônio.</p>
+
+  <h4 class="sec">5.2.1.2.1 Balanço Geral</h4>
+  <p>As demonstrações contábeis exercem um papel fundamental na gestão dos recursos públicos, pois evidenciam a posição financeira, orçamentária e patrimonial das entidades do setor público. A elaboração dos balanços no setor público deve observar as disposições contidas no art. 101 da Lei nº 4.320/64: “Os resultados gerais do exercício serão demonstrados no Balanço Orçamentário, no Balanço Financeiro, no Balanço Patrimonial, na Demonstração das Variações Patrimoniais, segundo Anexo 12, 13, e 14 os quadros demonstrativos constantes nos anexos 1, 2, 6, 7, 8, 9, 10, 11, e 16. Adicionalmente, a Lei de Responsabilidade Fiscal prevê em seu art. 2º, inciso III, que as demonstrações contábeis compreenderão, isolada e conjuntamente, as transações e operações de cada órgão, fundo ou entidade da administração direta, autárquica e fundacional, inclusive empresa estatal dependente.</p>
+  <p>Na análise das peças que compõem o Balanço Geral do Município de {{municipio_uf}}, foi constatada a devida consolidação dos valores referentes à execução orçamentária, financeira e patrimonial de todas as unidades orçamentárias integrantes do Orçamento Municipal no exercício em referência. Verifica-se, ainda, o encaminhamento dos demais anexos do Balanço Geral, definidos na Lei nº 4.320/64 (Anexos 1, 2, 6, 7, 8, 9, 10, 11 e 16), conforme exigido pela Instrução Normativa nº 52/2017.</p>
+  <p>Constata-se, por fim, que os referidos anexos do Balanço Geral encontram-se em conformidade com as disposições da Lei Federal nº 4.320/64, da NBC TSP 16.6, do Manual de Contabilidade Aplicada ao Setor Público (MCASP) e do padrão estabelecido pelo Decreto nº 10.540, de 5 de novembro de 2020 (SIAFIC).</p>
+
+  <h4 class="sec">5.2.1.2.2 Confronto dos Valores nos Demonstrativos Contábeis</h4>
+  <p>O montante da Receita Realizada registrado no Balanço Orçamentário (R$ {{receita_realizada}} ) confere com o demonstrado no Balanço Financeiro (R$ {{receita_realizada}}).</p>
+
+  <h4 class="sec">5.2.1.2.3 Da Despesa Empenhada</h4>
+  <p>O montante da Despesa Empenhada registrado no Balanço Orçamentário (R$ {{despesa_empenhada}}) confere com o valor executado (despesa orçamentária) demonstrado no Balanço Financeiro (R$ {{despesa_empenhada}}).</p>
+
+  <h4 class="sec">5.2.1.2.4 Da Despesa Paga</h4>
+  <p>O montante da Despesa Paga registrado no Balanço Orçamentário (R$ {{despesa_paga}}) confere com o valor pago apurado no Balanço Financeiro (R$ {{despesa_paga}}) .</p>
+
+  <h4 class="sec">5.2.1.2.5 Dos Restos a Pagar</h4>
+  <p>O valor a título de inscrição de restos a pagar não processados e processados registrado no Balanço Financeiro (R$ {{restos_a_pagar}}) confere com o resultado apurado no Balanço Orçamentário (R$ {{restos_a_pagar}}).</p>
+
+  <h4 class="sec">5.2.1.2.6 Do Saldo de Caixa e Equivalente de Caixa</h4>
+  <p>O saldo da conta “caixa e equivalente de caixa”, que corresponde ao montante das disponibilidades em moeda corrente, registrado no Balanço Patrimonial (R$ {{saldo_caixa_final}}) confere com o valor a título de “saldo para o exercício seguinte” apresentado no Balanço Financeiro (R$ {{saldo_caixa_final}} ) e {{saldo_caixa_confere_dfc}} com o resultado apresentado na Demonstração de Fluxo de Caixa (R$ {{saldo_caixa_dfc}}) .</p>
+
+  <h4 class="sec">5.2.1.2.7 Das Disponibilidades de Caixa</h4>
+  <p>A variação das disponibilidades de caixa registrada no Balanço Patrimonial (R$ {{variacao_disponibilidades_bp}}) {{variacao_disponibilidades_situacao}} com o resultado apresentado na Demonstração de Fluxo de Caixa (R$ {{variacao_disponibilidades_dfc}}) .</p>
+
+  <h4 class="sec">5.2.1.2.8 Balanço Orçamentário (BO) – Anexo XII</h4>
+  <p>O Balanço Orçamentário apresenta, de forma detalhada, as receitas classificadas por categoria econômica e fonte, contemplando a estimativa inicial, a estimativa atualizada, o valor efetivamente arrecadado e o resultado final, que evidencia a ocorrência de superávit ou déficit na arrecadação. De maneira análoga, as despesas estão organizadas por categoria econômica e tipo, incluindo a dotação inicial, a reestimativa, os valores empenhados, liquidados, pagos e o saldo remanescente.</p>
+  <p>Cabe destacar que, na consolidação do Balanço Orçamentário, são excluídas as transações intraorçamentárias — aquelas realizadas entre unidades do mesmo ente — a fim de evitar duplicidade nos registros de receitas e despesas.</p>
+  <p>Verifica-se, ainda, se os demonstrativos do Balanço Orçamentário estão em conformidade com a estrutura definida pela Secretaria do Tesouro Nacional. Com base na prestação de contas apresentada, a estrutura das receitas e despesas orçamentárias está detalhada nos Quadros 8 e 9 anexos a este relatório.</p>
+  <p>A análise comparativa entre as receitas orçamentárias previstas e realizadas, bem como entre as despesas empenhadas, liquidadas e pagas, fornece importantes indicativos sobre a situação fiscal do ente público. Observa-se, conforme o Balanço Orçamentário, que o orçamento do Município foi atualizado de R$ {{orcamento_atualizado_de}} para R$ {{orcamento_atualizado_para}}, em decorrência de créditos adicionais e remanejamentos.</p>
+
+  <h4 class="sec">5.2.1.2.8.a – Gestão das Receitas</h4>
+  <p>A análise da efetividade na arrecadação das receitas orçamentárias é essencial para aprimorar a eficiência na captação de recursos públicos.</p>
+  <p>Nesse sentido, conforme demonstrado no Quadro 10 anexo a este relatório, constatou-se {{gestao_receitas_situacao}} na arrecadação.</p>
+
+  <h4 class="sec">5.2.1.2.8.b - Equilíbrio Fiscal</h4>
+  <p>Avaliar a relação entre receitas e despesas orçamentárias permite verificar se o ente público apresenta superávit ou déficit fiscal, sendo essa análise essencial para aferir sua sustentabilidade financeira de longo prazo.</p>
+  <p>Com base nas informações constantes no Quadro 3 anexo a este relatório, esta Unidade Técnica concluiu que o resultado orçamentário do Município de {{municipio_uf}} foi {{resultado_orcamentario_situacao}}, de acordo com o disposto no § 1º do art. 1º, na alínea “b” do inciso I do art. 4º e no caput do art. 9º da Lei Complementar nº 101/2000 (Lei de Responsabilidade Fiscal), combinado com a alínea “b” do art. 48 da Lei nº 4.320/1964.</p>
+
+  <h4 class="sec">5.2.1.2.8.c - Comparativo de informações entre a LOA e o Balanço Orçamentário</h4>
+  <p>A divergência entre os valores de receitas e despesas previstos na Lei Orçamentária Anual (LOA) e aqueles registrados no Balanço Orçamentário do ente configura uma situação que demanda atenção e eventuais medidas corretivas.</p>
+  <p>É importante destacar que, em alguns casos, tais divergências podem decorrer de alterações legítimas no orçamento, devidamente formalizadas e registradas conforme os procedimentos legais estabelecidos. No entanto, o foco desta análise recai sobre inconsistências resultantes de falhas nos sistemas ou nos processos de registro, caracterizadas por lançamentos incompatíveis entre a LOA e o Balanço Orçamentário — ainda antes da execução orçamentária —, o que compromete a fidedignidade das informações e exige correções imediatas.</p>
+  <!-- {{comparativo_loa_bo_texto}} = frase-conclusão variável (conformidade/divergência de receitas e despesas). Ex.:
+       "constatou conformidade entre os valores das receitas previstas na LOA e os valores registrados no Balanço Orçamentário. divergente entre os valores das despesas fixados na LOA e os valores registrados no Balanço Orçamentário." -->
+  <p>Nesse contexto, ao confrontar os dados constantes na LOA do município de {{municipio_uf}} com os registros do Balanço Orçamentário, conforme demonstrado no quadro 11 anexo a este relatório, esta unidade técnica {{comparativo_loa_bo_texto}}</p>
+
+  <h4 class="sec">5.2.1.2.9 Balanço Financeiro (BF) – Anexo XIII</h4>
+  <p>Este demonstrativo evidencia os ingressos e dispêndios de recursos em um determinado exercício financeiro. Dessa forma, partindo do item Disponível do Exercício Anterior (saldo inicial), deve-se adicionar a receita orçamentária, as transferências financeiras recebidas e os recebimentos extraorçamentários e subtrair as despesas orçamentárias, as transferências financeiras concedidas e pagamentos extraorçamentários, chegando-se, assim, ao valor do Disponível para o Exercício Seguinte (saldo final).</p>
+
+  <h4 class="sec">5.2.1.2.9.a - Depósitos Restituíveis e Valores Vinculados</h4>
+  <p>Este item tem como propósito examinar a contabilização dos Depósitos Restituíveis e Valores Vinculados, recursos que possuem natureza híbrida na contabilidade pública, exigindo reconhecimento tanto no ativo quanto no passivo.</p>
+  <p>Conforme estabelece o Manual de Contabilidade Aplicada ao Setor Público (MCASP), esses valores, quando retidos ou consignados sob responsabilidade de determinado órgão ou entidade, devem ser registrados como Caixa e Equivalentes de Caixa, no grupo de contas do PCASP 1.1.1.3.0 — Caixa e Equivalentes de Caixa — Valores Restituíveis e Vinculados.</p>
+  <p>Paralelamente, deve ser reconhecida a obrigação correspondente no passivo, em atendimento ao disposto no item 4.3.2 — Depósitos Restituíveis e Valores Vinculados — do MCASP.</p>
+  <p>Conforme demonstrado no Quadro 16 anexo a este relatório, o valor referente aos Depósitos Restituíveis e Valores Vinculados, foi registrado no Balanço Patrimonial.</p>
+  <p>Com base no Quadro 16, verificou-se que o saldo de Depósitos Restituíveis e Valores Vinculados registrado no Balanço Financeiro é de R$ {{depositos_saldo_bf}}, valor que coincide com o montante apurado no grupo Valores Restituíveis do Passivo Circulante, obtido pela diferença entre os saldos do exercício atual e do exercício anterior, no montante de R$ {{depositos_saldo_bf}}.</p>
+  <!-- BLOCO OPCIONAL: presente apenas quando há inconsistência no grupo "Saldos p/ o Exercício Seguinte" -->
+  {{#tem_depositos_inconsistencia}}
+  <p>No Balanço Financeiro, verificou-se que no Grupo “Saldos p/ o Exercício Seguinte”, integrante da conta Depósitos Restituíveis e Valores Vinculados, foi apresentada com saldo de R$ {{depositos_saldo_seguinte}}, quando, na realidade, deveria evidenciar o montante de R$ {{depositos_saldo_devido}}, correspondente à diferença entre os recebimentos e os pagamentos registrados nessa conta. Essa inconsistência caracteriza descumprimento do item 3.4 – Estrutura do Balanço Financeiro do Manual de Contabilidade Aplicada ao Setor Público (MCASP), 10ª edição.</p>
+  {{/tem_depositos_inconsistencia}}
+  <!-- BLOCO OPCIONAL: "Informações complementares" detalhadas sobre depósitos restituíveis -->
+  {{#tem_depositos_info_complementar}}
+  <p><strong>Informações complementares:</strong></p>
+  <p>{{depositos_info_complementar_texto}}</p>
+  {{/tem_depositos_info_complementar}}
+
+  <h4 class="sec">5.2.1.3 Transparência Fiscal</h4>
+  <p>A transparência dos atos da administração pública constitui pilar essencial de uma sociedade democrática, assegurando aos cidadãos o direito de acompanhar e fiscalizar as ações do Estado. Esse princípio é reforçado por diversos dispositivos legais, como a Lei de Responsabilidade Fiscal (LRF), a Lei de Acesso à Informação (LAI) e o Código de Defesa dos Usuários de Serviços Públicos (CDU). Nesse contexto, o Tribunal de Contas do Estado do Maranhão, por meio da Instrução Normativa nº 81/2024, regulamentou a forma de fiscalização dos sítios eletrônicos responsáveis por garantir a transparência da administração direta, indireta e fundacional de todos os Poderes do Estado e dos municípios.</p>
+  <p>O presente tópico tem como objetivo apresentar o índice de transparência da gestão municipal, referente ao exercício financeiro de {{exercicio}}. Essa avaliação é realizada pela Secretaria do Tribunal de Contas, que classifica os entes públicos em faixas que variam de Diamante (nível máximo) a Inexistente (nível mínimo), de acordo com o cumprimento dos critérios essenciais e o índice obtido. No exercício de {{exercicio}}, o município de {{municipio_uf}} foi enquadrado na faixa {{transparencia_faixa}}, o que indica bom desempenho no cumprimento das exigências legais relacionadas à publicidade e à transparência dos atos da administração pública. {{municipio_uf}}, foi {{transparencia_faixa}}</p>
+
+  <h3 class="sec">5.2.2 Dimensão Patrimonial</h3>
+  <p>Esta seção contempla a análise da composição do patrimônio municipal, sua valorização ou depreciação, e a capacidade da gestão em converter ativos públicos em benefícios concretos para a população. Mais do que um simples registro de bens e direitos, avalia-se aqui como o município de {{municipio_uf}}, tem assumido sua responsabilidade na preservação e otimização do patrimônio público, fundamental para a prestação de serviços e o desenvolvimento local</p>
+
+  <h4 class="sec">5.2.2.1 Balanço Patrimonial (BP) – Anexo XIV</h4>
+  <p>O Balanço Patrimonial é a demonstração contábil que evidencia, qualitativa e quantitativamente, a situação patrimonial da entidade pública, por meio de contas representativas do patrimônio público, além das contas de compensação. No quadro referente às compensações, deverão ser incluídos os atos potenciais do ativo e do passivo que possam, imediata ou indiretamente, vir a afetar o patrimônio. Ademais, o Balanço Patrimonial apresentará, em tabela anexa, pelos seus valores totais, podendo ser detalhados, os ativos e passivos financeiros e permanentes, bem como o saldo patrimonial.</p>
+  <!-- BLOCO OPCIONAL: constatação de ausência da conta Valores Vinculados/Restituíveis + informações complementares -->
+  {{#tem_bp_ausencia_conta}}
+  <p>No Balanço Patrimonial, constatou-se a ausência da conta Valores Vinculados/Restituíveis, integrante do passivo circulante, em desacordo com o item 4.4 — Estrutura do Balanço Patrimonial — do Manual de Contabilidade Aplicada ao Setor Público (MCASP), 10ª edição.</p>
+  <p><strong>Informações complementares:</strong></p>
+  <p>{{bp_info_complementar_texto}}</p>
+  {{/tem_bp_ausencia_conta}}
+
+  <h4 class="sec">5.2.2.2 Apuração do resultado financeiro</h4>
+  <p>demonstrativo contendo a apuração do Resultado Financeiro do exercício atual e do exercício anterior, cujos dados estão discriminados no quadro 12 anexo a este relatório.</p>
+  <p>Com base nas informações apresentadas, conclui-se que o Município de {{municipio_uf}} registrou, no exercício de {{exercicio}}, um superávit financeiro de R$ {{superavit_financeiro}} .</p>
+
+  <h4 class="sec">5.2.2.3 Evolução do patrimônio líquido</h4>
+  <p>Patrimônio Líquido é o valor residual dos ativos da entidade depois de deduzidos todos seus passivos. De acordo com o Balanço Patrimonial do exercício, apurou-se um Patrimônio Líquido no montante de R$ {{patrimonio_liquido}}, apresentando uma variação de R$ {{pl_variacao}}, que corresponde a um crescimento da ordem de {{pl_crescimento_percentual}} em relação ao exercício anterior, conforme demonstrado no quadro 13 anexo a este relatório.</p>
+
+  <h4 class="sec">5.2.2.4 Demonstração das Variações Patrimoniais (DVP) – Anexo XV</h4>
+  <p>A demonstração das variações patrimoniais evidencia as variações quantitativas e qualitativas. As variações quantitativas são decorrentes de transações no setor público que aumentam ou diminuem o patrimônio líquido. Já as variações qualitativas são decorrentes de transações no setor público que alteram a composição dos elementos patrimoniais sem afetar o patrimônio líquido.</p>
+  <p>O resultado patrimonial do período é apurado pelo confronto entre as variações patrimoniais quantitativas aumentativas e diminutivas.</p>
+  <p>Dessa forma, fica evidenciado que o Município de {{municipio}}, apresentou um superávit , no seu resultado patrimonial do período, na ordem de R$ {{resultado_patrimonial}}, ressaltando que a presente análise não teve por fito apontar irregularidades, servindo, pois de instrumento norteador para consecução dos fins da gestão, notadamente no que tange o atendimento das disposições legais.</p>
+
+  <h4 class="sec">5.2.2.5 Demonstração dos Fluxos de Caixa (DFC)</h4>
+  <p>A Demonstração dos Fluxos de Caixa deve ser elaborada pelo método direto, evidenciando as movimentações ocorridas no caixa e em seus equivalentes, distribuídas nos fluxos das atividades operacionais, de investimentos e de financiamentos.</p>
+  <p>No período em análise, conforme demostrado no quadro 14 anexo a este relatório, o Fluxo de Caixa apresentou um saldo inicial de Caixa e Equivalentes de Caixa de R$ {{fluxo_caixa_inicial}} e um saldo final de R$ {{fluxo_caixa_final}}, resultando em uma Geração Líquida de Caixa e Equivalentes de Caixa de R$ {{fluxo_caixa_geracao_liquida}}.</p>
+
+  <h4 class="sec">5.2.2.6 Restos a Pagar</h4>
+  <p>A exigência de disponibilidade de caixa para a cobertura de despesas assumidas nos dois últimos quadrimestres do mandato, conforme previsto no art. 42 da Lei de Responsabilidade Fiscal (LRF), reforça a relevância do planejamento fiscal e da gestão responsável dos recursos públicos, especialmente na fase final da administração.</p>
+  <p>Nesse período, é vedada ao gestor a contratação de novas obrigações financeiras sem a devida garantia de pagamento ainda durante o mandato ou, alternativamente, sem a existência de disponibilidade de caixa suficiente para cobrir parcelas futuras, nos termos da referida norma.</p>
+  <p>Adicionalmente, o art. 36 da Lei nº 4.320/64 define como Restos a Pagar as despesas empenhadas e não pagas até 31 de dezembro do exercício financeiro de origem, classificando-as em processadas (com liquidação) e não processadas (sem liquidação).</p>
+  <p>É importante destacar que o aumento expressivo do saldo de Restos a Pagar representa um risco à execução orçamentária e financeira do município, podendo comprometer o planejamento e a implementação de políticas públicas. Isso porque tais obrigações são pagas com recursos dos exercícios subsequentes, que, por sua vez, também devem atender às despesas correntes do período.</p>
+  <p>Assim, o acúmulo de Restos a Pagar pode gerar distorções na execução da despesa pública, configurando uma concorrência na utilização dos recursos financeiros disponíveis, o que pode comprometer o orçamento vigente e afetar o equilíbrio fiscal do ente.</p>
+  <p>Nesse contexto, conforme demonstrado nos Quadros 15 e 16 anexos a este relatório, o Município de {{municipio_uf}} apresentou disponibilidade de caixa no valor de R$ {{rp_disponibilidade_caixa}} , montante {{rp_suficiencia}} para fazer frente aos compromissos assumidos relativos aos Restos a Pagar.</p>
+
+  <h2 class="sec">5.3 INDICADORES E RESULTADOS DO GOVERNO</h2>
+  <p>Contempla a análise do cumprimento dos principais índices constitucionais que os municípios devem observar, tais como os investimentos mínimos em saúde, educação, aplicação dos recursos do FUNDEB e limite de gastos com pessoal.</p>
+
+  <h3 class="sec">5.3.1 DIMENSÃO OPERACIONAL</h3>
+
+  <h4 class="sec">5.3.1.1 Aplicação em Ações e Serviços Públicos de Saúde</h4>
+  <p>A Constituição Federal consagra a saúde como direito de todos e dever do Estado, a ser assegurado mediante políticas sociais e econômicas que visem à redução do risco de doenças e de outros agravos, bem como ao acesso universal e igualitário às ações e serviços de promoção, proteção e recuperação da saúde.</p>
+  <p>Nesse contexto, o art. 198, § 2º, inciso III, da Constituição Federal, com redação dada pela Lei Complementar nº 141/2012, determina que os Municípios devem aplicar, anualmente, no mínimo, 15% da arrecadação proveniente dos impostos previstos no art. 156, bem como dos recursos mencionados nos arts. 158 e 159, inciso I, alínea “b”, e § 3º, em ações e serviços públicos de saúde.</p>
+  <p>Dessa forma, conforme demonstrado nos Quadros 17 e 18 anexos a este relatório, verifica-se que o Município de {{municipio}} aplicou {{saude_percentual}} de seus recursos em ações e serviços públicos de saúde ao longo do exercício financeiro de {{exercicio}}, satisfazendo , portanto, a exigência constitucional estabelecida.</p>
+
+  <h4 class="sec">5.3.1.2 MDE</h4>
+  <p>Nos termos do art. 212 da Constituição Federal, os Municípios devem aplicar, anualmente, no mínimo 25% da receita proveniente de impostos — incluídas as transferências constitucionais — em ações de Manutenção e Desenvolvimento do Ensino (MDE). Esses recursos devem ser destinados a despesas que contribuam para a realização dos objetivos fundamentais das instituições educacionais.</p>
+  <p>Destaca-se, ainda, que o nível de ensino prioritário para os entes municipais está definido no § 2º do art. 211 da Constituição Federal e no art. 11 da Lei de Diretrizes e Bases da Educação Nacional (LDB). Esta última, por meio do art. 70, apresenta um rol exemplificativo das despesas consideradas como integrantes da MDE.</p>
+  <p>Nesse contexto, conforme evidenciado nos Quadros 19 e 20 anexos a este relatório, verifica-se que o Município de {{municipio_uf}} aplicou {{mde_percentual}} de seus recursos em ações de Manutenção e Desenvolvimento do Ensino no exercício financeiro de {{exercicio}}, cumprindo , portanto, o limite mínimo constitucional estabelecido.</p>
+
+  <h4 class="sec">5.3.1.3 Aplicação das Receitas do Fundo de Manutenção e Desenvolvimento da Educação Básica e de Valorização dos Profissionais da Educação - FUNDEB</h4>
+  <p>O Fundo de Manutenção e Desenvolvimento da Educação Básica e de Valorização dos Profissionais da Educação (FUNDEB), instituído como mecanismo permanente de financiamento da educação pública pela Emenda Constitucional nº 108, de 27 de agosto de 2020, e regulamentado pela Lei nº 14.113, de 25 de dezembro de 2020, configura-se como fundo de natureza contábil, compartilhado por todos os Estados e o Distrito Federal, conforme previsto no art. 212-A da Constituição Federal.</p>
+  <p>Seu principal objetivo é assegurar recursos para a valorização dos profissionais da educação e para o desenvolvimento e a manutenção das diversas etapas e modalidades da Educação Básica, que abrangem Creches, Pré-escola, Educação Infantil, Ensino Fundamental, Ensino Médio e Educação de Jovens e Adultos (EJA).</p>
+  <p>Nos termos do art. 26 da Lei nº 14.113/2020, os municípios devem destinar, no mínimo, 70% (setenta por cento) dos recursos anuais do FUNDEB à remuneração dos profissionais da educação básica em efetivo exercício na rede pública de ensino, podendo aplicar até 30% (trinta por cento) em outras despesas vinculadas à manutenção e ao desenvolvimento do ensino.</p>
+  <p>Além disso, a Emenda Constitucional nº 108/2020 estabeleceu a obrigatoriedade de que os municípios contemplados com a Complementação da União na modalidade Valor Anual Total por Aluno (VAAT) destinem, no mínimo, 15% (quinze por cento) desses recursos a despesas de capital. Determinou, ainda, que ao menos 50% (cinquenta por cento) da referida complementação sejam aplicados na Educação Infantil, conforme disposto nos arts. 26, inciso II, 26-A, 27 e 28 da Lei nº 14.113/2020.</p>
+  <p>Tais exigências também foram reiteradas na Portaria Interministerial nº 13, de 23 de dezembro de 2024, que dispõe sobre a aplicação mínima de recursos da Complementação VAAT na Educação Infantil.</p>
+  <p>Nessa perspectiva, os Quadros 21, 22, 23, 24, 25 e 26, anexos a este relatório, apresentam a alocação dos recursos destinados à constituição do FUNDEB, em consonância com o disposto no inciso II do art. 212-A da Constituição Federal.</p>
+  <p>Após análise dos percentuais legais, constatou-se que o Município de {{municipio_uf}} destinou {{fundeb_remuneracao_percentual}} dos recursos do FUNDEB à remuneração dos profissionais da educação básica em efetivo exercício, enquanto {{fundeb_outras_percentual}} foram aplicados em outras despesas vinculadas à manutenção e desenvolvimento do ensino, excluídas as despesas com a remuneração do magistério. Dessa forma, o município atendeu ao disposto nos arts. 26, inciso II, e 26-A da Lei nº 14.113/2020.</p>
+  <p>Verificou-se, ainda, que {{fundeb_total_percentual}} dos recursos totais do FUNDEB foram utilizados, {{fundeb_total_conformidade}} com o previsto no § 3º do art. 25 da mesma lei.</p>
+  <p>Quanto aos demais critérios legais , o Município de {{municipio_uf}} {{vaat_capital_situacao}} ao requisito mínimo de 15% (quinze por cento) da Complementação VAAT aplicados em despesas de capital, bem como, alcançou o percentual mínimo de 50,00% desses recursos destinados à Educação Infantil, não contrariando o disposto nos arts. 27 e 28 da Lei nº 14.113/2020, bem como na Portaria Interministerial nº 13, de 23 de dezembro de 2024.</p>
+
+  <!-- ===================== 6. CONSIDERAÇÕES FINAIS ===================== -->
+  <h1 class="sec">6. CONSIDERAÇÕES FINAIS</h1>
+
+  <h2 class="sec">6.1 Resumo Integrado do Resultado das Dimensões</h2>
+  <p>O exame das diversas dimensões avaliadas no presente relatório permite apresentar, de forma consolidada, o desempenho do Município de {{municipio}} no exercício financeiro de {{exercicio}}, destacando os principais resultados observados.</p>
+  <p><strong>Dimensão Orçamentária:</strong> A LOA de {{exercicio}} previu uma receita no valor de R$ {{loa_receita_prevista}} e fixou a dotação inicial de R$ {{loa_dotacao_inicial}} , atualizados posteriormente a dotação final para R$ {{orcamento_atualizado_para}} em razão de créditos adicionais. A receita arrecadada somou R$ {{receita_arrecadada}}. O orçamento apresentou situação {{resultado_orcamentario_situacao}}, não se constatando déficit orçamentário.</p>
+  <p><strong>Dimensão Financeira:</strong> A despesa líquida com pessoal totalizou R$ {{despesa_pessoal_liquida}}, representando {{pessoal_percentual_rcl}} da Receita Corrente Líquida (RCL), conformidade com o limite máximo de 54% previsto na LRF. {{regime_especial_constatacao}} necessidade de adoção de regime especial de controle de despesas com pessoal, e o município se manteve dentro dos limites legais quanto à dívida consolidada líquida, não havendo emissão de alerta pelo TCE/MA.</p>
+  <p><strong>Dimensão Contábil:</strong> As demonstrações contábeis não foram apresentadas conforme exigências legais e normativas, estando em desconformidade com a Lei nº 4.320/64, MCASP e Decreto nº 10.540/2020 (SIAFIC).</p>
+  <p><strong>Dimensão Patrimonial:</strong> O Município registrou superávit de R$ {{superavit_financeiro}} no exercício de {{exercicio}}. O Patrimônio Líquido alcançou R$ {{patrimonio_liquido}}, apresentando variação percentual de {{pl_crescimento_percentual}} em relação ao exercício anterior. O resultado patrimonial evidenciou superávit de R$ {{resultado_patrimonial}}. O saldo final de Caixa e Equivalentes de Caixa foi de R$ {{fluxo_caixa_final}}, suficiente para cobrir os Restos a Pagar, que totalizaram R$ {{restos_a_pagar}}.</p>
+  <p><strong>Dimensão Operacional:</strong> O Município aplicou {{saude_percentual}} da receita em ações e serviços públicos de saúde, atendendo ao mínimo constitucional de 15%. Na educação, destinou {{mde_percentual}} à Manutenção e Desenvolvimento do Ensino, superando o mínimo de 25% previsto na Constituição. Quanto ao FUNDEB, destinou {{fundeb_remuneracao_percentual}} dos recursos à remuneração dos profissionais da educação básica, atendeu às exigências legais, além de aplicar {{fundeb_total_percentual}} dos recursos totais, {{fundeb_total_conformidade}} com a legislação. {{vaat_resumo_situacao}} , também, os percentuais mínimos referentes à complementação VAAT.</p>
+  <p><strong>Transparência Fiscal:</strong> O faixa de transparência da gestão municipal foi equivalente a <span class="badge auto-status">{{transparencia_faixa}}</span> .</p>
+  <p>Diante dos resultados apurados, conclui-se que o Município de {{municipio_uf}} apresentou equilíbrio orçamentário e financeiro no exercício de {{exercicio}}, {{conclusao_conformidade}} , além de manter sua dívida consolidada dentro dos limites legais.</p>
+
+  <h2 class="sec">6.2 Síntese das Ocorrências (Desconformidades)</h2>
+  <p>Após a análise da Prestação de Contas Anual de Governo do ente em questão, foram identificadas as seguintes ocorrências, apresentadas por dimensão.</p>
+
+  <!--
+    Para cada dimensão, o corpo da tabela é preenchido dinamicamente:
+    - Se houver ocorrências, repita uma <tr> por item (loop {{#lista}} ... {{/lista}}).
+    - Se não houver, renderize a linha única "Sem Ocorrência".
+    Os campos de cada ocorrência: ordem, item, ocorrencia, fundamentacao.
+  -->
+
+  <h4 class="sec">6.2.1 Dimensão Orçamentária</h4>
+  <table class="quadro ocorrencias">
+    <thead><tr><th>ORDEM</th><th>ITEM</th><th>OCORRÊNCIA</th><th>FUNDAMENTAÇÃO</th></tr></thead>
+    <tbody>
+      {{#ocorrencias_orcamentaria}}
+      <tr class="linha-ocorrencia"><td class="centro">{{ordem}}</td><td class="centro">{{item}}</td><td>{{ocorrencia}}</td><td>{{fundamentacao}}</td></tr>
+      {{/ocorrencias_orcamentaria}}
+      {{^ocorrencias_orcamentaria}}
+      <tr><td colspan="4" class="sem-ocorrencia">Sem Ocorrência</td></tr>
+      {{/ocorrencias_orcamentaria}}
+    </tbody>
+  </table>
+
+  <h4 class="sec">6.2.2 Dimensão Financeira</h4>
+  <table class="quadro ocorrencias">
+    <thead><tr><th>ORDEM</th><th>ITEM</th><th>OCORRÊNCIA</th><th>FUNDAMENTAÇÃO</th></tr></thead>
+    <tbody>
+      {{#ocorrencias_financeira}}
+      <tr class="linha-ocorrencia"><td class="centro">{{ordem}}</td><td class="centro">{{item}}</td><td>{{ocorrencia}}</td><td>{{fundamentacao}}</td></tr>
+      {{/ocorrencias_financeira}}
+      {{^ocorrencias_financeira}}
+      <tr><td colspan="4" class="sem-ocorrencia">Sem Ocorrência</td></tr>
+      {{/ocorrencias_financeira}}
+    </tbody>
+  </table>
+
+  <h4 class="sec">6.2.3 Dimensão Contábil</h4>
+  <table class="quadro ocorrencias">
+    <thead><tr><th>ORDEM</th><th>ITEM</th><th>OCORRÊNCIA</th><th>FUNDAMENTAÇÃO</th></tr></thead>
+    <tbody>
+      {{#ocorrencias_contabil}}
+      <tr class="linha-ocorrencia"><td class="centro">{{ordem}}</td><td class="centro">{{item}}</td><td>{{ocorrencia}}</td><td>{{fundamentacao}}</td></tr>
+      {{/ocorrencias_contabil}}
+      {{^ocorrencias_contabil}}
+      <tr><td colspan="4" class="sem-ocorrencia">Sem Ocorrência</td></tr>
+      {{/ocorrencias_contabil}}
+    </tbody>
+  </table>
+
+  <h4 class="sec">6.2.4 Dimensão Patrimonial</h4>
+  <table class="quadro ocorrencias">
+    <thead><tr><th>ORDEM</th><th>ITEM</th><th>OCORRÊNCIA</th><th>FUNDAMENTAÇÃO</th></tr></thead>
+    <tbody>
+      {{#ocorrencias_patrimonial}}
+      <tr class="linha-ocorrencia"><td class="centro">{{ordem}}</td><td class="centro">{{item}}</td><td>{{ocorrencia}}</td><td>{{fundamentacao}}</td></tr>
+      {{/ocorrencias_patrimonial}}
+      {{^ocorrencias_patrimonial}}
+      <tr><td colspan="4" class="sem-ocorrencia">Sem Ocorrência</td></tr>
+      {{/ocorrencias_patrimonial}}
+    </tbody>
+  </table>
+
+  <h4 class="sec">6.2.5 Dimensão Operacional</h4>
+  <table class="quadro ocorrencias">
+    <thead><tr><th>ORDEM</th><th>ITEM</th><th>OCORRÊNCIA</th><th>FUNDAMENTAÇÃO</th></tr></thead>
+    <tbody>
+      {{#ocorrencias_operacional}}
+      <tr class="linha-ocorrencia"><td class="centro">{{ordem}}</td><td class="centro">{{item}}</td><td>{{ocorrencia}}</td><td>{{fundamentacao}}</td></tr>
+      {{/ocorrencias_operacional}}
+      {{^ocorrencias_operacional}}
+      <tr><td colspan="4" class="sem-ocorrencia">Sem Ocorrência</td></tr>
+      {{/ocorrencias_operacional}}
+    </tbody>
+  </table>
+
+  <h2 class="sec">6.3 PROPOSTA DE ENCAMINHAMENTO</h2>
+  <p>Com fundamento no art. 153, inciso V, do Regimento Interno do TCE/MA, sugere-se o seguinte:</p>
+  <p>6.3.1 Seja promovida a CITAÇÃO do(a) Exmo(a). Sr(a). {{responsavel}} (CPF {{cpf}}), Prefeito(a) Municipal de {{municipio_uf}} no exercício financeiro de {{exercicio}}, nos termos do art. 127 da Lei Estadual nº 8.258, de 6 de junho de 2005, para tomar ciência dos fatos que lhe são imputados no item 6.2 deste relatório e, querendo, apresentar defesa.</p>
+
+  <div class="assinatura-bloco">{{assinatura}}</div>
+
+  <!-- ===================== ANEXOS ===================== -->
+  <h1 class="sec quebra-pagina">ANEXOS</h1>
+
+  <!-- ---------- QUADRO 1 ---------- -->
+  <p class="quadro-titulo">Quadro 1 – Base de Cálculo para Repasse à Câmara Municipal</p>
+  <p class="quadro-desc">Este quadro detalha a base de cálculo para o limite de repasse financeiro ao Poder Legislativo Municipal, considerando a receita tributária e transferências.</p>
+  <table class="quadro">
+    <thead><tr><th>DESCRIÇÃO</th><th class="valor">VALOR</th></tr></thead>
+    <tbody>
+      <tr class="total"><td>1 - RECEITA TRIBUTÁRIA</td><td class="valor">R$ {{q1_receita_tributaria}}</td></tr>
+      <tr><td>IPTU</td><td class="valor">R$ {{q1_iptu}}</td></tr>
+      <tr><td>ISS</td><td class="valor">R$ {{q1_iss}}</td></tr>
+      <tr><td>ITBI</td><td class="valor">R$ {{q1_itbi}}</td></tr>
+      <tr><td>IRRF</td><td class="valor">R$ {{q1_irrf}}</td></tr>
+      <tr><td>TAXAS</td><td class="valor">R$ {{q1_taxas}}</td></tr>
+      <tr><td>CONTRIBUIÇÕES DE MELHORIAS</td><td class="valor">R$ {{q1_contribuicoes_melhorias}}</td></tr>
+      <tr><td>RECEITA DA DIVIDA ATIVA</td><td class="valor">R$ {{q1_divida_ativa}}</td></tr>
+      <tr><td>MULTAS JUROS SOBRE TRIBUTOS</td><td class="valor">R$ {{q1_multas_juros}}</td></tr>
+      <tr><td>CONTRIBUIÇÃO ILUMINAÇÃO PÚBLICA</td><td class="valor">R$ {{q1_iluminacao_publica}}</td></tr>
+      <tr class="total"><td>2 - TRANSFERIDOS PELO ESTADO</td><td class="valor">R$ {{q1_transf_estado}}</td></tr>
+      <tr><td>Cota-Parte IPVA</td><td class="valor">R$ {{q1_cp_ipva}}</td></tr>
+      <tr><td>Cota-Parte ICMS</td><td class="valor">R$ {{q1_cp_icms}}</td></tr>
+      <tr><td>ICMS DESONERAÇÃO</td><td class="valor">R$ {{q1_icms_desoneracao}}</td></tr>
+      <tr class="total"><td>3 - TRANSFERIDOS PELA UNIÃO</td><td class="valor">R$ {{q1_transf_uniao}}</td></tr>
+      <tr><td>CIDE</td><td class="valor">R$ {{q1_cide}}</td></tr>
+      <tr><td>Cota-Parte ITR</td><td class="valor">R$ {{q1_cp_itr}}</td></tr>
+      <tr><td>Cota-Parte FPM</td><td class="valor">R$ {{q1_cp_fpm}}</td></tr>
+      <tr><td>Cota-Parte IPI</td><td class="valor">R$ {{q1_cp_ipi}}</td></tr>
+      <tr class="total"><td>4 - TOTAL CONTRIBUIÇÃO DO MUN.P/ FORMAÇÃO DO FUNDEB</td><td class="valor">R$ {{q1_total_contrib_fundeb}}</td></tr>
+      <tr><td>Contribuição do Mun.p/ Formação do FUNDEB</td><td class="valor">R$ {{q1_contrib_fundeb}}</td></tr>
+      <tr class="total"><td>Total (Base Cálculo Repasse)</td><td class="valor">R$ {{q1_total_base_calculo}}</td></tr>
+    </tbody>
+  </table>
+  <p class="fonte">Fonte: Anexo 10 da Lei n° 4320/64 do Exercício Anterior.</p>
+
+  <!-- ---------- QUADRO 3 ---------- -->
+  <p class="quadro-titulo">Quadro 3 – Resultado Orçamentário</p>
+  <p class="quadro-desc">Este quadro avalia a relação entre receitas e despesas orçamentárias para determinar se há superávit ou déficit fiscal.</p>
+  <table class="quadro">
+    <thead><tr><th class="valor">RECEITA REALIZADA</th><th class="valor">DESPESA EMPENHADA</th><th class="centro">SITUAÇÃO</th></tr></thead>
+    <tbody>
+      <tr><td class="valor">R$ {{receita_arrecadada}}</td><td class="valor">R$ {{despesa_empenhada}}</td><td class="centro"><span class="badge auto-status">{{resultado_orcamentario_situacao}}</span></td></tr>
+    </tbody>
+  </table>
+  <p class="fonte">Fonte: Anexo 12 da Lei n° 4320/64.</p>
+  <p>Resultado orçamentário {{resultado_orcamentario_situacao}}, cumpriu o disposto no § 1º do art. 1º, na alínea “b” do inciso I do art. 4º e no caput do art. 9º da Lei Complementar nº 101, de 2000, combinado com a alínea “b” do art. 48 da Lei nº 4.320, de 1964.</p>
+
+  <!-- ---------- QUADRO 4 ---------- -->
+  <p class="quadro-titulo">Quadro 4 – Receita Corrente Líquida</p>
+  <p class="quadro-desc">Este quadro demonstra a receita corrente líquida do Município de {{municipio_uf}}.</p>
+  <table class="quadro">
+    <thead><tr><th>DESCRIÇÃO</th><th class="valor">TCE/MA</th></tr></thead>
+    <tbody>
+      <tr><td>Receita Tributária</td><td class="valor">R$ {{q4_receita_tributaria}}</td></tr>
+      <tr><td>Receita de Contribuições</td><td class="valor">R$ {{q4_receita_contribuicoes}}</td></tr>
+      <tr><td>Receita Patrimonial</td><td class="valor">R$ {{q4_receita_patrimonial}}</td></tr>
+      <tr><td>Receita Agropecuária</td><td class="valor">R$ {{q4_receita_agropecuaria}}</td></tr>
+      <tr><td>Receita Industrial</td><td class="valor">R$ {{q4_receita_industrial}}</td></tr>
+      <tr><td>Receita de Serviços</td><td class="valor">R$ {{q4_receita_servicos}}</td></tr>
+      <tr><td>Transferências Correntes</td><td class="valor">R$ {{q4_transferencias_correntes}}</td></tr>
+      <tr><td>Outras Receitas Correntes</td><td class="valor">R$ {{q4_outras_receitas}}</td></tr>
+      <tr class="total"><td>RECEITA CORRENTE</td><td class="valor">R$ {{q4_receita_corrente}}</td></tr>
+      <tr><td>(-) Contrib. do Servidor para o Plano de Previdência</td><td class="valor">R$ {{q4_ded_contrib_servidor}}</td></tr>
+      <tr><td>(-) Compensação Financ. entre Regimes Previdência</td><td class="valor">R$ {{q4_ded_compensacao}}</td></tr>
+      <tr><td>(-) Dedução de Receita para Formação do FUNDEB</td><td class="valor">R$ {{q4_ded_fundeb}}</td></tr>
+      <tr><td>(-) Transferências Obrigatórias da União relativas às Emendas Individuais (art. 166-A, §1º, da CF) (V)</td><td class="valor">R$ {{q4_ded_emendas_individuais}}</td></tr>
+      <tr><td>(-) Transferências Obrigatórias da União relativas às Emendas de Bancada (art. 166, § 16, da CF) (VI)</td><td class="valor">R$ {{q4_ded_emendas_bancada}}</td></tr>
+      <tr><td>(-) Rendimentos de Aplicações de Recursos Previdenciários</td><td class="valor">R$ {{q4_ded_rendimentos_prev}}</td></tr>
+      <tr><td>(-) Transferências da União relativas à remuneração dos agentes comunitários de saúde e de combate às endemias (CF, art. 198, §11) (7)</td><td class="valor">R$ {{q4_ded_agentes_saude}}</td></tr>
+      <tr class="total"><td>RECEITA CORRENTE LÍQUIDA DECLARADA</td><td class="valor">R$ {{rcl_valor}}</td></tr>
+    </tbody>
+  </table>
+  <p class="fonte">Fonte: Anexos 1, 2, 10, 12 e 13 da Lei n° 4320/64.</p>
+
+  <!-- ---------- QUADRO 5 ---------- -->
+  <p class="quadro-titulo">Quadro 5 – Despesa com Pessoal</p>
+  <p class="quadro-desc">Este quadro detalha a despesa com pessoal do Município de {{municipio}}.</p>
+  <table class="quadro">
+    <thead><tr><th>DESCRIÇÃO</th><th class="valor">TCE/MA</th></tr></thead>
+    <tbody>
+      <tr><td>Pessoal ativo</td><td class="valor">R$ {{q5_pessoal_ativo}}</td></tr>
+      <tr><td>Pessoal inativo e pensionistas</td><td class="valor">R$ {{q5_pessoal_inativo}}</td></tr>
+      <tr><td>Outras despesas de pessoal decorrentes de contratos de terceirização (§ 1º do art. 18 da LRF)</td><td class="valor">R$ {{q5_terceirizacao}}</td></tr>
+      <tr class="total"><td>DESPESA COM PESSOAL</td><td class="valor">R$ {{q5_despesa_pessoal}}</td></tr>
+      <tr><td>(-) Indenizações por demissão e incentivos à demissão voluntária</td><td class="valor">R$ {{q5_ded_indenizacoes}}</td></tr>
+      <tr><td>(-) Decorrentes de decisão judicial de período anterior ao da apuração</td><td class="valor">R$ {{q5_ded_decisao_judicial}}</td></tr>
+      <tr><td>(-) Despesas de exercícios anteriores de período anterior ao da apuração</td><td class="valor">R$ {{q5_ded_exercicios_anteriores}}</td></tr>
+      <tr><td>(-) Inativos e pensionistas com recursos vinculados</td><td class="valor">R$ {{q5_ded_inativos_vinculados}}</td></tr>
+      <tr><td>(-) Agentes Comunitários de Saúde e de Combate às Endemias com Recursos Vinculados (CF, art. 198, §11)</td><td class="valor">R$ {{q5_ded_agentes_saude}}</td></tr>
+      <tr><td>(-) Parcela dedutível referente ao piso salarial do Enfermeiro, Técnico de Enfermagem, Auxiliar de Enfermagem e Parteira (ADCT, art. 38, §2º)</td><td class="valor">R$ {{q5_ded_piso_enfermagem}}</td></tr>
+      <tr><td>DESPESA LÍQUIDA COM PESSOAL (DESPESAS INSCRITAS EM RESTOS A PAGAR NÃO PROCESSADOS)</td><td class="valor">R$ {{q5_despesa_liquida_rp}}</td></tr>
+      <tr class="total"><td>DESPESA LÍQUIDA COM PESSOAL</td><td class="valor">R$ {{despesa_pessoal_liquida}}</td></tr>
+      <tr><td>Base de cálculo informada</td><td class="valor">R$ {{rcl_valor}}</td></tr>
+      <tr class="total"><td>PERCENTUAL DE APLICAÇÃO EM DESPESA COM PESSOAL</td><td class="valor">{{pessoal_percentual_rcl}}</td></tr>
+    </tbody>
+  </table>
+  <p class="fonte">Fonte: Anexos 1, 2, 10, 11, 12 e 13 da Lei n° 4320/64.</p>
+
+  <!-- ---------- QUADRO 6 ---------- -->
+  <p class="quadro-titulo">Quadro 6 – Comportamento da Despesa com Pessoal no Exercício</p>
+  <p class="quadro-desc">Este quadro demonstra o comportamento da despesa de pessoal no exercício corrente do Município de {{municipio}}.</p>
+  <table class="quadro">
+    <thead><tr><th class="centro">1º Semestre (R$)</th><th class="centro">(APURADO PELO TCE) (R$)</th></tr></thead>
+    <tbody>
+      <tr><td>Total Despesa — R$ {{q6_total_despesa_1sem}}</td><td>Total Despesa — R$ {{q6_total_despesa_ano}}</td></tr>
+      <tr><td>RECEITA CORRENTE LÍQUIDA — R$ {{q6_rcl_1sem}}</td><td>RECEITA CORRENTE LÍQUIDA — R$ {{rcl_valor}}</td></tr>
+      <tr><td>Despesa de Pessoal EXECUTIVO – Limite Legal - R$ {{q6_limite_1sem}} (54% da RCL - art. 21 II da LRF)</td><td>Despesa de Pessoal EXECUTIVO – Limite Legal - R$ {{q6_limite_ano}} (54% da RCL - art. 21 II da LRF)</td></tr>
+      <tr class="total"><td>Percentual e Valor Apurados — {{pessoal_percentual_1sem}}</td><td>Percentual e Valor Apurados — {{pessoal_percentual_rcl}}</td></tr>
+    </tbody>
+  </table>
+  <p class="fonte">Fonte: Anexos 1, 2, 10, 12 e 13 da Lei n° 4320/64 e Relatório de Gestão Fiscal (RGF).</p>
+
+  <!-- ---------- QUADRO 7 ---------- -->
+  <p class="quadro-titulo">Quadro 7 – Dívida Consolidada e Mobiliária</p>
+  <p class="quadro-desc">Este quadro evidencia se o Município de {{municipio_uf}}, se enquadra nos limites aceitáveis de sua dívida consolidada e mobiliária.</p>
+  <table class="quadro">
+    <thead>
+      <tr><th>DÍVIDA CONSOLIDADA</th><th class="valor">SALDO DO EXERCÍCIO ANTERIOR</th><th class="valor">Até o 1º Semestre</th><th class="valor">Até o 2º Semestre</th></tr>
+    </thead>
+    <tbody>
+      <tr class="total"><td>DÍVIDA CONSOLIDADA - DC (I)</td><td class="valor">R$ {{q7_dc_anterior}}</td><td class="valor">R$ {{q7_dc_1sem}}</td><td class="valor">R$ {{q7_dc_2sem}}</td></tr>
+      <tr><td>Dívida Mobiliária</td><td class="valor">R$ {{q7_mobiliaria_anterior}}</td><td class="valor">R$ {{q7_mobiliaria_1sem}}</td><td class="valor">R$ {{q7_mobiliaria_2sem}}</td></tr>
+      <tr><td>Dívida Contratual</td><td class="valor">R$ {{q7_contratual_anterior}}</td><td class="valor">R$ {{q7_contratual_1sem}}</td><td class="valor">R$ {{q7_contratual_2sem}}</td></tr>
+      <tr><td>Precatórios posteriores a 05/05/2000 (inclusive) - Vencidos e não pagos</td><td class="valor">R$ {{q7_precatorios_anterior}}</td><td class="valor">R$ {{q7_precatorios_1sem}}</td><td class="valor">R$ {{q7_precatorios_2sem}}</td></tr>
+      <tr><td>Outras Dívidas</td><td class="valor">R$ {{q7_outras_anterior}}</td><td class="valor">R$ {{q7_outras_1sem}}</td><td class="valor">R$ {{q7_outras_2sem}}</td></tr>
+      <tr class="total"><td>DEDUÇÕES (II)¹</td><td class="valor">R$ {{q7_deducoes_anterior}}</td><td class="valor">R$ {{q7_deducoes_1sem}}</td><td class="valor">R$ {{q7_deducoes_2sem}}</td></tr>
+      <tr><td>Disponibilidade de Caixa</td><td class="valor">R$ {{q7_disp_caixa_anterior}}</td><td class="valor">R$ {{q7_disp_caixa_1sem}}</td><td class="valor">R$ {{q7_disp_caixa_2sem}}</td></tr>
+      <tr><td>Disponibilidade de Caixa Bruta</td><td class="valor">R$ {{q7_disp_bruta_anterior}}</td><td class="valor">R$ {{q7_disp_bruta_1sem}}</td><td class="valor">R$ {{q7_disp_bruta_2sem}}</td></tr>
+      <tr><td>(-) Restos a Pagar Processados (Exceto Precatórios)</td><td class="valor">R$ {{q7_rp_proc_anterior}}</td><td class="valor">R$ {{q7_rp_proc_1sem}}</td><td class="valor">R$ {{q7_rp_proc_2sem}}</td></tr>
+      <tr><td>Demais Haveres Financeiros</td><td class="valor">R$ {{q7_haveres_anterior}}</td><td class="valor">R$ {{q7_haveres_1sem}}</td><td class="valor">R$ {{q7_haveres_2sem}}</td></tr>
+      <tr class="total"><td>DÍVIDA CONSOLIDADA LÍQUIDA (DCL) (III) = (I - II)</td><td class="valor">R$ {{q7_dcl_anterior}}</td><td class="valor">R$ {{q7_dcl_1sem}}</td><td class="valor">R$ {{q7_dcl_2sem}}</td></tr>
+      <tr><td>RECEITA CORRENTE LÍQUIDA - RCL</td><td class="valor">R$ {{q7_rcl_anterior}}</td><td class="valor">R$ {{q7_rcl_1sem}}</td><td class="valor">R$ {{q7_rcl_2sem}}</td></tr>
+      <tr><td>(-) Transferências Obrigatórias da União Relativas às Emendas Individuais (art. 166-A, § 1º, da CF) (V)</td><td class="valor">R$ {{q7_transf_emendas_anterior}}</td><td class="valor">R$ {{q7_transf_emendas_1sem}}</td><td class="valor">R$ {{q7_transf_emendas_2sem}}</td></tr>
+      <tr><td>RECEITA CORRENTE LÍQUIDA AJUSTADA PARA CÁLCULO DOS LIMITES DE ENDIVIDAMENTO (VI) = (IV - V)</td><td class="valor">R$ {{q7_rcl_ajustada_anterior}}</td><td class="valor">R$ {{q7_rcl_ajustada_1sem}}</td><td class="valor">R$ {{q7_rcl_ajustada_2sem}}</td></tr>
+      <tr><td>% da DC sobre a RCL (I/RCL)</td><td class="valor">{{q7_perc_dc_anterior}}</td><td class="valor">{{q7_perc_dc_1sem}}</td><td class="valor">{{q7_perc_dc_2sem}}</td></tr>
+      <tr><td>% da DCL sobre a RCL (III/RCL)</td><td class="valor">{{q7_perc_dcl_anterior}}</td><td class="valor">{{q7_perc_dcl_1sem}}</td><td class="valor">{{q7_perc_dcl_2sem}}</td></tr>
+      <tr><td>LIMITE DEFINIDO POR RESOLUÇÃO DO SENADO FEDERAL</td><td class="valor">R$ {{q7_limite_senado_anterior}}</td><td class="valor">R$ {{q7_limite_senado_1sem}}</td><td class="valor">R$ {{q7_limite_senado_2sem}}</td></tr>
+      <tr><td>LIMITE DE ALERTA (inciso III do § 1º do art. 59 da LRF) - %</td><td class="valor">R$ {{q7_limite_alerta_anterior}}</td><td class="valor">R$ {{q7_limite_alerta_1sem}}</td><td class="valor">R$ {{q7_limite_alerta_2sem}}</td></tr>
+    </tbody>
+  </table>
+  <p class="fonte">Fonte: Relatório de Gestão Fiscal (RGF).</p>
+
+  <!-- ---------- QUADRO 8 ---------- -->
+  <p class="quadro-titulo">Quadro 8 – Balanço Orçamentário - Receitas</p>
+  <p class="quadro-desc">Este quadro apresenta o Balanço Orçamentário do Município de {{municipio_uf}}, detalhando as receitas por categoria econômica e fonte, incluindo a estimativa inicial, a previsão revisada, os valores efetivamente arrecadados e o resultado final.</p>
+  <table class="quadro">
+    <thead><tr><th>RECEITAS ORÇAMENTÁRIAS</th><th class="valor">Prevista Inicial (A)</th><th class="valor">Prevista atualizada (B)</th><th class="valor">Realizada (C)</th><th class="valor">Saldo (D)=(C)-(B)</th></tr></thead>
+    <tbody>
+      <tr><td>Receitas Correntes (I)</td><td class="valor">R$ {{q8_correntes_a}}</td><td class="valor">R$ {{q8_correntes_b}}</td><td class="valor">R$ {{q8_correntes_c}}</td><td class="valor">R$ {{q8_correntes_d}}</td></tr>
+      <tr><td>Receitas de Capital (II)</td><td class="valor">R$ {{q8_capital_a}}</td><td class="valor">R$ {{q8_capital_b}}</td><td class="valor">R$ {{q8_capital_c}}</td><td class="valor">R$ {{q8_capital_d}}</td></tr>
+      <tr class="total"><td>SUBTOTAL DAS RECEITAS (III) = (I + II)</td><td class="valor">R$ {{q8_subtotal_a}}</td><td class="valor">R$ {{q8_subtotal_b}}</td><td class="valor">R$ {{q8_subtotal_c}}</td><td class="valor">R$ {{q8_subtotal_d}}</td></tr>
+      <tr><td>Operações de Crédito/Refinanciamento (IV)</td><td class="valor">R$ {{q8_operacoes_a}}</td><td class="valor">R$ {{q8_operacoes_b}}</td><td class="valor">R$ {{q8_operacoes_c}}</td><td class="valor">R$ {{q8_operacoes_d}}</td></tr>
+      <tr class="total"><td>SUBTOTAL COM REFINANCIAMENTO (V) = (III + IV)</td><td class="valor">R$ {{q8_subtotal_refin_a}}</td><td class="valor">R$ {{q8_subtotal_refin_b}}</td><td class="valor">R$ {{q8_subtotal_refin_c}}</td><td class="valor">R$ {{q8_subtotal_refin_d}}</td></tr>
+      <tr><td>Déficit (VI)</td><td class="valor">R$ {{q8_deficit_a}}</td><td class="valor">R$ {{q8_deficit_b}}</td><td class="valor">R$ {{q8_deficit_c}}</td><td class="valor">R$ {{q8_deficit_d}}</td></tr>
+      <tr class="total"><td>TOTAL (VII) = (V + VI)</td><td class="valor">R$ {{q8_total_a}}</td><td class="valor">R$ {{q8_total_b}}</td><td class="valor">R$ {{q8_total_c}}</td><td class="valor">R$ {{q8_total_d}}</td></tr>
+      <tr><td>Saldos de Exercícios Anteriores (Utilizados Para Créditos Adicionais)</td><td class="valor">R$ {{q8_saldos_ant_a}}</td><td class="valor">R$ {{q8_saldos_ant_b}}</td><td class="valor">R$ {{q8_saldos_ant_c}}</td><td class="valor">R$ {{q8_saldos_ant_d}}</td></tr>
+      <tr><td>Recursos Arrecadados em Exercícios Anteriores</td><td class="valor">R$ {{q8_recursos_ant_a}}</td><td class="valor">R$ {{q8_recursos_ant_b}}</td><td class="valor">R$ {{q8_recursos_ant_c}}</td><td class="valor">R$ {{q8_recursos_ant_d}}</td></tr>
+      <tr><td>Superávit Financeiro</td><td class="valor">R$ {{q8_superavit_a}}</td><td class="valor">R$ {{q8_superavit_b}}</td><td class="valor">R$ {{q8_superavit_c}}</td><td class="valor">R$ {{q8_superavit_d}}</td></tr>
+      <tr><td>Reabertura de Créditos Adicionais</td><td class="valor">R$ {{q8_reabertura_a}}</td><td class="valor">R$ {{q8_reabertura_b}}</td><td class="valor">R$ {{q8_reabertura_c}}</td><td class="valor">R$ {{q8_reabertura_d}}</td></tr>
+    </tbody>
+  </table>
+  <p class="fonte">Fonte: Anexo 12 da Lei n° 4320/64.</p>
+
+  <!-- ---------- QUADRO 9 ---------- -->
+  <p class="quadro-titulo">Quadro 9 – Balanço Orçamentário - Despesas</p>
+  <p class="quadro-desc">Este quadro apresenta a estrutura das despesas orçamentárias do Município de {{municipio_uf}}.</p>
+  <table class="quadro">
+    <thead><tr><th>DESPESAS ORÇAMENTÁRIAS</th><th class="valor">Dotação Inicial (D)</th><th class="valor">Dotação atualizada (E)</th><th class="valor">Empenhada (F)</th><th class="valor">Liquidadas (G)</th><th class="valor">Pagas (H)</th><th class="valor">Saldo De Dotação (I)=(E)-(F)</th></tr></thead>
+    <tbody>
+      <tr><td>DESPESAS Correntes (VIII)</td><td class="valor">R$ {{q9_correntes_d}}</td><td class="valor">R$ {{q9_correntes_e}}</td><td class="valor">R$ {{q9_correntes_f}}</td><td class="valor">R$ {{q9_correntes_g}}</td><td class="valor">R$ {{q9_correntes_h}}</td><td class="valor">R$ {{q9_correntes_i}}</td></tr>
+      <tr><td>DESPESAS de Capital (IX)</td><td class="valor">R$ {{q9_capital_d}}</td><td class="valor">R$ {{q9_capital_e}}</td><td class="valor">R$ {{q9_capital_f}}</td><td class="valor">R$ {{q9_capital_g}}</td><td class="valor">R$ {{q9_capital_h}}</td><td class="valor">R$ {{q9_capital_i}}</td></tr>
+      <tr><td>Reserva de Contingência (X)</td><td class="valor">R$ {{q9_reserva_d}}</td><td class="valor">R$ {{q9_reserva_e}}</td><td class="valor">R$ {{q9_reserva_f}}</td><td class="valor">R$ {{q9_reserva_g}}</td><td class="valor">R$ {{q9_reserva_h}}</td><td class="valor">R$ {{q9_reserva_i}}</td></tr>
+      <tr class="total"><td>SUBTOTAL das DESPESAS (XI) = (VIII + IX + X)</td><td class="valor">R$ {{q9_subtotal_d}}</td><td class="valor">R$ {{q9_subtotal_e}}</td><td class="valor">R$ {{q9_subtotal_f}}</td><td class="valor">R$ {{q9_subtotal_g}}</td><td class="valor">R$ {{q9_subtotal_h}}</td><td class="valor">R$ {{q9_subtotal_i}}</td></tr>
+      <tr><td>Amortização da Dívida /Refinanciamento (XII)</td><td class="valor">R$ {{q9_amortizacao_d}}</td><td class="valor">R$ {{q9_amortizacao_e}}</td><td class="valor">R$ {{q9_amortizacao_f}}</td><td class="valor">R$ {{q9_amortizacao_g}}</td><td class="valor">R$ {{q9_amortizacao_h}}</td><td class="valor">R$ {{q9_amortizacao_i}}</td></tr>
+      <tr class="total"><td>SUBTOTAL COM REFINANCIAMENTO (XIII) = (XI + XII)</td><td class="valor">R$ {{q9_subtotal_refin_d}}</td><td class="valor">R$ {{q9_subtotal_refin_e}}</td><td class="valor">R$ {{q9_subtotal_refin_f}}</td><td class="valor">R$ {{q9_subtotal_refin_g}}</td><td class="valor">R$ {{q9_subtotal_refin_h}}</td><td class="valor">R$ {{q9_subtotal_refin_i}}</td></tr>
+      <tr><td>Superávit (XIV)</td><td class="valor">R$ {{q9_superavit_d}}</td><td class="valor">R$ {{q9_superavit_e}}</td><td class="valor">R$ {{q9_superavit_f}}</td><td class="valor">R$ {{q9_superavit_g}}</td><td class="valor">R$ {{q9_superavit_h}}</td><td class="valor">R$ {{q9_superavit_i}}</td></tr>
+      <tr class="total"><td>TOTAL (XV) = (XIII + XIV)</td><td class="valor">R$ {{q9_total_d}}</td><td class="valor">R$ {{q9_total_e}}</td><td class="valor">R$ {{q9_total_f}}</td><td class="valor">R$ {{q9_total_g}}</td><td class="valor">R$ {{q9_total_h}}</td><td class="valor">R$ {{q9_total_i}}</td></tr>
+      <tr><td>Reserva do RPPS</td><td class="valor">R$ {{q9_rpps_d}}</td><td class="valor">R$ {{q9_rpps_e}}</td><td class="valor">R$ {{q9_rpps_f}}</td><td class="valor">R$ {{q9_rpps_g}}</td><td class="valor">R$ {{q9_rpps_h}}</td><td class="valor">R$ {{q9_rpps_i}}</td></tr>
+    </tbody>
+  </table>
+  <p class="fonte">Fonte: Anexo 12 da Lei n° 4320/64.</p>
+
+  <!-- ---------- QUADRO 10 ---------- -->
+  <p class="quadro-titulo">Quadro 10 – Efetividade na Arrecadação de Receitas</p>
+  <p class="quadro-desc">Este quadro avalia a efetividade da arrecadação das receitas orçamentárias do Município de {{municipio_uf}}.</p>
+  <table class="quadro">
+    <thead><tr><th class="valor">RECEITA TRIBUTÁRIA REALIZADA</th><th class="valor">RECEITA TRIBUTÁRIA ATUALIZADA</th><th class="centro">SITUAÇÃO</th></tr></thead>
+    <tbody>
+      <tr><td class="valor">R$ {{q10_receita_realizada}}</td><td class="valor">R$ {{q10_receita_atualizada}}</td><td class="centro"><span class="badge auto-status">{{gestao_receitas_situacao}}</span></td></tr>
+    </tbody>
+  </table>
+  <p class="fonte">Fonte: Anexos 1, 2, 10 e 12 da Lei n° 4320/64.</p>
+
+  <!-- ---------- QUADRO 11 ---------- -->
+  <p class="quadro-titulo">Quadro 11 – Comparativo LOA x Balanço Orçamentário</p>
+  <p class="quadro-desc">Este quadro apresenta a comparação entre os valores previstos na Lei Orçamentária Anual (LOA) e aqueles efetivamente registrados no Balanço Orçamentário (BO) do Município de {{municipio_uf}}.</p>
+  <table class="quadro">
+    <thead><tr><th>DESCRIÇÃO</th><th class="valor">LOA</th><th class="valor">BO</th><th class="centro">SITUAÇÃO</th></tr></thead>
+    <tbody>
+      <tr><td>Receita Prevista</td><td class="valor">R$ {{q11_receita_loa}}</td><td class="valor">R$ {{q11_receita_bo}}</td><td class="centro"><span class="badge auto-status">{{q11_receita_situacao}}</span></td></tr>
+      <tr><td>Dotação Inicial</td><td class="valor">R$ {{q11_dotacao_loa}}</td><td class="valor">R$ {{q11_dotacao_bo}}</td><td class="centro"><span class="badge auto-status">{{q11_dotacao_situacao}}</span></td></tr>
+    </tbody>
+  </table>
+  <p class="fonte">Fonte: Anexo 12 da Lei n° 4320/64 e Lei orçamentária anual (LOA).</p>
+
+  <!-- ---------- QUADRO 12 ---------- -->
+  <p class="quadro-titulo">Quadro 12 – Apuração do Resultado Financeiro</p>
+  <p class="quadro-desc">Este quadro apresenta a apuração do Resultado Financeiro constante no Balanço Patrimonial do Município de {{municipio_uf}}, evidenciando a relação entre os ativos financeiros e as obrigações a curto prazo.</p>
+  <table class="quadro">
+    <thead><tr><th>Especificação</th><th class="valor">Exercício Atual</th><th class="valor">Exercício Anterior</th></tr></thead>
+    <tbody>
+      <tr><td>(+) Ativo Financeiro</td><td class="valor">R$ {{q12_ativo_atual}}</td><td class="valor">R$ {{q12_ativo_anterior}}</td></tr>
+      <tr><td>(-) Passivo Financeiro</td><td class="valor">R$ {{q12_passivo_atual}}</td><td class="valor">R$ {{q12_passivo_anterior}}</td></tr>
+      <tr><td>(+) Saldos dos créditos adicionais transferidos e as operações de crédito vinculadas</td><td class="valor">R$ {{q12_creditos_atual}}</td><td class="valor">R$ {{q12_creditos_anterior}}</td></tr>
+      <tr class="total"><td>(=) Superávit/ Deficit Financeiro Apurado</td><td class="valor">R$ {{q12_resultado_atual}}</td><td class="valor">R$ {{q12_resultado_anterior}}</td></tr>
+    </tbody>
+  </table>
+  <p class="fonte">Fonte: Anexo 14 da Lei n° 4320/64.</p>
+
+  <!-- ---------- QUADRO 13 ---------- -->
+  <p class="quadro-titulo">Quadro 13 – Evolução do Patrimônio Líquido</p>
+  <p class="quadro-desc">Este quadro apresenta a evolução do Patrimônio Líquido registrada no Balanço Patrimonial do Município de {{municipio_uf}}, evidenciando as variações ocorridas no exercício.</p>
+  <table class="quadro">
+    <thead><tr><th class="valor">Patrimônio Líquido {{exercicio_anterior}} (a)</th><th class="valor">Patrimônio Líquido {{exercicio}} (b)</th><th class="valor">Variação (c = b – a)</th><th class="valor">%</th></tr></thead>
+    <tbody>
+      <tr><td class="valor">R$ {{q13_pl_anterior}}</td><td class="valor">R$ {{patrimonio_liquido}}</td><td class="valor">R$ {{pl_variacao}}</td><td class="valor">{{pl_crescimento_percentual}}</td></tr>
+    </tbody>
+  </table>
+  <p class="fonte">Fonte: Anexo 14 da Lei n° 4320/64.</p>
+
+  <!-- ---------- QUADRO 14 ---------- -->
+  <p class="quadro-titulo">Quadro 14 – Apuração do Fluxo de Caixa do Período</p>
+  <p class="quadro-desc">Este quadro apresenta a apuração do fluxo de caixa do período, demonstrando as entradas e saídas financeiras do Município de {{municipio_uf}}.</p>
+  <table class="quadro">
+    <thead><tr><th>Descrição</th><th class="valor">Exercício Atual</th><th class="valor">Exercício Anterior</th></tr></thead>
+    <tbody>
+      <tr><td>Geração Líquida de Caixa e Equivalente de Caixa</td><td class="valor">R$ {{fluxo_caixa_geracao_liquida}}</td><td class="valor">R$ {{q14_geracao_anterior}}</td></tr>
+      <tr><td>Caixa e Equivalente de Caixa Inicial</td><td class="valor">R$ {{fluxo_caixa_inicial}}</td><td class="valor">R$ {{q14_inicial_anterior}}</td></tr>
+      <tr><td>Caixa e Equivalente de Caixa Final</td><td class="valor">R$ {{fluxo_caixa_final}}</td><td class="valor">R$ {{q14_final_anterior}}</td></tr>
+    </tbody>
+  </table>
+  <p class="fonte">Fonte: Demonstrativo dos Fluxos de Caixa.</p>
+
+  <!-- ---------- QUADRO 15 ---------- -->
+  <p class="quadro-titulo">Quadro 15 – Suficiência de Caixa</p>
+  <p class="quadro-desc">Este quadro evidencia a suficiência ou insuficiência das disponibilidades de caixa do Município de {{municipio_uf}} em relação ao montante das obrigações de despesa a saldar.</p>
+  <table class="quadro">
+    <thead><tr><th>DESCRIÇÃO</th><th class="valor">VALOR</th></tr></thead>
+    <tbody>
+      <tr><td>Disponibilidades de Caixa Bruta (A)</td><td class="valor">R$ {{q15_disp_bruta}}</td></tr>
+      <tr><td>(-)Depósitos/ Consignações (B)</td><td class="valor">R$ {{q15_depositos}}</td></tr>
+      <tr><td>(-)Outras Obrigações (C)</td><td class="valor">R$ {{q15_outras_obrigacoes}}</td></tr>
+      <tr class="total"><td>DISPONIBILIDADE DE CAIXA LÍQUIDA (D)=(A)-(B)-(C)</td><td class="valor">R$ {{q15_disp_liquida}}</td></tr>
+      <tr><td>(-)Restos a pagar (exercícios anteriores) (E)</td><td class="valor">R$ {{q15_rp_anteriores}}</td></tr>
+      <tr><td>(-)Restos a pagar PROCESSADOS (inscritos no exercício) (F)</td><td class="valor">R$ {{q15_rp_processados}}</td></tr>
+      <tr><td>(-) Restos a pagar NÃO PROCESSADOS (inscritos no exercício) (G)</td><td class="valor">R$ {{q15_rp_nao_processados}}</td></tr>
+      <tr class="total"><td>TOTAL RESTO A PAGAR NÃO PAGO (H)=(E)+(F)+(G)</td><td class="valor">R$ {{q15_total_rp_nao_pago}}</td></tr>
+      <tr><td>(+)Restos a pagar (pago) (I)</td><td class="valor">R$ {{q15_rp_pago}}</td></tr>
+      <tr><td>(+)Restos a pagar PROCESSADOS/Não PROCESSADOS (Cancelados) (J)</td><td class="valor">R$ {{q15_rp_cancelados}}</td></tr>
+      <tr><td>(+)Restos a pagar PROCESSADOS/ Não PROCESSADOS (Baixados) (K)</td><td class="valor">R$ {{q15_rp_baixados}}</td></tr>
+      <tr class="total"><td>TOTAL RESTO A PAGAR (L)=(H)-(I)-(J)-(K)</td><td class="valor">R$ {{q15_total_rp}}</td></tr>
+      <tr class="total"><td>SALDO (M)=(D)-(L)</td><td class="valor">R$ {{q15_saldo}}</td></tr>
+    </tbody>
+  </table>
+  <p class="fonte">Fonte: Anexos 12, 13 e 14 da Lei n° 4320/64 e Demonstrativo dos Fluxos de Caixa.</p>
+
+  <!-- ---------- QUADRO 16 ---------- -->
+  <p class="quadro-titulo">Quadro 16 – Análise de Depósitos Restituíveis e Valores Vinculados</p>
+  <p class="quadro-desc">Este quadro apresenta uma análise comparativa da contabilização dos depósitos restituíveis e dos valores vinculados entre o Balanço Financeiro (BF) e o Balanço Patrimonial (BP) do Município de {{municipio_uf}}.</p>
+  <table class="quadro">
+    <thead><tr><th>DESCRIÇÃO</th><th class="valor">VALOR</th></tr></thead>
+    <tbody>
+      <tr><td>(-)Depósitos/ Consignações - Recebimentos extraorcamentários (BF) (A)</td><td class="valor">R$ {{q16_recebimentos_bf}}</td></tr>
+      <tr><td>(-)Depósitos/ Consignações - Pagamentos extraorçamentários (BF) - (B)</td><td class="valor">R$ {{q16_pagamentos_bf}}</td></tr>
+      <tr class="total"><td>SALDO (C)=(A)-(B)</td><td class="valor">R$ {{q16_saldo_c}}</td></tr>
+      <tr><td>(-)Depósitos/ Consignações - Recebimentos extraorcamentários (BP) (D)</td><td class="valor">R$ {{q16_recebimentos_bp}}</td></tr>
+      <tr class="total"><td>SALDO (E)=(C)-(D)</td><td class="valor">R$ {{q16_saldo_e}}</td></tr>
+    </tbody>
+  </table>
+  <p class="fonte">Fonte: Anexos 12, 13 e 14 da Lei n° 4320/64 e Demonstrativo dos Fluxos de Caixa.</p>
+
+  <!-- ---------- QUADRO 17 ---------- -->
+  <p class="quadro-titulo">Quadro 17 – Base de Cálculo do Índice de Saúde</p>
+  <p class="quadro-desc">Este quadro apresenta a apuração da receita proveniente de impostos e transferências utilizada para o cálculo do índice de saúde do Município de {{municipio_uf}}.</p>
+  <table class="quadro">
+    <thead><tr><th>DESCRIÇÃO</th><th class="valor">TCE/MA</th></tr></thead>
+    <tbody>
+      <tr class="total"><td>RECEITA DE IMPOSTOS</td><td class="valor">R$ {{q17_receita_impostos}}</td></tr>
+      <tr><td>Imposto Predial e Territorial Urbano - IPTU</td><td class="valor">R$ {{q17_iptu}}</td></tr>
+      <tr><td>Multas, juros de mora, dívida ativa e outros encargos do IPTU</td><td class="valor">R$ {{q17_iptu_encargos}}</td></tr>
+      <tr><td>Imposto sobre a Transmissão de Bens Intervivos - ITBI</td><td class="valor">R$ {{q17_itbi}}</td></tr>
+      <tr><td>Multas, juros de mora, dívida ativa e outros encargos do ITBI</td><td class="valor">R$ {{q17_itbi_encargos}}</td></tr>
+      <tr><td>Imposto sobre Serviços de Qualquer Natureza - ISS</td><td class="valor">R$ {{q17_iss}}</td></tr>
+      <tr><td>Multas, juros de mora, dívida ativa e outros encargos do ISS</td><td class="valor">R$ {{q17_iss_encargos}}</td></tr>
+      <tr><td>Imposto de Renda Retido na Fonte - IRRF</td><td class="valor">R$ {{q17_irrf}}</td></tr>
+      <tr><td>Imposto Territorial Rural - ITR</td><td class="valor">R$ {{q17_itr}}</td></tr>
+      <tr><td>Multas, juros de mora, dívida ativa e outros encargos do ITR</td><td class="valor">R$ {{q17_itr_encargos}}</td></tr>
+      <tr><td>Multas, juros de mora e outros e encargos dos impostos</td><td class="valor">R$ {{q17_multas_impostos}}</td></tr>
+      <tr><td>Dívida ativa dos impostos</td><td class="valor">R$ {{q17_divida_ativa}}</td></tr>
+      <tr><td>Multa, juros de mora e outros encargos da dívida ativa</td><td class="valor">R$ {{q17_divida_ativa_encargos}}</td></tr>
+      <tr class="total"><td>RECEITA DE TRANSFERÊNCIAS CONSTITUCIONAIS E LEGAIS</td><td class="valor">R$ {{q17_transferencias}}</td></tr>
+      <tr><td>Cota-parte FPM</td><td class="valor">R$ {{q17_cp_fpm}}</td></tr>
+      <tr><td>Cota-parte ITR</td><td class="valor">R$ {{q17_cp_itr}}</td></tr>
+      <tr><td>Cota-parte IPVA</td><td class="valor">R$ {{q17_cp_ipva}}</td></tr>
+      <tr><td>Cota-parte ICMS</td><td class="valor">R$ {{q17_cp_icms}}</td></tr>
+      <tr><td>ICMS-Desoneração – LC nº 87/1996</td><td class="valor">R$ {{q17_icms_desoneracao}}</td></tr>
+      <tr><td>Cota-parte IPI-Exportação</td><td class="valor">R$ {{q17_cp_ipi}}</td></tr>
+      <tr><td>Cota-parte IOF-Ouro</td><td class="valor">R$ {{q17_cp_iof}}</td></tr>
+      <tr><td>Outras</td><td class="valor">R$ {{q17_outras}}</td></tr>
+      <tr class="total"><td>TOTAL DA RECEITA RESULTANTE DE IMPOSTOS (Base de cálculo)</td><td class="valor">R$ {{q17_total_base_calculo}}</td></tr>
+    </tbody>
+  </table>
+  <p class="fonte">Fonte: Anexos 1, 2, 10 e 13 da Lei n° 4320/64.</p>
+
+  <!-- ---------- QUADRO 18 ---------- -->
+  <p class="quadro-titulo">Quadro 18 – Despesas com Ações e Serviços de Saúde</p>
+  <p class="quadro-desc">Este quadro detalha as despesas realizadas pelo Município de {{municipio_uf}} com ações e serviços públicos de saúde.</p>
+  <table class="quadro">
+    <thead><tr><th>DESCRIÇÃO</th><th class="valor">TCE/MA</th></tr></thead>
+    <tbody>
+      <tr><td>Atenção Básica</td><td class="valor">R$ {{q18_atencao_basica}}</td></tr>
+      <tr><td>Assistência Hospitalar e Ambulatorial</td><td class="valor">R$ {{q18_assistencia_hospitalar}}</td></tr>
+      <tr><td>Suporte Profilático e Terapêuticos</td><td class="valor">R$ {{q18_suporte_profilatico}}</td></tr>
+      <tr><td>Vigilância Sanitária</td><td class="valor">R$ {{q18_vigilancia_sanitaria}}</td></tr>
+      <tr><td>Vigilância Epidemiológica</td><td class="valor">R$ {{q18_vigilancia_epidemiologica}}</td></tr>
+      <tr><td>Alimentação e Nutrição</td><td class="valor">R$ {{q18_alimentacao_nutricao}}</td></tr>
+      <tr><td>Outras Subfunções</td><td class="valor">R$ {{q18_outras_subfuncoes}}</td></tr>
+      <tr class="total"><td>TOTAL DAS DESPESAS COM SAÚDE</td><td class="valor">R$ {{q18_total_saude}}</td></tr>
+      <tr><td>(-)Despesas com saúde não computadas para fins de apuração do Percentual Mínimo (Inscritas em restos a pagar não processados)</td><td class="valor">R$ {{q18_ded_nao_computadas}}</td></tr>
+      <tr><td>(-) Despesas com inativos e pensionistas</td><td class="valor">R$ {{q18_ded_inativos}}</td></tr>
+      <tr><td>(-) Despesa com assistência à saúde que não atende ao princípio de acesso universal</td><td class="valor">R$ {{q18_ded_acesso_universal}}</td></tr>
+      <tr><td>(-) Despesas custeadas com outros recursos</td><td class="valor">R$ {{q18_ded_outros_recursos}}</td></tr>
+      <tr><td>(-) Outras ações e serviços não computados</td><td class="valor">R$ {{q18_ded_outras_acoes}}</td></tr>
+      <tr><td>(-) Restos a pagar não processados inscritos indevidamente no exercício sem disponibilidade financeira</td><td class="valor">R$ {{q18_ded_rp_indevidos}}</td></tr>
+      <tr><td>(-) Despesas custeadas com disponibilidade de caixa vinculada aos restos a pagar cancelados</td><td class="valor">R$ {{q18_ded_rp_cancelados}}</td></tr>
+      <tr><td>(-) Despesas custeadas com recursos vinculados a parcela do percentual mínimo que não foi aplicada em ações e serviços de saúde em exercícios anteriores</td><td class="valor">R$ {{q18_ded_recursos_vinculados}}</td></tr>
+      <tr class="total"><td>TOTAL DAS DESPESAS COM AÇÕES E SERVIÇOS PÚBLICOS DE SAÚDE, PARA FINS DE APURAÇÃO DO PERCENTUAL MÍNIMO</td><td class="valor">R$ {{q18_total_para_percentual}}</td></tr>
+      <tr><td>Base de cálculo informada</td><td class="valor">R$ {{q18_base_calculo}}</td></tr>
+      <tr class="total"><td>PERCENTUAL DE APLICAÇÃO EM AÇÕES E SERVIÇOS PÚBLICOS DE SAÚDE</td><td class="valor">{{saude_percentual}}</td></tr>
+    </tbody>
+  </table>
+  <p class="fonte">Fonte: Anexos 6, 7, 8, 9, 10 e 13 da Lei nº 4.320/1964; Anexo I do Módulo 1 da IN nº 52/2017; Anexos 12 e 13 da Lei nº 4.320/1964; e Demonstrativo dos Fluxos de Caixa constante do Anexo I do Módulo 6 da IN nº 52/2017, referente ao Fundo Municipal de Saúde.</p>
+
+  <!-- ---------- QUADRO 19 ---------- -->
+  <p class="quadro-titulo">Quadro 19 – Base de Cálculo do Índice de Manutenção e Desenvolvimento do Ensino (MDE)</p>
+  <p class="quadro-desc">Este quadro apresenta a apuração da receita proveniente de impostos e transferências utilizada no cálculo do percentual constitucional destinado à Manutenção e Desenvolvimento do Ensino no Município de {{municipio_uf}}.</p>
+  <table class="quadro">
+    <thead><tr><th>DESCRIÇÃO</th><th class="valor">TCE/MA</th></tr></thead>
+    <tbody>
+      <tr class="total"><td>RECEITA DE IMPOSTOS</td><td class="valor">R$ {{q19_receita_impostos}}</td></tr>
+      <tr><td>Imposto Predial e Territorial Urbano - IPTU</td><td class="valor">R$ {{q19_iptu}}</td></tr>
+      <tr><td>Multas, Juros de Mora, Dívida Ativa e Outros Encargos do IPTU</td><td class="valor">R$ {{q19_iptu_encargos}}</td></tr>
+      <tr><td>Imposto Sobre a Transmissão de Bens Intervivos - ITBI</td><td class="valor">R$ {{q19_itbi}}</td></tr>
+      <tr><td>Multas, Juros de Mora, Dívida Ativa e Outros Encargos do ITBI</td><td class="valor">R$ {{q19_itbi_encargos}}</td></tr>
+      <tr><td>Imposto Sobre Serviços de Qualquer Natureza - ISS</td><td class="valor">R$ {{q19_iss}}</td></tr>
+      <tr><td>Multas, Juros de Mora, Dívida Ativa e Outros Encargos do ISS</td><td class="valor">R$ {{q19_iss_encargos}}</td></tr>
+      <tr><td>Imposto de Renda Retido na Fonte - IRRF</td><td class="valor">R$ {{q19_irrf}}</td></tr>
+      <tr><td>Imposto Territorial Rural - ITR</td><td class="valor">R$ {{q19_itr}}</td></tr>
+      <tr><td>Multas, Juros de Mora, Dívida Ativa e Outros Encargos do ITR</td><td class="valor">R$ {{q19_itr_encargos}}</td></tr>
+      <tr><td>Multas, Juros de Mora e Outros e Encargos dos Impostos</td><td class="valor">R$ {{q19_multas_impostos}}</td></tr>
+      <tr><td>Dívida Ativa dos Impostos</td><td class="valor">R$ {{q19_divida_ativa}}</td></tr>
+      <tr><td>Multa, Juros de Mora e Outros Encargos da Dívida Ativa</td><td class="valor">R$ {{q19_divida_ativa_encargos}}</td></tr>
+      <tr class="total"><td>RECEITA DE TRANSFERÊNCIAS CONSTITUCIONAIS E LEGAIS</td><td class="valor">R$ {{q19_transferencias}}</td></tr>
+      <tr><td>Cota-parte FPM</td><td class="valor">R$ {{q19_cp_fpm}}</td></tr>
+      <tr><td>Cota-parte ITR</td><td class="valor">R$ {{q19_cp_itr}}</td></tr>
+      <tr><td>Cota-parte IPVA</td><td class="valor">R$ {{q19_cp_ipva}}</td></tr>
+      <tr><td>Cota-parte ICMS</td><td class="valor">R$ {{q19_cp_icms}}</td></tr>
+      <tr><td>ICMS-Desoneração – LC nº 87/1996</td><td class="valor">R$ {{q19_icms_desoneracao}}</td></tr>
+      <tr><td>Cota-parte IPI-Exportação</td><td class="valor">R$ {{q19_cp_ipi}}</td></tr>
+      <tr><td>Cota-parte IOF-Ouro</td><td class="valor">R$ {{q19_cp_iof}}</td></tr>
+      <tr><td>Outras</td><td class="valor">R$ {{q19_outras}}</td></tr>
+      <tr class="total"><td>TOTAL DA RECEITA RESULTANTE DE IMPOSTOS (Base de cálculo)</td><td class="valor">R$ {{q19_total_base_calculo}}</td></tr>
+    </tbody>
+  </table>
+  <p class="fonte">Fonte: Anexos 1, 2, 10 e 13 da Lei n° 4320/64.</p>
+
+  <!-- ---------- QUADRO 20 ---------- -->
+  <p class="quadro-titulo">Quadro 20 – Despesas com Manutenção e Desenvolvimento do Ensino (MDE)</p>
+  <p class="quadro-desc">Este quadro apresenta o cálculo do percentual constitucional aplicado pelo Município de {{municipio_uf}} nas ações de Manutenção e Desenvolvimento do Ensino (MDE).</p>
+  <table class="quadro">
+    <thead><tr><th>DESCRIÇÃO</th><th class="valor">TCE/MA</th></tr></thead>
+    <tbody>
+      <tr><td>Total das Despesas custeadas com FUNDEB - Impostos e Transferências de Impostos</td><td class="valor">R$ {{q20_fundeb_impostos}}</td></tr>
+      <tr><td>Total das Despesas custeadas com FUNDEB - Impostos e Transferências de Impostos (valor aplicado até o primeiro quadrimestre que integrarão o limite constitucional)</td><td class="valor">R$ {{q20_fundeb_1quad}}</td></tr>
+      <tr><td>Educação Infantil</td><td class="valor">R$ {{q20_educacao_infantil}}</td></tr>
+      <tr><td>Ensino Fundamental</td><td class="valor">R$ {{q20_ensino_fundamental}}</td></tr>
+      <tr class="total"><td>TOTAL DAS DESPESAS COM AÇÕES TÍPICAS DE MDE</td><td class="valor">R$ {{q20_total_mde}}</td></tr>
+      <tr><td>(+/-) Resultado Líquido das Transferências do FUNDEB</td><td class="valor">R$ {{q20_resultado_liquido_fundeb}}</td></tr>
+      <tr><td>(-) Despesas Custeadas com a Complementação do FUNDEB no Exercício</td><td class="valor">R$ {{q20_ded_complementacao}}</td></tr>
+      <tr><td>(-) Receita de Aplicação Financeira dos Recursos do FUNDEB</td><td class="valor">R$ {{q20_ded_aplicacao_financeira}}</td></tr>
+      <tr><td>(-) Despesas Custeadas com Superavit Financeiro, do Exercício Anterior, do FUNDEB</td><td class="valor">R$ {{q20_ded_superavit_anterior}}</td></tr>
+      <tr><td>(-) Despesas Custeadas com Outros Recursos</td><td class="valor">R$ {{q20_ded_outros_recursos}}</td></tr>
+      <tr><td>(-) Restos a Pagar Inscritos no Exercício sem Disponibilidade Financeira de Recursos de Impostos Vinculados ao Ensino</td><td class="valor">R$ {{q20_ded_rp_sem_disp}}</td></tr>
+      <tr><td>(-) Cancelamento, no Exercício, de Restos a Pagar Inscritos com Disponibilidade Financeira de Recursos de Impostos Vinculados ao Ensino</td><td class="valor">R$ {{q20_ded_rp_cancelados}}</td></tr>
+      <tr class="total"><td>TOTAL DAS DESPESAS PARA FINS DE LIMITE</td><td class="valor">R$ {{q20_total_para_limite}}</td></tr>
+      <tr><td>Base de cálculo informada</td><td class="valor">R$ {{q20_base_calculo}}</td></tr>
+      <tr class="total"><td>PERCENTUAL DE APLICAÇÃO NO ENSINO</td><td class="valor">{{mde_percentual}}</td></tr>
+    </tbody>
+  </table>
+  <p class="fonte">Fonte: Anexos 6, 7, 8, 9, 10 e 13 da Lei nº 4.320/1964; Anexo I do Módulo 1 da Instrução Normativa nº 52/2017; Anexos 12 e 13 da Lei nº 4.320/1964; e Demonstrativo dos Fluxos de Caixa constante do Anexo I do Módulo 6 da IN nº 52/2017, referente ao FUNDEB.</p>
+
+  <!-- ---------- QUADRO 21 ---------- -->
+  <p class="quadro-titulo">Quadro 21 – Recursos Destinados à Formação do FUNDEB</p>
+  <p class="quadro-desc">Este quadro apresenta a alocação dos recursos do Município de {{municipio_uf}} destinados à formação do FUNDEB.</p>
+  <table class="quadro">
+    <thead><tr><th>DESCRIÇÃO</th><th class="valor">TCE/MA</th></tr></thead>
+    <tbody>
+      <tr><td>2.1.1- Cota-parte FPM (Parcela referente à CF, art. 159, I, alínea b)</td><td class="valor">R$ {{q21_cp_fpm}}</td></tr>
+      <tr><td>2.2- Cota-parte ICMS</td><td class="valor">R$ {{q21_cp_icms}}</td></tr>
+      <tr><td>2.3- Cota-parte IPI-Exportação</td><td class="valor">R$ {{q21_cp_ipi}}</td></tr>
+      <tr><td>2.4- Cota-parte ITR ou ITR Arrecadado</td><td class="valor">R$ {{q21_cp_itr}}</td></tr>
+      <tr><td>2.5- Cota-parte IPVA</td><td class="valor">R$ {{q21_cp_ipva}}</td></tr>
+      <tr><td>2.7- Compensações Financeiras Provenientes de Impostos e Transferências Constitucionais</td><td class="valor">R$ {{q21_compensacoes}}</td></tr>
+      <tr class="total"><td>RECEITAS DESTINADAS AO FUNDEB (A)=(2.1.1)+(2.2)+(2.3)+(2.4)+(2.5)+(2.7)</td><td class="valor">R$ {{q21_receitas_destinadas}}</td></tr>
+      <tr class="total"><td>TOTAL EXIGIDO AO FUNDEB (B) 20% DE ((2.1.1) + (2.2) + (2.3) + (2.4) + (2.5) + (2.7))</td><td class="valor">R$ {{q21_total_exigido}}</td></tr>
+      <tr class="total"><td>TOTAL DESTINADO AO FUNDEB APURADO (C)</td><td class="valor">R$ {{q21_total_destinado}}</td></tr>
+      <tr class="total"><td>*PERCENTUAL DESTINADO AO FUNDEB (D)=(C)/(A)*100</td><td class="valor">{{q21_percentual_destinado}}</td></tr>
+    </tbody>
+  </table>
+  <p class="fonte">Fonte: Anexos 1, 2, 10 e 13 da Lei n° 4320/64.</p>
+
+  <!-- ---------- QUADRO 22 ---------- -->
+  <p class="quadro-titulo">Quadro 22 – Transferências de Recursos ao FUNDEB</p>
+  <p class="quadro-desc">Este quadro apresenta o saldo resultante das transferências de recursos ao FUNDEB destinadas ao Município de {{municipio_uf}}.</p>
+  <table class="quadro">
+    <thead><tr><th>DESCRIÇÃO</th><th class="valor">TCE/MA</th></tr></thead>
+    <tbody>
+      <tr class="total"><td>RECEITAS RECEBIDAS DO FUNDEB (E)=(F)+(G)+(H)+(I)+(J)</td><td class="valor">R$ {{q22_receitas_recebidas}}</td></tr>
+      <tr><td>Transferências de recursos do FUNDEB (F)</td><td class="valor">R$ {{q22_transferencias}}</td></tr>
+      <tr><td>FUNDEB - Complementação da União - VAAF (G)</td><td class="valor">R$ {{q22_vaaf}}</td></tr>
+      <tr><td>FUNDEB - Complementação da União - VAAT (H)</td><td class="valor">R$ {{q22_vaat}}</td></tr>
+      <tr><td>FUNDEB - Complementação da União - VAAR (I)</td><td class="valor">R$ {{q22_vaar}}</td></tr>
+      <tr><td>Receita de aplicação financeira dos recursos do FUNDEB (J)</td><td class="valor">R$ {{q22_aplicacao_financeira}}</td></tr>
+      <tr class="total"><td>TOTAL DESTINADO AO FUNDEB PELO ENTE APURADO (C)</td><td class="valor">R$ {{q22_total_destinado}}</td></tr>
+      <tr class="total"><td>RESULTADO LÍQUIDO DAS TRANSFERÊNCIAS DO FUNDEB (K)=(F-C)</td><td class="valor">R$ {{q22_resultado_liquido}}</td></tr>
+    </tbody>
+  </table>
+  <p class="fonte">Fonte: Anexos 1, 2, 10 e 13 da Lei n° 4320/64 e Anexos 12 e 13 da Lei nº 4.320/1964; e Demonstrativo dos Fluxos de Caixa constante do Anexo I do Módulo 6 da IN nº 52/2017, referente ao FUNDEB.</p>
+
+  <!-- ---------- QUADRO 23 ---------- -->
+  <p class="quadro-titulo">Quadro 23 – Aplicação de 70% do FUNDEB na Remuneração dos Profissionais da Educação</p>
+  <p class="quadro-desc">Este quadro detalha os valores das despesas do FUNDEB aplicados pelo Município de {{municipio}} na remuneração dos profissionais da educação básica.</p>
+  <table class="quadro">
+    <thead><tr><th>DESCRIÇÃO</th><th class="valor">VALOR MÍNIMO EXIGIDO</th><th class="valor">VALOR</th></tr></thead>
+    <tbody>
+      <tr><td>Mínimo de 70% do FUNDEB na Remuneração dos Profissionais da Educação Básica</td><td class="valor">R$ {{q23_minimo_exigido}}</td><td class="valor">R$ {{q23_valor}}</td></tr>
+      <tr><td>(-) Restos a Pagar inscritos no exercício s/ disponibilidade de recursos do FUNDEB 70%</td><td class="valor">-</td><td class="valor">R$ {{q23_ded_rp}}</td></tr>
+      <tr><td>(-) Despesas custeadas com superavit financeiro, do exercício anterior, do FUNDEB 70%</td><td class="valor">-</td><td class="valor">R$ {{q23_ded_superavit}}</td></tr>
+      <tr><td>Valor Aplicado na Remuneração dos Profissionais da Educação Básica</td><td class="valor">-</td><td class="valor">R$ {{q23_valor_aplicado}}</td></tr>
+      <tr><td>Base de cálculo Informada</td><td class="valor">-</td><td class="valor">R$ {{q23_base_calculo}}</td></tr>
+      <tr class="total"><td>%</td><td class="valor">70.00 %</td><td class="valor">{{fundeb_remuneracao_percentual}}</td></tr>
+    </tbody>
+  </table>
+  <p class="fonte">Fonte: Anexos 6, 7, 8, 9, 10 e 13 da Lei nº 4.320/1964; Anexo I do Módulo 1 da Instrução Normativa nº 52/2017; Anexos 12 e 13 da Lei nº 4.320/1964; e Demonstrativo dos Fluxos de Caixa constante do Anexo I do Módulo 6 da IN nº 52/2017, referente ao FUNDEB.</p>
+
+  <!-- ---------- QUADRO 24 (Subfunção · Despesas da Educação) ---------- -->
+  <p class="quadro-titulo">Quadro 24 – Despesas da Educação por Subfunção · Função 12 (Anexo 06)</p>
+  <p class="quadro-desc">Despesas da Função 12 por subfunção, segregadas entre SEMED/MDE e FUNDEB, conforme coluna TOTAL do Anexo 06.</p>
+  <table class="quadro">
+    <tbody>
+      <tr><th colspan="3" class="cab">ANEXO 6 – FUNÇÃO 12 · SEMED / MDE (Secretaria Municipal de Educação)</th></tr>
+      <tr><th class="cab">SUB FUNÇÃO</th><th class="cab">DESCRIÇÃO</th><th class="cab valor">VALOR – TOTAL (R$)</th></tr>
+      <tr><td class="centro">122</td><td>Administração Geral</td><td class="valor">R$ {{semed_122}}</td></tr>
+      <tr><td class="centro">361</td><td>Ensino Fundamental</td><td class="valor">R$ {{semed_361}}</td></tr>
+      <tr><td class="centro">365</td><td>Educação Infantil</td><td class="valor">R$ {{semed_365}}</td></tr>
+      <tr><td class="centro">362</td><td>Ensino Médio</td><td class="valor">R$ {{semed_362}}</td></tr>
+      <tr><td class="centro">367</td><td>Educação Especial</td><td class="valor">R$ {{semed_367}}</td></tr>
+      <tr><td class="centro">306</td><td>Alimentação e Nutrição</td><td class="valor">R$ {{semed_306}}</td></tr>
+      <tr class="total"><td colspan="2">SUBTOTAL SEMED / MDE</td><td class="valor">R$ {{semed_subtotal}}</td></tr>
+
+      <tr><th colspan="3" class="cab">ANEXO 6 – FUNÇÃO 12 · FUNDEB (Fundo de Desenvolvimento da Educação Básica)</th></tr>
+      <tr><th class="cab">SUB FUNÇÃO</th><th class="cab">DESCRIÇÃO</th><th class="cab valor">VALOR – TOTAL (R$)</th></tr>
+      <tr><td class="centro">361</td><td>Ensino Fundamental</td><td class="valor">R$ {{fundeb_361}}</td></tr>
+      <tr><td class="centro">365</td><td>Educação Infantil</td><td class="valor">R$ {{fundeb_365}}</td></tr>
+      <tr><td class="centro">366</td><td>Educação de Jovens e Adultos – EJA</td><td class="valor">R$ {{fundeb_366}}</td></tr>
+      <tr><td class="centro">367</td><td>Educação Especial</td><td class="valor">R$ {{fundeb_367}}</td></tr>
+      <tr class="total"><td colspan="2">SUBTOTAL FUNDEB</td><td class="valor">R$ {{fundeb_subtotal}}</td></tr>
+      <tr class="total"><td colspan="2">TOTAL GERAL – FUNÇÃO 12</td><td class="valor">R$ {{total_geral_funcao_12}}</td></tr>
+    </tbody>
+  </table>
+  <p class="fonte">Fonte: Anexo 06 da Lei nº 4.320/64.</p>
+
+  <!-- ---------- QUADRO 25 (Balanço Geral · Anexo 6 · FUNDEB 70%) ---------- -->
+  <p class="quadro-titulo">Quadro 25 – Balanço Geral · Anexo 6 · FUNDEB 70%</p>
+  <p class="quadro-desc">Aplicação dos recursos do FUNDEB (70%) por código e descrição, conforme a coluna TOTAL do Anexo 06.</p>
+  <table class="quadro">
+    <tbody>
+      <tr><th colspan="3" class="cab">BALANÇO GERAL - ANEXO 6 - FUNDEB 70%</th></tr>
+      <tr><th class="cab">Código</th><th class="cab">Descrição</th><th class="cab valor">Valor (R$)</th></tr>
+      <tr><td class="centro">12.361</td><td>Manutenção e Desenvolvimento do Ensino Fundamental</td><td class="valor">R$ {{valor_FUND_70_MANUT_FUNDAMENTAL}}</td></tr>
+      <tr><td class="centro">12.361</td><td>Remuneração dos Docentes — Ensino Fundamental</td><td class="valor">R$ {{valor_FUND_70_REMUN_DOCENTES_FUNDAMENTAL}}</td></tr>
+      <tr><td class="centro">12.361</td><td>Tempo Integral — Ensino Fundamental</td><td class="valor">R$ {{valor_FUND_70_TEMPO_INTEGRAL_FUNDAMENTAL}}</td></tr>
+      <tr><td class="centro">12.365</td><td>Manutenção e Desenvolvimento da Educação Infantil</td><td class="valor">R$ {{valor_FUND_70_MANUT_INFANTIL}}</td></tr>
+      <tr><td class="centro">12.365</td><td>VAAT 50% — Educação Infantil</td><td class="valor">R$ {{valor_FUND_70_VAAT50_INFANTIL}}</td></tr>
+      <tr><td class="centro">12.365</td><td>Remuneração dos Docentes — Educação Infantil</td><td class="valor">R$ {{valor_FUND_70_REMUN_DOCENTES_INFANTIL}}</td></tr>
+      <tr><td class="centro">12.365</td><td>Tempo Integral — Educação Infantil</td><td class="valor">R$ {{valor_FUND_70_TEMPO_INTEGRAL_INFANTIL}}</td></tr>
+      <tr><td class="centro">12.366</td><td>Educação de Jovens e Adultos (EJA)</td><td class="valor">R$ {{valor_FUND_70_EJA}}</td></tr>
+      <tr><td class="centro">12.367</td><td>Atendimento Educacional Especializado (AEE) / Educação Especial</td><td class="valor">R$ {{valor_FUND_70_AEE_EDUC_ESPECIAL}}</td></tr>
+      <tr class="total"><td colspan="2">TOTAL</td><td class="valor">R$ {{total_fundeb_70}}</td></tr>
+    </tbody>
+  </table>
+  <p class="fonte">Fonte: Anexo 06 da Lei nº 4.320/64.</p>
+
+  <!-- ---------- QUADRO 26 (Profissionais da Educação Básica · VAAT) ---------- -->
+  <p class="quadro-titulo">Quadro 26 – Profissionais da Educação Básica · Art. 212-A, inciso XI e § 3º da Constituição Federal</p>
+  <p class="quadro-desc">Aplicação mínima da Complementação da União ao FUNDEB (VAAT) na Educação Infantil e em Despesas de Capital.</p>
+  <table class="quadro">
+    <tbody>
+      <tr><th colspan="4" class="cab">Profissionais da Educação Básica - Art. 212-A, inciso XI e § 3º - Constituição Federal</th></tr>
+      <tr><th class="cab">DESCRIÇÃO</th><th class="cab valor">VALOR MÍNIMO EXIGIDO</th><th class="cab valor">VALOR APLICADO</th><th class="cab valor">PERCENTUAL %</th></tr>
+      <tr><td>Mínimo de 50% da Complementação da União ao FUNDEB - (VAAT) na Educação Infantil</td><td class="valor">R$ {{minimo_exigido_infantil}}</td><td class="valor">R$ {{valor_aplicado_infantil}}</td><td class="valor">{{percentual_aplicado_infantil}}</td></tr>
+      <tr><td>Mínimo de 15% da Complementação da União ao FUNDEB - (VAAT) em Despesas de Capital</td><td class="valor">R$ {{minimo_exigido_capital}}</td><td class="valor">R$ {{valor_aplicado_capital}}</td><td class="valor">{{percentual_aplicado_capital}}</td></tr>
+    </tbody>
+  </table>
+  <p class="fonte">Fonte: Anexos 6, 7, 8, 9, 10 e 13 da Lei nº 4.320/1964; Anexo I do Módulo 1 da Instrução Normativa nº 52/2017; Anexos 12 e 13 da Lei nº 4.320/1964; e Demonstrativo dos Fluxos de Caixa constante do Anexo I do Módulo 6 da IN nº 52/2017, referente ao FUNDEB.</p>
+
+</div>
+
+<!--
+  Colore automaticamente os selos .auto-status conforme o texto preenchido pelo seu sistema.
+  Verde = conformidade/positivo · Amarelo = atenção · Vermelho = desconformidade/negativo.
+  Também pode aplicar manualmente as classes: badge-ok / badge-alerta / badge-erro
+  (selo) ou st-ok / st-alerta / st-erro (texto inline) em qualquer ponto do relatório.
+  Observação: se o seu conversor para PDF não executar JavaScript, aplique as classes
+  diretamente no HTML (o seu sistema já sabe o valor de cada situação).
+-->
+<script>
+  (function () {
+    var regras = [
+      { re: /(diverg|desconformidade|deficit|d[eé]ficit|insufici|inexistente|fora do prazo|reprovad|irregular|n[aã]o cumpr|descumpr|n[aã]o atend)/i, cls: 'badge-erro' },
+      { re: /(excesso|parcial|intermedi|alerta|aten[cç][aã]o|prudencial)/i, cls: 'badge-alerta' },
+      { re: /(conformidade|superavit|suficiente|exatid|dentro do prazo|diamante|ouro|regular|aprovad|cumpr|atend)/i, cls: 'badge-ok' }
+    ];
+    document.querySelectorAll('.auto-status').forEach(function (el) {
+      var t = (el.textContent || '').trim();
+      if (!t || t.indexOf('{{') === 0) return;   // ainda é placeholder, não colore
+      for (var i = 0; i < regras.length; i++) {
+        if (regras[i].re.test(t)) { el.classList.add(regras[i].cls); return; }
+      }
+    });
+  })();
+</script>

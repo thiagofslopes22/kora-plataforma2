@@ -1,0 +1,74 @@
+DEMONSTRACAO DOS FLUXOS DE CAIXA - PREVIEW DE EXTRACAO
+Municipio: PINHEIRO | Exercicio: 2025
+======================================================================
+
+APURACAO GERAL
+  Caixa Inicial (atual)                7.566.465,55
+  Geracao Liquida (atual)             10.236.736,07
+  Caixa Final (atual)                 17.803.201,62
+
+FLUXO OPERACIONAL (I)
+  ingressos                                    472.074.746,83
+  receitas_derivadas                            39.794.706,34
+  transferencias_recebidas                     349.761.365,57
+  outros_ingressos                              82.518.674,92
+  desembolsos                                  430.776.027,52
+  pessoal_despesas                             347.639.487,52
+  juros_encargos                                         0,00
+  transferencias_concedidas                      5.691.951,17
+  outros_desembolsos                            77.444.588,83
+  fluxo_liquido                                 41.298.719,31
+
+FLUXO DE INVESTIMENTO (II)
+  ingressos                                              0,00
+  desembolsos                                   26.348.488,46
+  fluxo_liquido                                -26.348.488,46
+
+FLUXO DE FINANCIAMENTO (III)
+  ingressos                                              0,00
+  desembolsos                                    4.713.494,78
+  fluxo_liquido                                 -4.713.494,78
+
+ITENS DETALHADOS - OPERACIONAL
+  INGRESSOS                                                  472.074.746,83
+  RECEITAS DERIVADAS E ORIGINÁRIAS                            39.794.706,34
+  Impostos, Taxas e Contribuições de Melhoria                 24.533.893,68
+  Receita de Contribuições                                    11.368.359,02
+  Receita Patrimonial                                             63.032,79
+  Receita Agropecuária                                                 0,00
+  Receita Industrial                                                   0,00
+  Receita de Serviços                                                  0,00
+  Outras Receitas Originárias                                     79.264,57
+  Remuneração das Disponibilidades                             3.750.156,28
+  TRANSFERÊNCIAS RECEBIDAS                                   349.761.365,57
+  OUTROS INGRESSOS OPERACIONAIS                               82.518.674,92
+  Ingressos Extraorçamentários                                40.625.487,38
+  Transferências Financeiras Recebidas                        41.893.187,54
+  DESEMBOLSOS (Incluidos pagto de RP)                        430.776.027,52
+  PESSOAL E DEMAIS DESPESAS                                  347.639.487,52
+  JUROS E ENCARGOS DA DÍVIDA                                           0,00
+  TRANSFERÊNCIAS CONCEDIDAS                                    5.691.951,17
+  OUTROS DESEMBOLSOS OPERACIONAIS                             77.444.588,83
+  Desembolsos Extra-Orçamentários                             35.551.401,29
+  Transferências Financeiras Concedidas                       41.893.187,54
+  FLUXO DE CAIXA LÍQUIDO DAS ATIVIDADES OPERACIONAIS          41.298.719,31
+
+ITENS DETALHADOS - INVESTIMENTO
+  INGRESSOS                                                            0,00
+  ALIENAÇÃO DE BENS                                                    0,00
+  AMORTIZAÇÃO DE EMPRÉSTIMOS E FINANCIAMENTOS CONCED                   0,00
+  OUTROS INGRESSOS DE INVESTIMENTOS                                    0,00
+  DESEMBOLSOS                                                 26.348.488,46
+  AQUISIÇÃO DE ATIVO NÃO CIRCULANTE                           23.535.786,88
+  CONCESSÃO DE EMPRÉSTIMOS E FINANCIAMENTOS                            0,00
+  OUTROS DESEMBOLSOS DE INVESTIMENTOS                          2.812.701,58
+  FLUXO DE CAIXA LÍQUIDO DAS ATIVIDADES DE INVESTIME         -26.348.488,46
+
+ITENS DETALHADOS - FINANCIAMENTO
+  INGRESSOS                                                            0,00
+  OPERAÇÕES DE CRÉDITO                                                 0,00
+  INTEGRALIZAÇÃO DO CAPITAL SOCIAL DE EMPRESAS DEPEN                   0,00
+  DESEMBOLSOS                                                  4.713.494,78
+  AMORTIZAÇÃO/REFINANCIAMENTO DA DÍVIDA                                0,00
+  OUTROS DESEMBOLSOS DE FINANCIAMENTOS                         4.713.494,78
+  FLUXO DE CAIXA LÍQUIDO DAS ATIVIDADES DE FINANCIAM          -4.713.494,78

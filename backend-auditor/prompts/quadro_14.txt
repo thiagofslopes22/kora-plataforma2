@@ -1,0 +1,151 @@
+# PROMPT OTIMIZADO - JSON DISPONIBILIDADE DE CAIXA LÍQUIDA
+
+Extraia dos Anexos 12, 13, 14 e Fluxo de Caixa e gere JSON:
+
+json {   "municipio": "[extrair]",   "exercicio": "[ano]",   "analise_disponibilidade_caixa": {     "descricao": [       {         "item": "Disponibilidades de Caixa Bruta (A)",         "valor": 0.00       },       {         "item": "(-) Depósitos/ Consignações (B)",         "valor": 0.00       },       {         "item": "(-) Outras Obrigações (C)",         "valor": 0.00       },       {         "item": "DISPONIBILIDADE DE CAIXA LÍQUIDA (D)=(A)-(B)-(C)",         "valor": 0.00       },       {         "item": "(-)Restos a pagar (exercícios anteriores) (E)",         "valor": 0.00       },       {         "item": "(-)Restos a pagar PROCESSADOS (inscritos no exercício) (F)",         "valor": 0.00       },       {         "item": "(-) Restos a pagar NÃO PROCESSADOS (inscritos no exercício) (G)",         "valor": 0.00       },       {         "item": "TOTAL RESTO A PAGAR NÃO PAGO (H)=(E)+(F)+(G)",         "valor": 0.00       },       {         "item": "(+)Restos a pagar (pago) (I)",         "valor": 0.00       },       {         "item": "(+)Restos a pagar PROCESSADOS/Não PROCESSADOS (Cancelados) (J)",         "valor": 0.00       },       {         "item": "(+)Restos a pagar PROCESSADOS/ Não PROCESSADOS (Baixados) (K)",         "valor": 0.00       },       {         "item": "TOTAL RESTO A PAGAR (L)=(H)-(I)-(J)-(K)",         "valor": 0.00       },       {         "item": "SALDO (M)=(D)-(L)",         "valor": 0.00       }     ],     "situacao": ""   } } 
+
+---
+
+## EXTRAÇÃO POR FONTE:
+
+### A) DISPONIBILIDADES DE CAIXA BRUTA:
+
+| FONTE | LOCALIZAÇÃO | OPERAÇÃO |
+|-------|-------------|----------|
+| Anexo 14 | Ativo Circulante — "CAIXA E EQUIVALENTES DE CAIXA" | extrair total |
+| Alternativa | Fluxo de Caixa — "(=) CAIXA E EQUIVALENTE DE CAIXA FINAL" | extrair |
+
+Prioridade: usar Anexo 14.
+
+---
+
+### B) DEPÓSITOS / CONSIGNAÇÕES:
+
+| FONTE | LOCALIZAÇÃO | OPERAÇÃO |
+|-------|-------------|----------|
+| Anexo 14 | Passivo Circulante — "VALORES RESTITUÍVEIS" | extrair total |
+
+Somar subcategorias se necessário: CONSIGNAÇÕES + DEPÓSITOS JUDICIAIS + outros valores restituíveis.
+
+---
+
+### C) OUTRAS OBRIGAÇÕES:
+
+| FONTE | LOCALIZAÇÃO | OPERAÇÃO |
+|-------|-------------|----------|
+| Anexo 14 | Passivo Circulante — "OUTRAS OBRIGAÇÕES A CURTO PRAZO" | extrair total |
+
+CRÍTICO: Usar exclusivamente a linha "OUTRAS OBRIGAÇÕES A CURTO PRAZO".
+NÃO incluir: Obrigações trabalhistas, fornecedores, valores restituíveis ou qualquer outro grupo do passivo circulante.
+
+---
+
+### D) DISPONIBILIDADE DE CAIXA LÍQUIDA:
+
+javascript disponibilidade_caixa_liquida = caixa_bruto - depositos_consignacoes - outras_obrigacoes_cp 
+
+---
+
+### E) RESTOS A PAGAR (EXERCÍCIOS ANTERIORES):
+
+| FONTE | LOCALIZAÇÃO | OPERAÇÃO |
+|-------|-------------|----------|
+| Anexo 12 | RP Processados — coluna "(a) EM EXERCÍCIOS ANTERIORES" | extrair |
+| Anexo 12 | RP Não Processados — coluna "(a) EM EXERCÍCIOS ANTERIORES" | extrair |
+| | Somar ambos | total |
+
+---
+
+### F) RESTOS A PAGAR PROCESSADOS (INSCRITOS NO EXERCÍCIO):
+
+| FONTE | LOCALIZAÇÃO | OPERAÇÃO |
+|-------|-------------|----------|
+| Anexo 12 | RP Processados — coluna "(b) EM 31 DE DEZEMBRO DO EXERCÍCIO" — linha TOTAL | extrair |
+
+---
+
+### G) RESTOS A PAGAR NÃO PROCESSADOS (INSCRITOS NO EXERCÍCIO):
+
+| FONTE | LOCALIZAÇÃO | OPERAÇÃO |
+|-------|-------------|----------|
+| Anexo 12 | RP Não Processados — coluna "(b) EM 31 DE DEZEMBRO DO EXERCÍCIO" — linha TOTAL | extrair |
+
+---
+
+### H) TOTAL RESTO A PAGAR NÃO PAGO:
+
+javascript total_rp_nao_pago = rp_exercicios_anteriores + rp_processados_inscritos + rp_nao_processados_inscritos 
+
+---
+
+### I) RESTOS A PAGAR PAGOS:
+
+| FONTE | LOCALIZAÇÃO | OPERAÇÃO |
+|-------|-------------|----------|
+| Anexo 12 | RP Processados — coluna "PAGOS" | extrair |
+| Anexo 12 | RP Não Processados — coluna "PAGOS" | extrair |
+| | Somar ambos | total |
+
+---
+
+### J) RESTOS A PAGAR CANCELADOS:
+
+| FONTE | LOCALIZAÇÃO | OPERAÇÃO |
+|-------|-------------|----------|
+| Anexo 12 | RP Processados — coluna "CANCELADOS" | extrair |
+| Anexo 12 | RP Não Processados — coluna "CANCELADOS" | extrair |
+| | Somar ambos | total |
+
+---
+
+### K) RESTOS A PAGAR BAIXADOS:
+
+Usar 0.00 se não houver coluna específica no documento.
+
+---
+
+### L) TOTAL RESTO A PAGAR (SALDO):
+
+javascript total_rp_saldo = total_rp_nao_pago - rp_pagos - rp_cancelados - rp_baixados 
+
+Ou extrair diretamente da coluna "SALDO" do Anexo 12 (RP Processados + RP Não Processados).
+
+---
+
+### M) SALDO FINAL:
+
+javascript saldo_final = disponibilidade_caixa_liquida - total_rp_saldo 
+
+---
+
+## CÁLCULO DA SITUAÇÃO:
+
+javascript if (saldo_final > 0) {   situacao = "Suficiente" } else if (saldo_final < 0) {   situacao = "Insuficiente" } else {   situacao = "Equilibrado" } 
+
+---
+
+## REGRAS:
+
+1. Valores: decimal 2 casas
+2. (C) = somente "OUTRAS OBRIGAÇÕES A CURTO PRAZO" — nunca incluir fornecedores, pessoal ou demais grupos
+3. Priorizar Anexo 14 para caixa bruto (A), depósitos (B) e outras obrigações (C)
+4. Priorizar Anexo 12 para todos os restos a pagar (E, F, G, I, J)
+5. Se não encontrado: usar 0.00
+6. Item: texto exato conforme especificado
+7. Situação: primeira letra maiúscula
+
+---
+
+## MAPEAMENTO SIMPLIFICADO:
+
+ANEXO 14:   Ativo Circulante → Caixa e Equivalentes                  = (A)   Passivo Circulante → Valores Restituíveis                 = (B)   Passivo Circulante → Outras Obrigações a Curto Prazo      = (C)  ← SOMENTE ESTA LINHA  ANEXO 12:   RP Processados   → col. (a) anteriores + col. (b) inscritos  = parte de (E) + (F)   RP Não Processados → col. (a) anteriores + col. (b) inscritos = parte de (E) + (G)   RP Processados   → col. pagos + cancelados                   = parte de (I) + (J)   RP Não Processados → col. pagos + cancelados                 = parte de (I) + (J)   RP → coluna SALDO (ambas tabelas somadas)                    = (L)  CÁLCULOS:   (D) = (A) - (B) - (C)   (H) = (E) + (F) + (G)   (L) = (H) - (I) - (J) - (K)   (M) = (D) - (L)
+
+---
+
+## VALIDAÇÕES:
+
+javascript ✓ disponibilidades_bruta > 0 ✓ disponibilidade_liquida = bruta - depositos - outras_obrigacoes_cp ✓ total_rp_nao_pago = E + F + G ✓ total_rp_saldo = H - I - J - K ✓ saldo_final = D - L ✓ situacao = "Suficiente" OU "Insuficiente" OU "Equilibrado" ✓ todos valores com 2 casas decimais ✓ (C) NÃO inclui fornecedores nem obrigações trabalhistas 
+
+---
+
+OUTPUT: disponibilidade_caixa_liquida_[municipio]_[ano].json (UTF-8, indent 2)

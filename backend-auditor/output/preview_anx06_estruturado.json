@@ -1,0 +1,1407 @@
+{
+  "municipio": "PINHEIRO",
+  "exercicio": "2025",
+  "periodo": "01/01/2025 ATÉ 31/12/2025",
+  "unidades": [
+    {
+      "orgao_codigo": "01",
+      "orgao_nome": "LEGISLATIVO",
+      "unidade_codigo": "01",
+      "unidade_nome": "CÂMARA MUNICIPAL",
+      "total_projetos": 0.0,
+      "total_atividades": 0.0,
+      "total_geral": 7539961.44,
+      "acoes": [
+        {
+          "codigo": "01.031.0010.2001.0000",
+          "descricao": "Funcionamento do Corpo Legislativo da Câmara Munic",
+          "projetos": 0.0,
+          "atividades": 0.0,
+          "total": 2600953.63
+        },
+        {
+          "codigo": "01.031.0010.2002.0000",
+          "descricao": "MANUT. DAS ATIVIDADES DO LEGISLATIVO",
+          "projetos": 0.0,
+          "atividades": 0.0,
+          "total": 4702343.81
+        },
+        {
+          "codigo": "01.031.0010.2341.0000",
+          "descricao": "Aquisição de equipamentos e material permanente",
+          "projetos": 0.0,
+          "atividades": 0.0,
+          "total": 236664.0
+        }
+      ]
+    },
+    {
+      "orgao_codigo": "02",
+      "orgao_nome": "EXECUTIVO",
+      "unidade_codigo": "01",
+      "unidade_nome": "GABINETE DO PREFEITO",
+      "total_projetos": 0.0,
+      "total_atividades": 0.0,
+      "total_geral": 2523678.95,
+      "acoes": [
+        {
+          "codigo": "04.122.0305.2006.0000",
+          "descricao": "MANUT.DAS ATIV.DA CONTROLADORIA GERAL DO",
+          "projetos": 0.0,
+          "atividades": 0.0,
+          "total": 1250559.6
+        },
+        {
+          "codigo": "04.122.0305.2378.0000",
+          "descricao": "MANUT. E FUNC. DA COMISSÃO CENTRAL DE LICI",
+          "projetos": 0.0,
+          "atividades": 0.0,
+          "total": 220246.67
+        },
+        {
+          "codigo": "04.122.0305.2477.0000",
+          "descricao": "MANUTENÇÃO E FUNCIONAMENTO DA ASSESSO",
+          "projetos": 0.0,
+          "atividades": 0.0,
+          "total": 0.0
+        },
+        {
+          "codigo": "04.122.0305.2721.0000",
+          "descricao": "MANUTENÇÃO E FUNCIONAMENTO DO GABINETE",
+          "projetos": 0.0,
+          "atividades": 0.0,
+          "total": 1052872.68
+        },
+        {
+          "codigo": "06.182.0428.2751.0000",
+          "descricao": "MANUT.DA COORDENADORIA MUNICIPAL DA DEF",
+          "projetos": 0.0,
+          "atividades": 0.0,
+          "total": 0.0
+        }
+      ]
+    },
+    {
+      "orgao_codigo": "02",
+      "orgao_nome": "EXECUTIVO",
+      "unidade_codigo": "02",
+      "unidade_nome": "PROCURADORIA GERAL DO MUNICIPIO",
+      "total_projetos": 0.0,
+      "total_atividades": 0.0,
+      "total_geral": 1462221.66,
+      "acoes": [
+        {
+          "codigo": "04.122.0305.2004.0000",
+          "descricao": "MANUT.DAS ATIV. DA PROCURADORIA GERAL DO",
+          "projetos": 0.0,
+          "atividades": 0.0,
+          "total": 1462221.66
+        },
+        {
+          "codigo": "04.125.0305.1031.0000",
+          "descricao": "PROMOVER A INSCRIÇÃO DA DIVIDA ATIVA DO M",
+          "projetos": 0.0,
+          "atividades": 0.0,
+          "total": 0.0
+        }
+      ]
+    },
+    {
+      "orgao_codigo": "02",
+      "orgao_nome": "EXECUTIVO",
+      "unidade_codigo": "03",
+      "unidade_nome": "SECRETARIA MUNICIPAL DE GOVERNO",
+      "total_projetos": 0.0,
+      "total_atividades": 0.0,
+      "total_geral": 531391.56,
+      "acoes": [
+        {
+          "codigo": "04.122.0305.2007.0000",
+          "descricao": "MANUT. DAS ATIV. DA SEC. MUN. DE GOVERNO",
+          "projetos": 0.0,
+          "atividades": 0.0,
+          "total": 531391.56
+        },
+        {
+          "codigo": "04.131.0305.2483.0000",
+          "descricao": "MANUTENÇÃO E FUNCIONAMENTO DA TRANSPA",
+          "projetos": 0.0,
+          "atividades": 0.0,
+          "total": 0.0
+        }
+      ]
+    },
+    {
+      "orgao_codigo": "02",
+      "orgao_nome": "EXECUTIVO",
+      "unidade_codigo": "04",
+      "unidade_nome": "SEC. MUN. DE ADMINIST.PLANEJAMENTO E FINANÇAS",
+      "total_projetos": 0.0,
+      "total_atividades": 0.0,
+      "total_geral": 17199122.86,
+      "acoes": [
+        {
+          "codigo": "04.122.0353.2288.0000",
+          "descricao": "MANUTENÇÃO DA CONTADORIA GERAL DO MUNI",
+          "projetos": 0.0,
+          "atividades": 0.0,
+          "total": 281900.0
+        },
+        {
+          "codigo": "04.122.0355.2377.0000",
+          "descricao": "MANUTENÇÃO DO PROTOCOLO",
+          "projetos": 0.0,
+          "atividades": 0.0,
+          "total": 0.0
+        },
+        {
+          "codigo": "04.122.0355.2431.0000",
+          "descricao": "MANUTENÇÃO DA SECRETARIA MUNICIPAL DE AD",
+          "projetos": 0.0,
+          "atividades": 0.0,
+          "total": 12203728.08
+        },
+        {
+          "codigo": "04.122.0355.2478.0000",
+          "descricao": "MANUTENÇÃO E FUNCIONAMENTO DA CENTRAL",
+          "projetos": 0.0,
+          "atividades": 0.0,
+          "total": 0.0
+        },
+        {
+          "codigo": "04.129.0355.2038.0000",
+          "descricao": "IMPLANTAR O CADASTRO POSITIVO MUNICIPAL",
+          "projetos": 0.0,
+          "atividades": 0.0,
+          "total": 0.0
+        },
+        {
+          "codigo": "28.843.0400.2040.0000",
+          "descricao": "MANTER PAGAMENTO DE ENCARGOS DA DIVIDA",
+          "projetos": 0.0,
+          "atividades": 0.0,
+          "total": 4713494.78
+        }
+      ]
+    },
+    {
+      "orgao_codigo": "02",
+      "orgao_nome": "EXECUTIVO",
+      "unidade_codigo": "05",
+      "unidade_nome": "SECRETARIA MUNICIPAL DE INFRAESTRUTURA",
+      "total_projetos": 3853297.45,
+      "total_atividades": 29789457.42,
+      "total_geral": 33642754.87,
+      "acoes": [
+        {
+          "codigo": "15.122.0305.2416.0000",
+          "descricao": "MANUTENÇÃO E FUNCIONAMENTO DA SEC. DE IN",
+          "projetos": 0.0,
+          "atividades": 0.0,
+          "total": 14041849.79
+        },
+        {
+          "codigo": "15.451.0348.1670.0000",
+          "descricao": "RECAPEAMENTO ASFALTICO DE VIAS URBANAS",
+          "projetos": 0.0,
+          "atividades": 0.0,
+          "total": 1178065.45
+        },
+        {
+          "codigo": "15.451.0348.1789.0000",
+          "descricao": "PAVIMENTAÇÃO ASFALTICA DE VIAS URBANAS",
+          "projetos": 0.0,
+          "atividades": 0.0,
+          "total": 1283704.01
+        },
+        {
+          "codigo": "15.451.0348.2464.0000",
+          "descricao": "MANUTENÇÃO E CONSERVAÇÃO DE VIAS URBAN",
+          "projetos": 0.0,
+          "atividades": 0.0,
+          "total": 3687578.44
+        },
+        {
+          "codigo": "15.451.0348.2481.0000",
+          "descricao": "MANUTENÇÃO E FUNCIONAMENTO DA LIMPEZA P",
+          "projetos": 0.0,
+          "atividades": 0.0,
+          "total": 5931877.77
+        },
+        {
+          "codigo": "15.451.0350.2240.0000",
+          "descricao": "MANUT. DA REDE DE ILUMINAÇÃO PÚBLICA DO M",
+          "projetos": 0.0,
+          "atividades": 0.0,
+          "total": 4783711.15
+        },
+        {
+          "codigo": "15.782.0348.1796.0000",
+          "descricao": "CONSTRUÇÃO, RECUPERAÇÃO E AMPLIAÇÃO DE",
+          "projetos": 0.0,
+          "atividades": 0.0,
+          "total": 424696.57
+        },
+        {
+          "codigo": "15.782.0348.1797.0000",
+          "descricao": "CONSTRUÇÃO, RECUPERAÇÃO DE PONTES",
+          "projetos": 0.0,
+          "atividades": 0.0,
+          "total": 931992.49
+        },
+        {
+          "codigo": "15.782.0348.2278.0000",
+          "descricao": "MANUTENÇÃO E CONSERVAÇÃO DE PONTES",
+          "projetos": 0.0,
+          "atividades": 0.0,
+          "total": 513945.32
+        },
+        {
+          "codigo": "15.782.0348.2297.0000",
+          "descricao": "MANUTENÇÃO E CONSERVAÇÃO DE ESTRADAS V",
+          "projetos": 0.0,
+          "atividades": 0.0,
+          "total": 830494.95
+        },
+        {
+          "codigo": "17.512.0348.1130.0000",
+          "descricao": "PERF. DE POÇOS ARTESIANOS NOS POVOADOS",
+          "projetos": 0.0,
+          "atividades": 0.0,
+          "total": 34838.93
+        },
+        {
+          "codigo": "25.752.0348.1813.0000",
+          "descricao": "IMPLANTAÇÃO DE SISTEMA DE ENERGIA SOLAR",
+          "projetos": 0.0,
+          "atividades": 0.0,
+          "total": 0.0
+        }
+      ]
+    },
+    {
+      "orgao_codigo": "02",
+      "orgao_nome": "EXECUTIVO",
+      "unidade_codigo": "06",
+      "unidade_nome": "SECRETARIA MUNICIPALDE AGRICULTURA E ABASTECIMENTO",
+      "total_projetos": 0.0,
+      "total_atividades": 0.0,
+      "total_geral": 784709.27,
+      "acoes": [
+        {
+          "codigo": "20.122.0305.2104.0000",
+          "descricao": "MANUT. DA SECRETARIA DE AGRICULTURA E AB",
+          "projetos": 0.0,
+          "atividades": 0.0,
+          "total": 784709.27
+        }
+      ]
+    },
+    {
+      "orgao_codigo": "02",
+      "orgao_nome": "EXECUTIVO",
+      "unidade_codigo": "07",
+      "unidade_nome": "SECRETARIA MUNICIPAL DE SEGURANÇA",
+      "total_projetos": 0.0,
+      "total_atividades": 0.0,
+      "total_geral": 5933008.35,
+      "acoes": [
+        {
+          "codigo": "06.122.0408.2339.0000",
+          "descricao": "MANUTENÇÃO E FUNCIONAMENTO DA SEC.DE SE",
+          "projetos": 0.0,
+          "atividades": 0.0,
+          "total": 5460082.61
+        },
+        {
+          "codigo": "06.122.0408.2436.0000",
+          "descricao": "MANUTENÇÃO DAS POLITICIAS DE TRANSITO E M",
+          "projetos": 0.0,
+          "atividades": 0.0,
+          "total": 13207.68
+        },
+        {
+          "codigo": "06.122.0408.2722.0000",
+          "descricao": "SISTEMA DE MONITORAMENTO POR CAMERAS",
+          "projetos": 0.0,
+          "atividades": 0.0,
+          "total": 0.0
+        },
+        {
+          "codigo": "06.181.0408.2168.0000",
+          "descricao": "MANUTENÇÃO E FUNCIONAMENTO DA GUARDA M",
+          "projetos": 0.0,
+          "atividades": 0.0,
+          "total": 459718.06
+        },
+        {
+          "codigo": "26.181.0408.2291.0000",
+          "descricao": "MANUTENÇÃO E FUNCIONAMENTO DA GUARDA D",
+          "projetos": 0.0,
+          "atividades": 0.0,
+          "total": 0.0
+        }
+      ]
+    },
+    {
+      "orgao_codigo": "02",
+      "orgao_nome": "EXECUTIVO",
+      "unidade_codigo": "08",
+      "unidade_nome": "SECRETARIA MUNICIPAL DE ESPORTE E LAZER",
+      "total_projetos": 143520.73,
+      "total_atividades": 825030.61,
+      "total_geral": 968551.34,
+      "acoes": [
+        {
+          "codigo": "27.812.0340.1271.0000",
+          "descricao": "CONSTRUÇÃO E AMPLIAÇÃO DE ESPAÇOS ESPO",
+          "projetos": 0.0,
+          "atividades": 0.0,
+          "total": 143520.73
+        },
+        {
+          "codigo": "27.812.0340.2247.0000",
+          "descricao": "MANUT. E REFORMA DOS ESPAÇOS DE DESPORT",
+          "projetos": 0.0,
+          "atividades": 0.0,
+          "total": 150747.7
+        },
+        {
+          "codigo": "27.812.0340.2387.0000",
+          "descricao": "MANUTENÇÃO DA SECRETARIA MUNICIPAL DE ES",
+          "projetos": 0.0,
+          "atividades": 0.0,
+          "total": 674282.91
+        }
+      ]
+    },
+    {
+      "orgao_codigo": "02",
+      "orgao_nome": "EXECUTIVO",
+      "unidade_codigo": "09",
+      "unidade_nome": "SEC. MUN. DE ASSIST. E DESENVOLVIMENTO SOCIAL",
+      "total_projetos": 0.0,
+      "total_atividades": 0.0,
+      "total_geral": 247453.46,
+      "acoes": [
+        {
+          "codigo": "08.122.0342.2430.0000",
+          "descricao": "MANUTENÇÃO DA SEC.MUNICIPAL DE ASSISTEN",
+          "projetos": 0.0,
+          "atividades": 0.0,
+          "total": 0.0
+        },
+        {
+          "codigo": "08.243.0423.2734.0000",
+          "descricao": "MANUTENÇÃO DO CONSELHO TUTELAR",
+          "projetos": 0.0,
+          "atividades": 0.0,
+          "total": 247453.46
+        }
+      ]
+    },
+    {
+      "orgao_codigo": "02",
+      "orgao_nome": "EXECUTIVO",
+      "unidade_codigo": "10",
+      "unidade_nome": "SECRETARIA MUNICIPAL DE SAÚDE",
+      "total_projetos": 0.0,
+      "total_atividades": 0.0,
+      "total_geral": 297865.46,
+      "acoes": [
+        {
+          "codigo": "10.122.0315.2414.0000",
+          "descricao": "Manutenção, conservação e reforma da Sede da Secr",
+          "projetos": 0.0,
+          "atividades": 0.0,
+          "total": 5400.0
+        },
+        {
+          "codigo": "10.122.0315.2433.0000",
+          "descricao": "Manutenção das atividades da Secretaria Municipal de",
+          "projetos": 0.0,
+          "atividades": 0.0,
+          "total": 292465.46
+        }
+      ]
+    },
+    {
+      "orgao_codigo": "02",
+      "orgao_nome": "EXECUTIVO",
+      "unidade_codigo": "11",
+      "unidade_nome": "SECRETARIA MUNICIPAL DE MEIO AMBIENTE",
+      "total_projetos": 0.0,
+      "total_atividades": 0.0,
+      "total_geral": 641478.2,
+      "acoes": [
+        {
+          "codigo": "18.541.0325.1808.0000",
+          "descricao": "PRESERVAÇÃO E DESENV.AMBIENTAL SUSTENT",
+          "projetos": 0.0,
+          "atividades": 0.0,
+          "total": 0.0
+        },
+        {
+          "codigo": "18.541.0325.2010.0000",
+          "descricao": "Implementação do Programa Campos Livres",
+          "projetos": 0.0,
+          "atividades": 0.0,
+          "total": 0.0
+        },
+        {
+          "codigo": "18.541.0325.2472.0000",
+          "descricao": "MANUTENÇÃO E FUNC.DA SECRETARIA MUN.DE",
+          "projetos": 0.0,
+          "atividades": 0.0,
+          "total": 641478.2
+        }
+      ]
+    },
+    {
+      "orgao_codigo": "02",
+      "orgao_nome": "EXECUTIVO",
+      "unidade_codigo": "12",
+      "unidade_nome": "SECRETARIA MUNICIPAL DE EDUCAÇÃO",
+      "total_projetos": 305594.7,
+      "total_atividades": 26004797.72,
+      "total_geral": 26310392.42,
+      "acoes": [
+        {
+          "codigo": "12.122.0414.2473.0000",
+          "descricao": "MANUTENÇÃO E FUNC.DA SECRETARIA MUNICIP",
+          "projetos": 0.0,
+          "atividades": 0.0,
+          "total": 40236.89
+        },
+        {
+          "codigo": "12.122.0415.2473.0000",
+          "descricao": "MANUTENÇÃO E FUNC.DA SECRETARIA MUNICIP",
+          "projetos": 0.0,
+          "atividades": 0.0,
+          "total": 18560153.24
+        },
+        {
+          "codigo": "12.361.0311.2321.0000",
+          "descricao": "MANUTENÇÃO DO PROGRAMA DE APOIO AO TRA",
+          "projetos": 0.0,
+          "atividades": 0.0,
+          "total": 336213.7
+        },
+        {
+          "codigo": "12.361.0311.2424.0000",
+          "descricao": "MANUT. DO PROGRAMA DE ALIMENTAÇÃO ESCOL",
+          "projetos": 0.0,
+          "atividades": 0.0,
+          "total": 7264.0
+        },
+        {
+          "codigo": "12.361.0311.2425.0000",
+          "descricao": "MANUT.DO PROGRAMA DE ALIMENTAÇÃO ESCOL",
+          "projetos": 0.0,
+          "atividades": 0.0,
+          "total": 1368430.15
+        },
+        {
+          "codigo": "12.361.0311.2467.0000",
+          "descricao": "MANUTENÇÃO E DESENVOLVIMENTO DO ENSINO",
+          "projetos": 0.0,
+          "atividades": 0.0,
+          "total": 1391407.27
+        },
+        {
+          "codigo": "12.361.0311.2749.0000",
+          "descricao": "DIREÇÃO E COODENAÇÃO PEDAGÓGICA",
+          "projetos": 0.0,
+          "atividades": 0.0,
+          "total": 18357.3
+        },
+        {
+          "codigo": "12.365.0314.1730.0000",
+          "descricao": "CONSTRUÇÃO, REFORMA,AMPLIAÇÃO E RESTRU",
+          "projetos": 0.0,
+          "atividades": 0.0,
+          "total": 305594.7
+        },
+        {
+          "codigo": "12.365.0314.2321.0000",
+          "descricao": "MANUTENÇÃO DO PROGRAMA DE APOIO AO TRA",
+          "projetos": 0.0,
+          "atividades": 0.0,
+          "total": 443723.67
+        },
+        {
+          "codigo": "12.365.0314.2389.0000",
+          "descricao": "MANUTENÇÃO DO TRANSPORTE DO ESCOLAR",
+          "projetos": 0.0,
+          "atividades": 0.0,
+          "total": 51292.88
+        },
+        {
+          "codigo": "12.365.0314.2420.0000",
+          "descricao": "MANUT. DO PROG. DE ALIMENTAÇÃO ESCOLAR N",
+          "projetos": 0.0,
+          "atividades": 0.0,
+          "total": 400748.32
+        },
+        {
+          "codigo": "12.365.0314.2421.0000",
+          "descricao": "MANUT. DO PROG. DE ALIMENTAÇÃO ESCOLAR N",
+          "projetos": 0.0,
+          "atividades": 0.0,
+          "total": 228435.1
+        },
+        {
+          "codigo": "12.365.0314.2422.0000",
+          "descricao": "MANUT. DO PROG. DE ALIMENTAÇÃO ESCOLAR N",
+          "projetos": 0.0,
+          "atividades": 0.0,
+          "total": 32717.1
+        },
+        {
+          "codigo": "12.365.0314.2424.0000",
+          "descricao": "MANUT. DO PROGRAMA DE ALIMENTAÇÃO ESCOL",
+          "projetos": 0.0,
+          "atividades": 0.0,
+          "total": 35163.86
+        },
+        {
+          "codigo": "12.365.0314.2425.0000",
+          "descricao": "MANUT.DO PROGRAMA DE ALIMENTAÇÃO ESCOL",
+          "projetos": 0.0,
+          "atividades": 0.0,
+          "total": 618035.56
+        },
+        {
+          "codigo": "12.365.0314.2469.0000",
+          "descricao": "MANUTENÇÃO E DESENVOLVIMENTO DO ENSINO",
+          "projetos": 0.0,
+          "atividades": 0.0,
+          "total": 2003586.3
+        },
+        {
+          "codigo": "12.365.0314.2749.0000",
+          "descricao": "DIREÇÃO E COODENAÇÃO PEDAGÓGICA",
+          "projetos": 0.0,
+          "atividades": 0.0,
+          "total": 18957.88
+        },
+        {
+          "codigo": "12.366.0311.2423.0000",
+          "descricao": "MANUT. DO PROGRAMA DE ALIMENTAÇÃO ESCOL",
+          "projetos": 0.0,
+          "atividades": 0.0,
+          "total": 412113.8
+        },
+        {
+          "codigo": "12.367.0311.2425.0000",
+          "descricao": "MANUT.DO PROGRAMA DE ALIMENTAÇÃO ESCOL",
+          "projetos": 0.0,
+          "atividades": 0.0,
+          "total": 37960.7
+        }
+      ]
+    },
+    {
+      "orgao_codigo": "02",
+      "orgao_nome": "EXECUTIVO",
+      "unidade_codigo": "13",
+      "unidade_nome": "SEC. MUN. DE DIREITOS HUMANOS FAMILIA E MULHER",
+      "total_projetos": 0.0,
+      "total_atividades": 0.0,
+      "total_geral": 607520.29,
+      "acoes": [
+        {
+          "codigo": "14.122.0305.2187.0000",
+          "descricao": "APOIO AOS CONSELHOS MUNICIPAIS",
+          "projetos": 0.0,
+          "atividades": 0.0,
+          "total": 0.0
+        },
+        {
+          "codigo": "14.122.0305.2379.0000",
+          "descricao": "MANUT. E FUNCIONAMENTO DA SECRETARIA MU",
+          "projetos": 0.0,
+          "atividades": 0.0,
+          "total": 595520.29
+        },
+        {
+          "codigo": "14.241.0344.2373.0000",
+          "descricao": "Manutenção do Centro do Idoso",
+          "projetos": 0.0,
+          "atividades": 0.0,
+          "total": 0.0
+        },
+        {
+          "codigo": "14.242.0344.2374.0000",
+          "descricao": "IMPLANTAÇÃO E MANUTENÇÃO DOS SERVIÇOS D",
+          "projetos": 0.0,
+          "atividades": 0.0,
+          "total": 0.0
+        },
+        {
+          "codigo": "14.422.0410.2725.0000",
+          "descricao": "Promover e Manter Politicas para a Mulher",
+          "projetos": 0.0,
+          "atividades": 0.0,
+          "total": 12000.0
+        }
+      ]
+    },
+    {
+      "orgao_codigo": "02",
+      "orgao_nome": "EXECUTIVO",
+      "unidade_codigo": "14",
+      "unidade_nome": "SECRETARIA MUNICIPAL DE COMUNICAÇÃO",
+      "total_projetos": 0.0,
+      "total_atividades": 0.0,
+      "total_geral": 479687.32,
+      "acoes": [
+        {
+          "codigo": "24.131.0305.2318.0000",
+          "descricao": "MANUTENÇÃO DA SECRETARIA MUNICIPAL DE C",
+          "projetos": 0.0,
+          "atividades": 0.0,
+          "total": 479687.32
+        }
+      ]
+    },
+    {
+      "orgao_codigo": "02",
+      "orgao_nome": "EXECUTIVO",
+      "unidade_codigo": "15",
+      "unidade_nome": "SECRETARIA MUNICIPAL DE JUVENTUDE",
+      "total_projetos": 0.0,
+      "total_atividades": 0.0,
+      "total_geral": 454980.34,
+      "acoes": [
+        {
+          "codigo": "04.122.0419.2380.0000",
+          "descricao": "MANUTENÇÃO DA SECRETARIA MUNICIPAL DE JU",
+          "projetos": 0.0,
+          "atividades": 0.0,
+          "total": 454980.34
+        },
+        {
+          "codigo": "04.334.0419.1040.0000",
+          "descricao": "QUALIFICAÇÃO DE JOVENS PARA O MERCADO D",
+          "projetos": 0.0,
+          "atividades": 0.0,
+          "total": 0.0
+        }
+      ]
+    },
+    {
+      "orgao_codigo": "02",
+      "orgao_nome": "EXECUTIVO",
+      "unidade_codigo": "16",
+      "unidade_nome": "SECRETARIA MUN. DA INDUSTRIA COMERCIO E ENERGIA",
+      "total_projetos": 0.0,
+      "total_atividades": 0.0,
+      "total_geral": 374583.94,
+      "acoes": [
+        {
+          "codigo": "22.122.0409.2375.0000",
+          "descricao": "MANUT. E FUNC DA SEC MUNICIPAL DA INDUSTRI",
+          "projetos": 0.0,
+          "atividades": 0.0,
+          "total": 374583.94
+        },
+        {
+          "codigo": "23.695.0334.1769.0000",
+          "descricao": "CONST,REFORMA E MANUTENÇÃO DE OBRAS TU",
+          "projetos": 0.0,
+          "atividades": 0.0,
+          "total": 0.0
+        }
+      ]
+    },
+    {
+      "orgao_codigo": "02",
+      "orgao_nome": "EXECUTIVO",
+      "unidade_codigo": "17",
+      "unidade_nome": "SECRETARIA MUNICIPAL DE CULTURA",
+      "total_projetos": 0.0,
+      "total_atividades": 0.0,
+      "total_geral": 7725442.16,
+      "acoes": [
+        {
+          "codigo": "13.392.0305.2426.0000",
+          "descricao": "MANUTENÇÃO DA SECRETARIA MUNICIPAL DE C",
+          "projetos": 0.0,
+          "atividades": 0.0,
+          "total": 5946419.2
+        },
+        {
+          "codigo": "13.392.0333.2730.0000",
+          "descricao": "PROMOÇÃO E REALIZAÇÃO DE EVENTOS E FESTI",
+          "projetos": 0.0,
+          "atividades": 0.0,
+          "total": 1640222.1
+        },
+        {
+          "codigo": "13.392.0333.2731.0000",
+          "descricao": "APOIO E INCENTIVO AS ENTIDADES CULTURAIS E",
+          "projetos": 0.0,
+          "atividades": 0.0,
+          "total": 9400.43
+        },
+        {
+          "codigo": "13.392.0333.2752.0000",
+          "descricao": "Formento as Atividades Culturais / Lei Paulo Gustavo",
+          "projetos": 0.0,
+          "atividades": 0.0,
+          "total": 129400.43
+        }
+      ]
+    },
+    {
+      "orgao_codigo": "02",
+      "orgao_nome": "EXECUTIVO",
+      "unidade_codigo": "18",
+      "unidade_nome": "FUNDO MUNICIPAL DE ASSISTÊNCIA SOCIAL- FMAS",
+      "total_projetos": 0.0,
+      "total_atividades": 0.0,
+      "total_geral": 5290505.59,
+      "acoes": [
+        {
+          "codigo": "08.122.0342.2443.0000",
+          "descricao": "MANUTENÇÃO DO FUNDO MUNICIPAL DE ASSIST",
+          "projetos": 0.0,
+          "atividades": 0.0,
+          "total": 3078285.06
+        },
+        {
+          "codigo": "08.243.0342.2453.0000",
+          "descricao": "Manutenção do Programa Primeira Infância no SUAS",
+          "projetos": 0.0,
+          "atividades": 0.0,
+          "total": 629646.23
+        },
+        {
+          "codigo": "08.244.0342.2305.0000",
+          "descricao": "MANUT. E FUNC. DO CONSELHO MUNIC. DE ASSIS",
+          "projetos": 0.0,
+          "atividades": 0.0,
+          "total": 61424.64
+        },
+        {
+          "codigo": "08.244.0342.2371.0000",
+          "descricao": "MANUTENÇÃO DA GESTÃO DO SUAS",
+          "projetos": 0.0,
+          "atividades": 0.0,
+          "total": 20095.16
+        },
+        {
+          "codigo": "08.244.0343.2311.0000",
+          "descricao": "MANUT. DO CENTRO DE REFERENCIA ESP DE AS",
+          "projetos": 0.0,
+          "atividades": 0.0,
+          "total": 134362.51
+        },
+        {
+          "codigo": "08.244.0343.2367.0000",
+          "descricao": "MANUT. DA UNIDADE DE ACOLHIMENTO INST. CA",
+          "projetos": 0.0,
+          "atividades": 0.0,
+          "total": 235066.26
+        },
+        {
+          "codigo": "08.244.0343.2571.0000",
+          "descricao": "Manutenção do Serviço de Acolhimento em família ac",
+          "projetos": 0.0,
+          "atividades": 0.0,
+          "total": 74659.39
+        },
+        {
+          "codigo": "08.244.0344.2253.0000",
+          "descricao": "MANUT. DO CENTRO DE REF. DE ASSIST. SOCIAL-",
+          "projetos": 0.0,
+          "atividades": 0.0,
+          "total": 491836.1
+        },
+        {
+          "codigo": "08.244.0344.2258.0000",
+          "descricao": "MANUTENÇÃO E FUNC.DOS PROGRAMAS BOLSA",
+          "projetos": 0.0,
+          "atividades": 0.0,
+          "total": 452076.39
+        },
+        {
+          "codigo": "08.244.0344.2370.0000",
+          "descricao": "MANUT. DO SERVIÇO DE CONVIVENCIA E FORTAL",
+          "projetos": 0.0,
+          "atividades": 0.0,
+          "total": 113053.85
+        }
+      ]
+    },
+    {
+      "orgao_codigo": "02",
+      "orgao_nome": "EXECUTIVO",
+      "unidade_codigo": "22",
+      "unidade_nome": "FUNDO DE DESENVOLVIMENTO DA EDUCAÇÃO BÁSICA - FUNDEB",
+      "total_projetos": 15888953.28,
+      "total_atividades": 160172559.44,
+      "total_geral": 176061512.72,
+      "acoes": [
+        {
+          "codigo": "12.361.0311.1224.0000",
+          "descricao": "VAAT 15% CAPITAL AQUISIÇÕES, CONSTRUÇOES",
+          "projetos": 0.0,
+          "atividades": 0.0,
+          "total": 9857632.11
+        },
+        {
+          "codigo": "12.361.0311.2011.0000",
+          "descricao": "FUNDEB 70% - MANUTENÇÃO E DESENVOLVIMEN",
+          "projetos": 0.0,
+          "atividades": 0.0,
+          "total": 7514458.27
+        },
+        {
+          "codigo": "12.361.0311.2389.0000",
+          "descricao": "MANUTENÇÃO DO TRANSPORTE DO ESCOLAR",
+          "projetos": 0.0,
+          "atividades": 0.0,
+          "total": 3509272.97
+        },
+        {
+          "codigo": "12.361.0311.2467.0000",
+          "descricao": "MANUTENÇÃO E DESENVOLVIMENTO DO ENSINO",
+          "projetos": 0.0,
+          "atividades": 0.0,
+          "total": 20218074.87
+        },
+        {
+          "codigo": "12.361.0311.2741.0000",
+          "descricao": "FUNDEB 70% REMUNERAÇÃO DOS DOCENTES E",
+          "projetos": 0.0,
+          "atividades": 0.0,
+          "total": 78355805.1
+        },
+        {
+          "codigo": "12.361.0311.2763.0000",
+          "descricao": "FUNDEB 70% MANUTENÇÃO DAS ATIVIDADES DA",
+          "projetos": 0.0,
+          "atividades": 0.0,
+          "total": 1390048.24
+        },
+        {
+          "codigo": "12.365.0314.1225.0000",
+          "descricao": "VAAT 15% CAPITAL e 50% AQUISIÇÕES, CONSTRU",
+          "projetos": 0.0,
+          "atividades": 0.0,
+          "total": 6031321.17
+        },
+        {
+          "codigo": "12.365.0314.2021.0000",
+          "descricao": "FUNDEB 70% - MANUTENÇÃO E DESENVOLVIMEN",
+          "projetos": 0.0,
+          "atividades": 0.0,
+          "total": 5215769.55
+        },
+        {
+          "codigo": "12.365.0314.2389.0000",
+          "descricao": "MANUTENÇÃO DO TRANSPORTE DO ESCOLAR",
+          "projetos": 0.0,
+          "atividades": 0.0,
+          "total": 2018669.91
+        },
+        {
+          "codigo": "12.365.0314.2467.0000",
+          "descricao": "MANUTENÇÃO E DESENVOLVIMENTO DO ENSINO",
+          "projetos": 0.0,
+          "atividades": 0.0,
+          "total": 3832.36
+        },
+        {
+          "codigo": "12.365.0314.2469.0000",
+          "descricao": "MANUTENÇÃO E DESENVOLVIMENTO DO ENSINO",
+          "projetos": 0.0,
+          "atividades": 0.0,
+          "total": 6629052.23
+        },
+        {
+          "codigo": "12.365.0314.2501.0000",
+          "descricao": "FUNDEB 70% - MANUTENÇÃO DO FUNDEB COM R",
+          "projetos": 0.0,
+          "atividades": 0.0,
+          "total": 15123283.94
+        },
+        {
+          "codigo": "12.365.0314.2502.0000",
+          "descricao": "MANUTENÇÃO DO FUNDEB COM RECURSO DO VA",
+          "projetos": 0.0,
+          "atividades": 0.0,
+          "total": 4235671.57
+        },
+        {
+          "codigo": "12.365.0314.2742.0000",
+          "descricao": "FUNDEB 70% REMUNERAÇÃO DOS DOCENTES E",
+          "projetos": 0.0,
+          "atividades": 0.0,
+          "total": 2266719.0
+        },
+        {
+          "codigo": "12.365.0314.2763.0000",
+          "descricao": "FUNDEB 70% MANUTENÇÃO DAS ATIVIDADES DA",
+          "projetos": 0.0,
+          "atividades": 0.0,
+          "total": 199250.72
+        },
+        {
+          "codigo": "12.366.0311.2028.0000",
+          "descricao": "FUNDEB 70% - MANUTENÇÃO E FUNCIONAMENTO",
+          "projetos": 0.0,
+          "atividades": 0.0,
+          "total": 3465552.25
+        },
+        {
+          "codigo": "12.366.0311.2744.0000",
+          "descricao": "MANUTENÇÃO E FUNCIONAMENTO DA EJA",
+          "projetos": 0.0,
+          "atividades": 0.0,
+          "total": 1433090.39
+        },
+        {
+          "codigo": "12.367.0311.2743.0000",
+          "descricao": "MANUTENÇÃO E FUNCIONAMENTO DA AEE",
+          "projetos": 0.0,
+          "atividades": 0.0,
+          "total": 526116.6
+        },
+        {
+          "codigo": "12.367.0314.2022.0000",
+          "descricao": "FUNDEB 70% - MANUTENÇÃO E FUNCIONAMENTO",
+          "projetos": 0.0,
+          "atividades": 0.0,
+          "total": 7307452.32
+        },
+        {
+          "codigo": "12.367.0314.2743.0000",
+          "descricao": "MANUTENÇÃO E FUNCIONAMENTO DA AEE",
+          "projetos": 0.0,
+          "atividades": 0.0,
+          "total": 760439.15
+        }
+      ]
+    },
+    {
+      "orgao_codigo": "02",
+      "orgao_nome": "EXECUTIVO",
+      "unidade_codigo": "23",
+      "unidade_nome": "FUNDO MUNICIPAL DE SAÚDE-FMS",
+      "total_projetos": 519594.33,
+      "total_atividades": 95135524.6,
+      "total_geral": 95655118.93,
+      "acoes": [
+        {
+          "codigo": "10.122.0315.2450.0000",
+          "descricao": "MANUTENÇÃO DO FUNDO MUNICIPAL DE SAÚDE-",
+          "projetos": 0.0,
+          "atividades": 0.0,
+          "total": 27545157.42
+        },
+        {
+          "codigo": "10.122.0315.2764.0000",
+          "descricao": "Manut. Do Piso Nacional de Enfermagem",
+          "projetos": 0.0,
+          "atividades": 0.0,
+          "total": 8874836.7
+        },
+        {
+          "codigo": "10.301.0316.2432.0000",
+          "descricao": "Manutenção das atividades da atenção básica",
+          "projetos": 0.0,
+          "atividades": 0.0,
+          "total": 7476647.2
+        },
+        {
+          "codigo": "10.301.0316.2441.0000",
+          "descricao": "Manutenção do Centro de Atenção Psicosocial - CAPS",
+          "projetos": 0.0,
+          "atividades": 0.0,
+          "total": 80779.21
+        },
+        {
+          "codigo": "10.301.0316.2451.0000",
+          "descricao": "Manutenção do Núcleo de Apoio a Saúde da Família N",
+          "projetos": 0.0,
+          "atividades": 0.0,
+          "total": 38143.44
+        },
+        {
+          "codigo": "10.301.0316.2452.0000",
+          "descricao": "Manutenção do Programa Agentes Comunit. De Saúde",
+          "projetos": 0.0,
+          "atividades": 0.0,
+          "total": 11327151.88
+        },
+        {
+          "codigo": "10.301.0316.2454.0000",
+          "descricao": "Manutenção do Programa Saúde Bucal - PSB",
+          "projetos": 0.0,
+          "atividades": 0.0,
+          "total": 474699.84
+        },
+        {
+          "codigo": "10.301.0316.2455.0000",
+          "descricao": "Manutenção do Programa Saúde da Família PSF",
+          "projetos": 0.0,
+          "atividades": 0.0,
+          "total": 874124.17
+        },
+        {
+          "codigo": "10.301.0318.2487.0000",
+          "descricao": "Manutenção, conservação e reforma de Unidades Bás",
+          "projetos": 0.0,
+          "atividades": 0.0,
+          "total": 3574162.89
+        },
+        {
+          "codigo": "10.301.0422.2017.0000",
+          "descricao": "Aquisição de Medicamentos e Insumos para a Farmaci",
+          "projetos": 0.0,
+          "atividades": 0.0,
+          "total": 418225.23
+        },
+        {
+          "codigo": "10.302.0318.1713.0000",
+          "descricao": "CONST., REF., AMPL E EQUIP. DE HOSPITAIS",
+          "projetos": 0.0,
+          "atividades": 0.0,
+          "total": 519594.33
+        },
+        {
+          "codigo": "10.302.0318.2076.0000",
+          "descricao": "Implementação e Manutenção da Rede Materno Infanti",
+          "projetos": 0.0,
+          "atividades": 0.0,
+          "total": 837933.42
+        },
+        {
+          "codigo": "10.302.0318.2218.0000",
+          "descricao": "Manutenção dos Serviços de Atendimento Móvel - SA",
+          "projetos": 0.0,
+          "atividades": 0.0,
+          "total": 1297539.16
+        },
+        {
+          "codigo": "10.302.0318.2226.0000",
+          "descricao": "Tratamento Fora do Domicilio TFD",
+          "projetos": 0.0,
+          "atividades": 0.0,
+          "total": 98325.0
+        },
+        {
+          "codigo": "10.302.0318.2434.0000",
+          "descricao": "Manutenção das Atividades dos Serviços Especializad",
+          "projetos": 0.0,
+          "atividades": 0.0,
+          "total": 31937452.66
+        },
+        {
+          "codigo": "10.302.0318.2484.0000",
+          "descricao": "Manutenção e Funcionamento do Centro de Imagem",
+          "projetos": 0.0,
+          "atividades": 0.0,
+          "total": 13434.8
+        },
+        {
+          "codigo": "10.302.0318.2739.0000",
+          "descricao": "MANUTENÇÃO, CONSERVAÇÃO E REFORMA DE H",
+          "projetos": 0.0,
+          "atividades": 0.0,
+          "total": 35501.28
+        },
+        {
+          "codigo": "10.304.0421.2365.0000",
+          "descricao": "Manutenção das Ações da Vigilância Sanitária",
+          "projetos": 0.0,
+          "atividades": 0.0,
+          "total": 109843.76
+        },
+        {
+          "codigo": "10.305.0421.2366.0000",
+          "descricao": "Manutenção das Ações da Vigilância Epidemiologica",
+          "projetos": 0.0,
+          "atividades": 0.0,
+          "total": 121566.54
+        }
+      ]
+    },
+    {
+      "orgao_codigo": "02",
+      "orgao_nome": "EXECUTIVO",
+      "unidade_codigo": "24",
+      "unidade_nome": "FUNDO MUNICIPAL DE TURISMO",
+      "total_projetos": 0.0,
+      "total_atividades": 0.0,
+      "total_geral": 229615.91,
+      "acoes": [
+        {
+          "codigo": "04.695.0334.2382.0000",
+          "descricao": "MANUTENÇÃO DO FUNDO MUNICIPAL DE TURISM",
+          "projetos": 0.0,
+          "atividades": 0.0,
+          "total": 229615.91
+        }
+      ]
+    },
+    {
+      "orgao_codigo": "02",
+      "orgao_nome": "EXECUTIVO",
+      "unidade_codigo": "28",
+      "unidade_nome": "FUNDO MUNICIPAL DE CULTURA",
+      "total_projetos": 0.0,
+      "total_atividades": 0.0,
+      "total_geral": 0.0,
+      "acoes": [
+        {
+          "codigo": "13.392.0333.2384.0000",
+          "descricao": "MANUTENÇÃO DO FUNDO MUNICIPAL DE CULTUR",
+          "projetos": 0.0,
+          "atividades": 0.0,
+          "total": 0.0
+        }
+      ]
+    },
+    {
+      "orgao_codigo": "02",
+      "orgao_nome": "EXECUTIVO",
+      "unidade_codigo": "29",
+      "unidade_nome": "OUVIDORIA GERAL DO MUNICIPIO",
+      "total_projetos": 0.0,
+      "total_atividades": 0.0,
+      "total_geral": 77573.76,
+      "acoes": [
+        {
+          "codigo": "04.122.0305.2388.0000",
+          "descricao": "MANUTENÇÃO DA OUVIDORIA GERAL DO MUNICI",
+          "projetos": 0.0,
+          "atividades": 0.0,
+          "total": 77573.76
+        }
+      ]
+    },
+    {
+      "orgao_codigo": "02",
+      "orgao_nome": "EXECUTIVO",
+      "unidade_codigo": "31",
+      "unidade_nome": "FUNDO MUNICIPAL DE AGRICULTURA",
+      "total_projetos": 0.0,
+      "total_atividades": 0.0,
+      "total_geral": 0.0,
+      "acoes": [
+        {
+          "codigo": "20.122.0305.2748.0000",
+          "descricao": "MANUTENÇÃO DO FUNDO MUNICIPAL DE AGRICU",
+          "projetos": 0.0,
+          "atividades": 0.0,
+          "total": 0.0
+        }
+      ]
+    },
+    {
+      "orgao_codigo": "02",
+      "orgao_nome": "EXECUTIVO",
+      "unidade_codigo": "32",
+      "unidade_nome": "SECRETARIA MUNICIPAL DE URBANISMO E HABITAÇÃO",
+      "total_projetos": 0.0,
+      "total_atividades": 0.0,
+      "total_geral": 1297278.57,
+      "acoes": [
+        {
+          "codigo": "04.122.0309.2757.0000",
+          "descricao": "MANUTENÇÃO DA SECRETARIA MUNICIPAL DE U",
+          "projetos": 0.0,
+          "atividades": 0.0,
+          "total": 529207.66
+        },
+        {
+          "codigo": "04.122.0355.2757.0000",
+          "descricao": "MANUTENÇÃO DA SECRETARIA MUNICIPAL DE U",
+          "projetos": 0.0,
+          "atividades": 0.0,
+          "total": 33198.0
+        },
+        {
+          "codigo": "15.451.0348.1812.0000",
+          "descricao": "PAVIMENTAÇÃO DE VIAS EM BLOQUETE",
+          "projetos": 0.0,
+          "atividades": 0.0,
+          "total": 0.0
+        },
+        {
+          "codigo": "15.451.0348.2481.0000",
+          "descricao": "MANUTENÇÃO E FUNCIONAMENTO DA LIMPEZA P",
+          "projetos": 0.0,
+          "atividades": 0.0,
+          "total": 734872.91
+        }
+      ]
+    },
+    {
+      "orgao_codigo": "02",
+      "orgao_nome": "EXECUTIVO",
+      "unidade_codigo": "33",
+      "unidade_nome": "SECRETARIA MUNICIPAL DE PESCA",
+      "total_projetos": 0.0,
+      "total_atividades": 0.0,
+      "total_geral": 274650.94,
+      "acoes": [
+        {
+          "codigo": "04.122.0309.2759.0000",
+          "descricao": "MANUTENÇÃO DA SECRETARIA DE PESCA",
+          "projetos": 0.0,
+          "atividades": 0.0,
+          "total": 258711.94
+        },
+        {
+          "codigo": "04.122.0355.2759.0000",
+          "descricao": "MANUTENÇÃO DA SECRETARIA DE PESCA",
+          "projetos": 0.0,
+          "atividades": 0.0,
+          "total": 15939.0
+        }
+      ]
+    },
+    {
+      "orgao_codigo": "02",
+      "orgao_nome": "EXECUTIVO",
+      "unidade_codigo": "34",
+      "unidade_nome": "SECRETARIA DE PROMOÇÃO E IGUALDADE RACIAL",
+      "total_projetos": 0.0,
+      "total_atividades": 0.0,
+      "total_geral": 321055.52,
+      "acoes": [
+        {
+          "codigo": "04.122.0309.2753.0000",
+          "descricao": "MANUTENÇÃO E FUNCIONAMENTO DA SECRETA",
+          "projetos": 0.0,
+          "atividades": 0.0,
+          "total": 297129.52
+        },
+        {
+          "codigo": "04.122.0355.2753.0000",
+          "descricao": "MANUTENÇÃO E FUNCIONAMENTO DA SECRETA",
+          "projetos": 0.0,
+          "atividades": 0.0,
+          "total": 23926.0
+        }
+      ]
+    },
+    {
+      "orgao_codigo": "02",
+      "orgao_nome": "EXECUTIVO",
+      "unidade_codigo": "35",
+      "unidade_nome": "SECRETARIA MUNICIPAL DE ARTICULAÇÃO POLÍTICA",
+      "total_projetos": 0.0,
+      "total_atividades": 0.0,
+      "total_geral": 534532.76,
+      "acoes": [
+        {
+          "codigo": "04.122.0309.2756.0000",
+          "descricao": "MANUTENÇÃO E FUNCIONAMENTO DA SECRETA",
+          "projetos": 0.0,
+          "atividades": 0.0,
+          "total": 532282.76
+        },
+        {
+          "codigo": "04.122.0355.2756.0000",
+          "descricao": "MANUTENÇÃO E FUNCIONAMENTO DA SECRETA",
+          "projetos": 0.0,
+          "atividades": 0.0,
+          "total": 2250.0
+        }
+      ]
+    },
+    {
+      "orgao_codigo": "02",
+      "orgao_nome": "EXECUTIVO",
+      "unidade_codigo": "36",
+      "unidade_nome": "SECRETARIA DA FAZENDA",
+      "total_projetos": 0.0,
+      "total_atividades": 0.0,
+      "total_geral": 1595672.5,
+      "acoes": [
+        {
+          "codigo": "04.122.0309.2755.0000",
+          "descricao": "MANUTENÇÃO DA SECRETARIA MUNICIPAL DA FA",
+          "projetos": 0.0,
+          "atividades": 0.0,
+          "total": 291437.13
+        },
+        {
+          "codigo": "04.122.0355.2755.0000",
+          "descricao": "MANUTENÇÃO DA SECRETARIA MUNICIPAL DA FA",
+          "projetos": 0.0,
+          "atividades": 0.0,
+          "total": 1291144.45
+        },
+        {
+          "codigo": "04.123.0110.2758.0000",
+          "descricao": "MANUTENÇAO DO SETOR TRIBUTARIO",
+          "projetos": 0.0,
+          "atividades": 0.0,
+          "total": 13090.92
+        }
+      ]
+    },
+    {
+      "orgao_codigo": "02",
+      "orgao_nome": "EXECUTIVO",
+      "unidade_codigo": "37",
+      "unidade_nome": "SECRETARIA MUNICIPAL DAS COMUNIDADES",
+      "total_projetos": 0.0,
+      "total_atividades": 0.0,
+      "total_geral": 135870.91,
+      "acoes": [
+        {
+          "codigo": "04.122.0309.2760.0000",
+          "descricao": "MANUTENÇÃO DA SECRETARIA MUNICIPAL DAS C",
+          "projetos": 0.0,
+          "atividades": 0.0,
+          "total": 134870.91
+        },
+        {
+          "codigo": "04.122.0355.2760.0000",
+          "descricao": "MANUTENÇÃO DA SECRETARIA MUNICIPAL DAS C",
+          "projetos": 0.0,
+          "atividades": 0.0,
+          "total": 1000.0
+        }
+      ]
+    },
+    {
+      "orgao_codigo": "02",
+      "orgao_nome": "EXECUTIVO",
+      "unidade_codigo": "38",
+      "unidade_nome": "SECRETARIA DE TURISMO",
+      "total_projetos": 0.0,
+      "total_atividades": 0.0,
+      "total_geral": 128778.03,
+      "acoes": [
+        {
+          "codigo": "04.122.0309.2761.0000",
+          "descricao": "MANUTENÇÃO DA SECRETARIA MUNICIPAL DE TU",
+          "projetos": 0.0,
+          "atividades": 0.0,
+          "total": 124021.53
+        },
+        {
+          "codigo": "04.122.0355.2761.0000",
+          "descricao": "MANUTENÇÃO DA SECRETARIA MUNICIPAL DE TU",
+          "projetos": 0.0,
+          "atividades": 0.0,
+          "total": 4756.5
+        }
+      ]
+    }
+  ],
+  "total_geral": {
+    "projetos": 20710960.49,
+    "atividades": 368616009.54,
+    "total": 389326970.03
+  }
+}

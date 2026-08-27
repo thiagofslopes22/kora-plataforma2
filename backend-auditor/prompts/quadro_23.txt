@@ -1,0 +1,58 @@
+# PROMPT OTIMIZADO - JSON FUNDEB 70% REMUNERAÇÃO PROFISSIONAIS DA EDUCAÇÃO BÁSICA
+
+Extraia dos Anexos 06 e 10 e gere JSON:
+
+json {   "municipio": "[extrair do cabeçalho]",   "exercicio": "[extrair do cabeçalho]",   "fundeb_70_remuneracao": {     "minimo_exigido": 0.00,     "rp_sem_disponibilidade": 0.00,     "superavit_exercicio_anterior": 0.00,     "valor_aplicado_remuneracao": 0.00,     "base_calculo": 0.00,     "percentual_minimo": 70.00,     "percentual_aplicado": 0.00,     "situacao": ""   } } 
+
+---
+
+## ⚠️ REGRA CRÍTICA — LEITURA DA COLUNA ARRECADADA (OBRIGATÓRIA PARA TODOS OS CÓDIGOS DO ANEXO 10)
+
+Formato de cada linha do Anexo 10: ORÇADA | ARRECADADA | DIFERENÇA | CÓDIGO | DESCRIÇÃO  CASO 1 — Três valores DISTINTOS: Ex: "60.468.635,30  69.378.813,85  8.910.178,55  1751.50.0.0" → ARRECADADA = 69.378.813,85 ✓  CASO 2 — Dois valores IGUAIS: Ex: "2.993.617,38  2.993.617,38  1715.53.0.0" → ARRECADADA = 0,00 ✓  CASO 3 — Um único valor: → ARRECADADA = 0,00 ✓  ⚠️ Aplicar essa verificação em CADA código antes de registrar qualquer valor.
+
+---
+
+## EXTRAÇÃO DETALHADA:
+
+### 1. BASE DE CÁLCULO
+Fonte: Anexo 10 — coluna ARRECADADA (aplicar regra crítica em cada código)javascript // Receitas FUNDEB recebidas — EXCLUIR VAAR base_calculo = transf_recursos_fundeb (1751.50.0.0)  // ⚠️ aplicar regra crítica              + vaaf (1715.51.0.0)                    // ⚠️ aplicar regra crítica              + vaat (1715.50.0.0)                    // ⚠️ aplicar regra crítica              + eti (1715.53.0.0)                     // ⚠️ aplicar regra crítica // NÃO incluir VAAR (1715.52.0.0) 
+
+---
+
+### 2. MÍNIMO EXIGIDO (70%)
+javascript minimo_exigido = base_calculo * 0.70 
+
+---
+
+### 3. VALOR APLICADO NA REMUNERAÇÃO
+Fonte: Anexo 06 — Unidade 22 (FUNDEB)
+Somar APENAS as ações com descrição contendo "FUNDEB 70%" e "REMUNERAÇÃO":
+
+javascript // Ensino Fundamental (361) valor_361 = 12.361.0311.2741  // FUNDEB 70% REMUNERAÇÃO DOCENTES           + 12.361.0311.2763  // FUNDEB 70% MANUT. EDUCAÇÃO TEMPO INTEGRAL  // Educação Infantil (365) valor_365 = 12.365.0314.2742  // FUNDEB 70% REMUNERAÇÃO DOCENTES           + 12.365.0314.2763  // FUNDEB 70% MANUT. EDUCAÇÃO TEMPO INTEGRAL  // EJA (366) — verificar se há ações de remuneração // Educação Especial (367) — verificar se há ações de remuneração  valor_aplicado = valor_361 + valor_365 + valor_366 + valor_367 ⚠️ ATENÇÃO: Incluir SOMENTE ações que contenham "REMUNERAÇÃO" ou "PROFISSIONAIS" na descrição. NÃO incluir ações de manutenção geral, transporte, alimentação.
+
+---
+
+### 4. RP SEM DISPONIBILIDADE FUNDEB 70%
+Buscar no RGF. Se não disponível: 0.00
+
+---
+
+### 5. SUPERÁVIT EXERCÍCIO ANTERIOR FUNDEB 70%
+javascript // Calcular somente se despesas FUNDEB 70% > receitas FUNDEB if (valor_aplicado > base_calculo * 0.70):     superavit_anterior = valor_aplicado - (base_calculo * 0.70) else:     superavit_anterior = 0.00 
+
+---
+
+### 6. PERCENTUAL APLICADO
+javascript percentual_aplicado = (valor_aplicado / base_calculo) * 100  if (percentual_aplicado >= 70.00):     situacao = "Aprovado — acima do mínimo de 70%" else:     situacao = "Irregular — abaixo do mínimo de 70%" 
+
+---
+
+## CÁLCULOS:
+
+javascript base_calculo    = fundeb_recebido - vaar minimo_exigido  = base_calculo * 0.70 valor_liquido   = valor_aplicado - rp_sem_disponibilidade - superavit_anterior percentual      = (valor_liquido / base_calculo) * 100 
+
+---
+
+## EXEMPLO — PINHEIRO 2025:
+
+json {   "municipio": "Pinheiro",   "exercicio": "2025",   "fundeb_70_remuneracao": {     "minimo_exigido": 115101281.84,     "rp_sem_disponibilidade": 0.00,     "superavit_exercicio_anterior": 0.00,     "valor_aplicado_remuneracao": 120838339.39,     "base_calculo": 164430402.63,     "percentual_minimo": 70.00,     "percentual_aplicado": 73.49,     "situacao": "Aprovado — acima do mínimo de 70%"   },   "detalhamento_base_calculo": {     "transf_recursos_fundeb": 69378813.85,     "vaaf": 46389009.08,     "vaat": 45668962.32,     "eti": 2993617.38,     "vaar_excluido": 325711.75   },   "detalhamento_valor_aplicado": {     "fundeb_70_remuneracao_361": 79746853.34,     "fundeb_70_remuneracao_365": 18020193.16,     "fundeb_70_remuneracao_366": 0.00,     "fundeb_70_remuneracao_367": 7307452.32   } } OUTPUT: fundeb_70_remuneracao_[municipio]_[ano].json

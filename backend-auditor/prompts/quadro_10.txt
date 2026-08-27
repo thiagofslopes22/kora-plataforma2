@@ -1,0 +1,52 @@
+# PROMPT OTIMIZADO - JSON EFETIVIDADE ARRECADAÇÃO RECEITA TRIBUTÁRIA
+
+Extraia do Anexo 12 (Balanço Orçamentário) e gere JSON:
+json {   "receita_tributaria_realizada": 0.00,   "receita_tributaria_atualizada": 0.00,   "situacao": "" }
+
+## EXTRAÇÃO:
+
+| CAMPO | ANEXO | LOCALIZAÇÃO | OPERAÇÃO |
+|-------|-------|-------------|----------|
+| receita_tributaria_realizada | Anexo 12 | IMPOSTOS, TAXAS E CONTRIBUIÇÕES DE MELHORIA (coluna REALIZADA) | extrair valor realizado |
+| receita_tributaria_atualizada | Anexo 12 | IMPOSTOS, TAXAS E CONTRIBUIÇÕES DE MELHORIA (coluna PREVISÃO ATUALIZADA) | extrair valor orçado |
+| situacao | - | Cálculo | se realizada > atualizada = "Excesso", senão = "Insuficiência" |
+
+## MAPEAMENTO DIRETO:
+
+ANEXO 12:
+- Linha: "IMPOSTOS, TAXAS E CONTRIBUIÇÕES DE MELHORIA"
+- Formato da linha: PREVISÃO INICIAL | PREVISÃO ATUALIZADA | RECEITA REALIZADA | SALDO
+- Coluna PREVISÃO ATUALIZADA → receita_tributaria_atualizada
+- Coluna RECEITA REALIZADA → receita_tributaria_realizada
+
+## CÁLCULO SITUAÇÃO:
+javascript if (receita_tributaria_realizada > receita_tributaria_atualizada) {   situacao = "Excesso" } else if (receita_tributaria_realizada < receita_tributaria_atualizada) {   situacao = "Insuficiência" } else {   situacao = "Equilibrio" }
+
+## VALIDAÇÕES:
+javascript ✓ receita_tributaria_realizada > 0 ✓ receita_tributaria_atualizada > 0 ✓ situacao = "Excesso" OU "Insuficiência" OU "Equilibrio"
+
+## REGRAS:
+
+1. Valores: decimal 2 casas
+2. Situação: primeira letra maiúscula
+3. Fonte única: Anexo 12 (Balanço Orçamentário). Não usar o Anexo 10 para este quadro.
+
+## EXEMPLO COMPLETO:
+json {   "receita_tributaria_realizada": 4825538.62,   "receita_tributaria_atualizada": 2085455.32,   "situacao": "Excesso" } OUTPUT: efetividade_receita_tributaria_[ano].json
+
+OBS:
+
+Formato de cada linha do Anexo 12:
+PREVISÃO INICIAL | PREVISÃO ATUALIZADA | RECEITA REALIZADA | SALDO | CÓDIGO/DESCRIÇÃO
+
+ANTES de registrar qualquer valor, aplicar obrigatoriamente:
+
+PASSO 1 — Contar os valores numéricos na linha:
+
+CASO 1 — Três ou mais valores DISTINTOS presentes:
+Ex: "1.158.822,81  1.158.822,81  8.055.193,38  6.896.370,57"
+→ PREVISÃO INICIAL=1.158.822,81 | PREVISÃO ATUALIZADA=1.158.822,81 | REALIZADA=8.055.193,38
+→ USAR: atualizada=1.158.822,81 realizada=8.055.193,38 ✓
+
+CASO 2 — Valor realizado ausente/zerado:
+→ USAR: realizada=0,00 ✓

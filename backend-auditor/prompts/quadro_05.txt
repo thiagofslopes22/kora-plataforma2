@@ -1,0 +1,89 @@
+# PROMPT OTIMIZADO - JSON DESPESA COM PESSOAL (EXECUTIVO)
+
+Extraia do Anexo 02 (Natureza da Despesa por Órgão) e gere JSON:
+
+json {   "municipio": "[extrair cabeçalho]",   "exercicio": "[extrair ano]",   "orgao": "Executivo",   "despesa_com_pessoal": {     "pessoal_ativo": 0.00,     "pessoal_inativo_pensionistas": 0.00,     "outras_despesas_pessoal_terceirizacao": 0.00,     "contratacao_tempo_determinado_33": 0.00,     "despesa_com_pessoal_bruta": 0.00,     "deducoes": {       "decorrentes_decisao_judicial_periodo_anterior": 0.00,       "despesas_exercicios_anteriores": 0.00,       "indenizacoes_demissao_incentivos": 0.00,       "inativos_pensionistas_recursos_vinculados": 0.00,       "agentes_comunitarios_saude_endemias": 0.00,       "parcela_dedutivel_piso_enfermeiro": 0.00,       "subtotal_deducoes": 0.00     },     "despesa_liquida_pessoal_restos_pagar": 0.00,     "despesa_liquida_com_pessoal": 0.00,     "base_calculo_rcl": 0.00,     "percentual_aplicacao_despesa_pessoal": 0.00   } } 
+
+## ESCOPO: APENAS O ÓRGÃO EXECUTIVO
+
+Ignorar completamente o Legislativo e qualquer outro órgão.
+Extrair somente os elementos do bloco identificado como "EXECUTIVO" no Anexo 02.
+
+---
+
+## MAPEAMENTO — GASTO BRUTO:
+
+| CAMPO | ELEMENTO | REGRA |
+|-------|----------|-------|
+| pessoal_ativo | Soma de todos os elementos 3.1.x | somar |
+| pessoal_inativo_pensionistas | Buscar aposentadorias/pensões | extrair ou 0.00 |
+| outras_despesas_pessoal_terceirizacao | 3.3.90.34 | extrair ou 0.00 |
+| contratacao_tempo_determinado_33 | 3.3.90.04 | extrair ou 0.00 |
+| despesa_com_pessoal_bruta | pessoal_ativo + inativo + 3.3.90.34 + 3.3.90.04 | calcular |
+
+Importante: o grupo 3.1.x inclui TODOS os seus elementos, entre eles:
+- 3.1.90.04 — contratação por tempo determinado
+- 3.1.90.11 — vencimentos e vantagens fixas
+- 3.1.90.13 — obrigações patronais
+- 3.1.90.91 — sentenças judiciais
+- 3.1.90.92 — despesas de exercícios anteriores
+- outros subdesdobramentos 3.1.x que existirem
+
+Todos entram no bruto. As deduções são aplicadas depois.
+
+---
+
+## MAPEAMENTO — DEDUÇÕES:
+
+| CAMPO | ELEMENTO | REGRA |
+|-------|----------|-------|
+| decorrentes_decisao_judicial_periodo_anterior | 3.1.90.91 apenas | extrair ou 0.00 |
+| despesas_exercicios_anteriores | 3.1.90.92 apenas | extrair ou 0.00 |
+| indenizacoes_demissao_incentivos | Buscar indenizações demissão | extrair ou 0.00 |
+| inativos_pensionistas_recursos_vinculados | Recursos vinculados RPPS | extrair ou 0.00 |
+| agentes_comunitarios_saude_endemias | Buscar agentes comunitários | extrair ou 0.00 |
+| parcela_dedutivel_piso_enfermeiro | Buscar piso enfermeiro | extrair ou 0.00 |
+| subtotal_deducoes | soma de todas as deduções | calcular |
+
+Crítico: usar somente os elementos 3.1.90.91 e 3.1.90.92.
+NÃO somar 3.3.90.91 nem 3.3.90.92 nas deduções.
+
+---
+
+## BASE DE CÁLCULO:
+
+| CAMPO | FONTE | REGRA |
+|-------|-------|-------|
+| base_calculo_rcl | Anexo 10 — RCL (receita corrente líquida) | extrair |
+
+Usar a RCL (Receita Corrente Líquida = total receita corrente − deduções FUNDEB),
+NÃO usar o TOTAL (XV) do Anexo 12.
+
+---
+
+## CÁLCULOS:
+
+javascript // Bruto despesa_com_pessoal_bruta = pessoal_ativo                           + pessoal_inativo_pensionistas                           + outras_despesas_pessoal_terceirizacao  // 3.3.90.34                           + contratacao_tempo_determinado_33       // 3.3.90.04  // Deduções subtotal_deducoes = decorrentes_decisao_judicial_periodo_anterior  // 3.1.90.91                   + despesas_exercicios_anteriores                 // 3.1.90.92                   + indenizacoes_demissao_incentivos                   + inativos_pensionistas_recursos_vinculados                   + agentes_comunitarios_saude_endemias                   + parcela_dedutivel_piso_enfermeiro  // Líquida despesa_liquida_com_pessoal = despesa_com_pessoal_bruta                             - subtotal_deducoes                             - despesa_liquida_pessoal_restos_pagar  // Percentual percentual = (despesa_liquida_com_pessoal / base_calculo_rcl) * 100 
+
+---
+
+## REGRAS:
+
+1. Escopo: somente Executivo — ignorar Legislativo e outros órgãos
+2. Bruto = grupo 3.1.x completo + 3.3.90.34 + 3.3.90.04
+3. Deduções = apenas 3.1.90.91 e 3.1.90.92 (NÃO usar os de 3.3.x)
+4. Base = RCL do Anexo 10, não o total do Anexo 12
+5. Valores: decimal 2 casas
+6. Não encontrado = 0.00
+7. Percentual: 2 casas decimais
+8. Limite legal do Executivo: 49% da RCL (LRF Art. 20, III, b)
+
+---
+
+## VALIDAÇÕES:
+
+javascript ✓ pessoal_ativo = soma de todos os elementos 3.1.x do Executivo ✓ despesa_com_pessoal_bruta = pessoal_ativo + inativo + 3.3.90.34 + 3.3.90.04 ✓ subtotal_deducoes = 3.1.90.91 + 3.1.90.92 + demais deduções ✓ despesa_liquida = bruta - deducoes - restos_pagar ✓ percentual = (liquida / rcl) * 100 ✓ base_calculo_rcl = RCL do Anexo 10 (NÃO do Anexo 12) ✓ percentual < 100 ✓ base_calculo_rcl > 0 
+
+---
+
+OUTPUT: despesa_pessoal_executivo_[municipio]_[ano].json (UTF-8, indent 2)

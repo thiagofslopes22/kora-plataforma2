@@ -1,0 +1,81 @@
+ANEXO 14 — BALANÇO PATRIMONIAL
+MUNICÍPIO: PINHEIRO | EXERCÍCIO: 2025
+
+A) ATIVO
+-------------------------------------------------------------------------------
+ESPECIFICAÇÃO                                               ATUAL     ANTERIOR
+-------------------------------------------------------------------------------
+ATIVO CIRCULANTE                                     20.926.930,14 7.566.465,55
+CAIXA E EQUIVALENTES DE CAIXA                        17.803.201,62 7.566.465,55
+CAIXA E EQUIVALENTES DE CAIXA EM MOEDA NACIONAL      10.132.791,45 7.566.465,55
+CAIXA                                                      735,32       735,32
+CONTA ÚNICA                                            495.597,77 5.272.546,98
+APLICAÇÕES FINANCEIRAS DE LIQUIDEZ IMEDIATA - USO    9.612.010,40 2.293.153,10
+APLICAÇÕES FINANCEIRAS DE LIQUIDEZ IMEDIATA - RPPS -    24.447,96        30,15
+CAIXA E EQUIVALENTES DE CAIXA - VALORES RESTITUÍVEIS 7.670.410,17         0,00
+OUTROS VALORES RESTITUÍVEIS                          7.670.410,17         0,00
+DEMAIS CRÉDITOS E VALORES A CURTO PRAZO              3.123.728,52         0,00
+OUTROS CRÉDITOS A RECEBER E VALORES A CURTO PRAZO    3.123.728,52         0,00
+VALORES EM TRÂNSITO REALIZÁVEIS A CURTO PRAZO        3.123.728,52         0,00
+ATIVO NÃO CIRCULANTE                                 34.754.624,76 9.718.038,23
+IMOBILIZADO                                          34.754.624,76 9.718.038,23
+BENS MOVEIS                                          4.678.490,82 1.901.016,27
+MÁQUINAS, APARELHOS, EQUIPAMENTOS E FERRAMENTAS      4.006.488,40 1.564.017,27
+MÓVEIS E UTENSÍLIOS                                    335.003,42         0,00
+VEÍCULOS                                               336.999,00   336.999,00
+BENS IMÓVEIS                                         30.076.133,94 7.817.021,96
+BENS DE USO ESPECIAL                                 6.138.053,46         0,00
+BENS DE USO COMUM DO POVO                            10.046.520,21         0,00
+BENS IMÓVEIS EM ANDAMENTO                            10.569.263,57 7.817.021,96
+DEMAIS BENS IMÓVEIS                                  3.322.296,70         0,00
+TOTAL                                                55.681.554,90 17.284.503,78
+
+A) PASSIVO E PATRIMÔNIO LÍQUIDO
+-------------------------------------------------------------------------------
+ESPECIFICAÇÃO                                               ATUAL     ANTERIOR
+-------------------------------------------------------------------------------
+PASSIVO CIRCULANTE                                   12.611.349,72     7.871,45
+OBRIGAÇÕES TRABALHISTAS, PREVIDENCIÁRIAS E              28.449,69         0,00
+PESSOAL A PAGAR                                         28.449,69         0,00
+PESSOAL A PAGAR                                         28.449,69         0,00
+FORNECEDORES E CONTAS A PAGAR A CURTO PRAZO          4.851.687,21         0,00
+FORNECEDORES E CONTAS A PAGAR NACIONAIS A CURTO PRAZ 4.851.687,21         0,00
+FORNECEDORES NACIONAIS                               4.851.687,21         0,00
+ADIANTAMENTO DE CLIENTES E DEMAIS OBRIGAÇÕES A CURTO 7.731.212,82     7.871,45
+VALORES RESTITUÍVEIS                                 7.678.281,62     7.871,45
+CONSIGNAÇÕES                                         7.593.024,76     3.206,84
+DEPOSITOS JUDICIAIS                                     79.324,90         0,00
+CONSIGNAÇÕES                                                 0,00     4.664,61
+CONSIGNAÇÕES                                             5.931,96         0,00
+OUTRAS OBRIGAÇÕES A CURTO PRAZO                         52.931,20         0,00
+TRANSFERÊNCIAS ORCAMENTARIAS A LIBERAR                  52.931,20         0,00
+TOTAL PASSIVO                                        12.611.349,72     7.871,45
+PATRIMÔNIO LIQUIDO                                   43.070.205,18 17.276.632,33
+RESULTADOS ACUMULADOS                                43.070.205,18 17.276.632,33
+SUPERÁVITS OU DÉFICITS ACUMULADOS                    43.070.205,18 17.276.632,33
+SUPERÁVITS OU DÉFICITS DO EXERCÍCIO                  25.793.572,85         0,00
+SUPERAVITS OU DEFICITS DE EXERCÍCIOS ANTERIORES      17.276.632,33 17.276.632,33
+TOTAL PATRIMÔNIO LÍQUIDO                             43.070.205,18 17.276.632,33
+TOTAL                                                55.681.554,90 17.284.503,78
+
+B) ATIVOS E PASSIVOS FINANCEIROS E PERMANENTES
+-------------------------------------------------------------------------------
+ESPECIFICAÇÃO                                               ATUAL     ANTERIOR
+-------------------------------------------------------------------------------
+Ativo Financeiro                                     20.926.930,14 7.566.465,55
+Ativo Permanente                                     34.754.624,76 9.718.038,23
+Passivo Financeiro                                   12.611.829,72     7.871,45
+Passivo Permanente                                           0,00         0,00
+Saldo Patrimonial                                    43.069.725,18 17.276.632,33
+
+C) CONTAS DE COMPENSAÇÃO (CONTROLE)
+-------------------------------------------------------------------------------
+ESPECIFICAÇÃO                                               ATUAL     ANTERIOR
+-------------------------------------------------------------------------------
+Atos Potenciais Ativo                                1.436.987,95         0,00
+  Direitos Contratuais                               1.436.987,95         0,00
+  TOTAL                                              1.436.987,95         0,00
+Atos Potenciais Passivo                              151.831.623,09 5.248.799,88
+  Obrigações Contratuais                             151.831.623,09 5.248.799,88
+  TOTAL                                              151.831.623,09 5.248.799,88
+-------------------------------------------------------------------------------

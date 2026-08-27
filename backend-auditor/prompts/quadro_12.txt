@@ -1,0 +1,28 @@
+# PROMPT OTIMIZADO - JSON RESULTADO FINANCEIRO (ANEXO 14)
+
+Extraia do Anexo 14 (Balanço Patrimonial - Quadro B) e gere JSON:
+json {   "municipio": "[extrair]",   "exercicio": "[ano]",   "apuracao_resultado_financeiro": {     "especificacao": [       {         "descricao": "(+) Ativo Financeiro",         "exercicio_atual": 0.00,         "exercicio_anterior": 0.00       },       {         "descricao": "(-) Passivo Financeiro",         "exercicio_atual": 0.00,         "exercicio_anterior": 0.00       },       {         "descricao": "(+) Saldos dos créditos adicionais transferidos e as operações de crédito vinculadas",         "exercicio_atual": 0.00,         "exercicio_anterior": 0.00       },       {         "descricao": "(=) Superávit/ Déficit Financeiro Apurado",         "exercicio_atual": 0.00,         "exercicio_anterior": 0.00       }     ]   } } 
+
+## EXTRAÇÃO:
+
+| CAMPO | LOCALIZAÇÃO | OPERAÇÃO |
+|-------|-------------|----------|
+| ativo_financeiro_atual | Anexo 14 Quadro B - "ATIVO FINANCEIRO" coluna "Exercício Atual" | extrair |
+| ativo_financeiro_anterior | Anexo 14 Quadro B - "ATIVO FINANCEIRO" coluna "Exercício Anterior" | extrair |
+| passivo_financeiro_atual | Anexo 14 Quadro B - "PASSIVO FINANCEIRO" coluna "Exercício Atual" | extrair |
+| passivo_financeiro_anterior | Anexo 14 Quadro B - "PASSIVO FINANCEIRO" coluna "Exercício Anterior" | extrair |
+| creditos_adicionais | Buscar linha específica ou assumir 0.00 | extrair ou 0.00 |
+| superavit_deficit_atual | - | ativo_atual - passivo_atual + creditos_atual |
+| superavit_deficit_anterior | - | ativo_anterior - passivo_anterior + creditos_anterior |
+
+## CÁLCULOS:
+javascript especificacao[0] = {   descricao: "(+) Ativo Financeiro",   exercicio_atual: [Quadro B - ATIVO FINANCEIRO - Ex. Atual],   exercicio_anterior: [Quadro B - ATIVO FINANCEIRO - Ex. Anterior] }  especificacao[1] = {   descricao: "(-) Passivo Financeiro",   exercicio_atual: [Quadro B - PASSIVO FINANCEIRO - Ex. Atual],   exercicio_anterior: [Quadro B - PASSIVO FINANCEIRO - Ex. Anterior] }  especificacao[2] = {   descricao: "(+) Saldos dos créditos adicionais transferidos e as operações de crédito vinculadas",   exercicio_atual: 0.00,   exercicio_anterior: 0.00 }  especificacao[3] = {   descricao: "(=) Superávit/ Déficit Financeiro Apurado",   exercicio_atual: especificacao[0].exercicio_atual - especificacao[1].exercicio_atual + especificacao[2].exercicio_atual,   exercicio_anterior: especificacao[0].exercicio_anterior - especificacao[1].exercicio_anterior + especificacao[2].exercicio_anterior } 
+
+## REGRAS:
+
+1. Valores: decimal 2 casas
+2. Créditos adicionais: 0.00 (padrão)
+3. Descrições: exatas (com sinais)
+4. Fonte: Anexo 14 Quadro B (página 3)
+
+OUTPUT: resultado_financeiro_[ano].json

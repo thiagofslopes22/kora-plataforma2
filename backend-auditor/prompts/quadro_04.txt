@@ -1,0 +1,221 @@
+# PROMPT OTIMIZADO v2 — JSON RECEITA CORRENTE LÍQUIDA (RCL)
+
+Extraia do Anexo 10 (coluna ARRECADADA) e gere JSON da RCL.
+
+**Mudanças desta versão em relação à v1:**
+1. `receita_patrimonial.subtotal` passa a ser extraído DIRETO do código 1300.00 (igual já era feito com 1200.00 e 1900.00), em vez de calculado como `valores_mobiliarios + exploracao_recursos_naturais`. A v1 ignorava a linha "Demais Receitas Patrimoniais" (1390/1399), causando subavaliação.
+2. Adicionado campo `demais_receitas_patrimoniais` (código 1390.00) como item informativo dentro de `receita_patrimonial`.
+3. Adicionada etapa de **validação obrigatória** que compara a soma dos subtotais de categoria com o valor declarado em 1000.00. Se houver divergência, ela NÃO é absorvida silenciosamente — é reportada em um campo `divergencia_total_receita_corrente`, para virar ocorrência de auditoria.
+4. `total_receita_corrente` continua sendo extraído diretamente de 1000.00 (é o valor oficialmente declarado pela prefeitura e usado no cálculo da RCL), mas agora sempre acompanhado da soma calculada dos subtotais para fins de conferência.
+
+```json
+{
+  "municipio": "[extrair cabeçalho]",
+  "exercicio": "[ano]",
+  "receita_corrente_liquida": {
+    "receita_tributaria": {
+      "impostos": 0.00,
+      "taxas": 0.00,
+      "contribuicoes_melhorias": 0.00,
+      "subtotal": 0.00
+    },
+    "receita_contribuicoes": {
+      "cosip": 0.00,
+      "subtotal": 0.00
+    },
+    "receita_patrimonial": {
+      "valores_mobiliarios": 0.00,
+      "exploracao_recursos_naturais": 0.00,
+      "demais_receitas_patrimoniais": 0.00,
+      "subtotal": 0.00
+    },
+    "receita_agropecuaria": {
+      "valor": 0.00,
+      "subtotal": 0.00
+    },
+    "receita_industrial": {
+      "valor": 0.00,
+      "subtotal": 0.00
+    },
+    "receita_servicos": {
+      "valor": 0.00,
+      "subtotal": 0.00
+    },
+    "transferencias_correntes": {
+      "transferencias_uniao": 0.00,
+      "transferencias_estados": 0.00,
+      "transferencias_municipios": 0.00,
+      "transferencias_instituicoes_privadas": 0.00,
+      "transferencias_outras_instituicoes_publicas": 0.00,
+      "subtotal": 0.00
+    },
+    "outras_receitas_correntes": {
+      "multas_administrativas": 0.00,
+      "indenizacoes_restituicoes": 0.00,
+      "receita_divida_ativa": 0.00,
+      "outras": 0.00,
+      "subtotal": 0.00
+    },
+    "total_receita_corrente": 0.00,
+    "soma_subtotais_categorias": 0.00,
+    "divergencia_total_receita_corrente": {
+      "existe": false,
+      "valor": 0.00,
+      "observacao": ""
+    },
+    "deducoes": {
+      "contrib_servidor_previdencia": 0.00,
+      "compensacao_financ_regimes_previdencia": 0.00,
+      "deducao_formacao_fundeb": 0.00,
+      "transferencias_obrigatorias_uniao_166a_artigo51": 0.00,
+      "transferencias_obrigatorias_uniao_166_artigo166": 0.00,
+      "rendimentos_aplicacoes_recursos_previdenciarios": 0.00,
+      "transferencias_uniao_remuneracao_agentes_saude_endemias": 0.00,
+      "subtotal_deducoes": 0.00
+    },
+    "receita_corrente_liquida_declarada": 0.00
+  }
+}
+```
+
+## IDENTIFICAÇÃO DAS COLUNAS
+
+O Anexo 10 possui 3 colunas de valores na ordem:
+ORÇADA | ARRECADADA | DIFERENÇA
+
+SEMPRE extrair da coluna ARRECADADA (2ª coluna).
+
+Padrões de layout encontrados:
+- Tipo A (3 valores na linha): 159.682.397,58 | 196.780.871,46 | 37.098.473,88 → usar 2º valor
+- Tipo B (2 valores na linha): 3.301.626,30 | 3.301.626,30 → ORÇADA = ARRECADADA, diferença = 0 → usar 2º valor
+- Tipo C (código sem valores): linha aparece sem nenhum número → ARRECADADA = 0.00
+
+## MAPEAMENTO DIRETO
+
+| CAMPO | CÓDIGO(S) | OPERAÇÃO |
+|-------|-----------|----------|
+| **RECEITAS** | | |
+| impostos | 1110.00.0.0.00.00 | extrair ARRECADADA |
+| taxas | 1120.00.0.0.00.00 | extrair ARRECADADA |
+| contribuicoes_melhorias | 1130.00.0.0.00.00 | extrair ARRECADADA ou 0.00 |
+| receita_contribuicoes.subtotal | 1200.00.0.0.00.00 | extrair ARRECADADA — direto, NÃO calcular |
+| cosip (informativo) | 1240.00.0.0.00.00 | extrair ARRECADADA |
+| **receita_patrimonial.subtotal** | **1300.00.0.0.00.00** | **extrair ARRECADADA — direto, NÃO calcular** ⚠️ mudou na v2 |
+| valores_mobiliarios (informativo) | 1320.00.0.0.00.00 | extrair ARRECADADA |
+| exploracao_recursos_naturais (informativo) | 1340.00.0.0.00.00 | extrair ARRECADADA ou 0.00 |
+| demais_receitas_patrimoniais (informativo) | 1390.00.0.0.00.00 | extrair ARRECADADA ou 0.00 |
+| receita_agropecuaria | 1400.00.0.0.00.00 | extrair ARRECADADA ou 0.00 |
+| receita_industrial | 1500.00.0.0.00.00 | extrair ARRECADADA ou 0.00 |
+| receita_servicos | 1600.00.0.0.00.00 | extrair ARRECADADA — ver regra especial abaixo |
+| transferencias_uniao | 1710.00.0.0.00.00 | extrair ARRECADADA |
+| transferencias_estados | 1720.00.0.0.00.00 | extrair ARRECADADA |
+| transferencias_municipios | 1730.00.0.0.00.00 | extrair ARRECADADA ou 0.00 |
+| transferencias_instituicoes_privadas | 1740.00.0.0.00.00 | extrair ARRECADADA ou 0.00 |
+| transferencias_outras_instituicoes_publicas | 1750.00.0.0.00.00 | extrair ARRECADADA |
+| multas_administrativas | 1910.00.0.0.00.00 | extrair ARRECADADA ou 0.00 |
+| indenizacoes_restituicoes | 1920.00.0.0.00.00 | extrair ARRECADADA ou 0.00 |
+| receita_divida_ativa | buscar 19xx dívida ativa | extrair ARRECADADA ou 0.00 |
+| outras_receitas_correntes.subtotal | 1900.00.0.0.00.00 | extrair ARRECADADA — direto, NÃO calcular |
+| **DEDUÇÕES** | | |
+| contrib_servidor_previdencia | buscar contrib. prev. | extrair ARRECADADA ou 0.00 |
+| compensacao_financ_regimes_previdencia | buscar compens. regimes | extrair ARRECADADA ou 0.00 |
+| deducao_formacao_fundeb | 91000.00.0.0.00.00 | extrair valor absoluto |
+| transferencias_obrigatorias_uniao_166a_artigo51 | buscar emendas individuais | extrair ARRECADADA ou 0.00 |
+| transferencias_obrigatorias_uniao_166_artigo166 | buscar emendas bancada | extrair ARRECADADA ou 0.00 |
+| rendimentos_aplicacoes_recursos_previdenciarios | 1321.04.0.0.00.00 | extrair ARRECADADA |
+| transferencias_uniao_remuneracao_agentes_saude_endemias | buscar agentes saúde CF art.198 | extrair ARRECADADA ou 0.00 |
+
+## REGRA ESPECIAL — RECEITA DE SERVIÇOS (1600.00)
+
+1. Localizar linha com código 1600.00.0.0.00.00
+2. Contar quantos valores numéricos aparecem na linha:
+   - 3 valores → ORÇADA | ARRECADADA | DIFERENÇA → usar 2º valor
+   - 2 valores → ORÇADA = ARRECADADA (diferença zero) → usar 2º valor
+   - 0 valores → ARRECADADA = 0.00
+3. NUNCA usar a coluna ORÇADA como substituto
+4. Se o código 1600 não existe no documento → 0.00
+
+**Atenção:** em alguns municípios (ex: Pinheiro/MA 2025), o valor de 1600.00 não está somado dentro do totalizador 1000.00, mesmo aparecendo como categoria filha da estrutura. Isso é uma inconsistência do sistema/contador de origem — extrair normalmente e deixar a etapa de validação sinalizar a diferença.
+
+## CÁLCULOS
+
+```
+receita_tributaria.subtotal = impostos + taxas + contribuicoes_melhorias
+receita_contribuicoes.subtotal = 1200.00 (extrair direto)
+receita_patrimonial.subtotal = 1300.00 (extrair direto)  ⚠️ mudou na v2 — não somar sub-itens
+receita_agropecuaria.subtotal = valor
+receita_industrial.subtotal = valor
+receita_servicos.subtotal = valor
+transferencias_correntes.subtotal = transferencias_uniao + transferencias_estados +
+                                     transferencias_municipios + transferencias_instituicoes_privadas +
+                                     transferencias_outras_instituicoes_publicas
+outras_receitas_correntes.subtotal = 1900.00 (extrair direto)
+
+soma_subtotais_categorias = receita_tributaria.subtotal + receita_contribuicoes.subtotal +
+                             receita_patrimonial.subtotal + receita_agropecuaria.subtotal +
+                             receita_industrial.subtotal + receita_servicos.subtotal +
+                             transferencias_correntes.subtotal + outras_receitas_correntes.subtotal
+
+total_receita_corrente = código 1000.00.0.0.00.00 (ARRECADADA) — extrair direto, é o valor oficial declarado
+
+// VALIDAÇÃO OBRIGATÓRIA (não é opcional, sempre rodar):
+diferenca = soma_subtotais_categorias - total_receita_corrente
+se |diferenca| > 0.01:
+    divergencia_total_receita_corrente.existe = true
+    divergencia_total_receita_corrente.valor = diferenca
+    divergencia_total_receita_corrente.observacao = "Soma dos subtotais de categoria diverge do total declarado em 1000.00. Investigar causa (reclassificação, erro de sistema, omissão contábil)."
+senão:
+    divergencia_total_receita_corrente.existe = false
+
+// Deduções
+subtotal_deducoes = soma de todas as deduções
+
+// RCL Final — SEMPRE usa o total_receita_corrente OFICIAL (1000.00), nunca a soma calculada
+receita_corrente_liquida_declarada = total_receita_corrente - subtotal_deducoes
+```
+
+## REGRAS GERAIS
+
+1. Valores: decimal 2 casas
+2. Não encontrado = 0.00
+3. Deduções: sempre valor absoluto (positivo)
+4. Total RC = código 1000.00.0.0.00.00 (ARRECADADA) — usado na RCL, mesmo que divirja da soma dos subtotais
+5. Dedução FUNDEB = código 91000.00.0.0.00.00 (valor absoluto)
+6. RCL = Total RC (1000.00) - Deduções
+7. outras_receitas_correntes.subtotal = extrair direto do código 1900 — NUNCA calcular
+8. receita_contribuicoes.subtotal = extrair direto do código 1200 — NUNCA calcular
+9. **receita_patrimonial.subtotal = extrair direto do código 1300 — NUNCA calcular** ⚠️ regra nova v2
+10. cosip é apenas informativo dentro de receita_contribuicoes
+11. valores_mobiliarios, exploracao_recursos_naturais e demais_receitas_patrimoniais são apenas informativos dentro de receita_patrimonial ⚠️ regra nova v2
+12. Receitas INTRA (código 7000.00) = IGNORAR no cálculo da RCL
+13. Para TODO campo: extrair SEMPRE coluna ARRECADADA, NUNCA coluna ORÇADA
+14. rendimentos_aplicacoes_recursos_previdenciarios = código 1321.04.0.0.00.00 (ARRECADADA)
+15. **A validação de divergência entre soma_subtotais_categorias e total_receita_corrente é obrigatória em todo processamento** — o resultado nunca deve ser forçado a bater artificialmente. Se divergir, reportar e seguir usando o valor de 1000.00 na RCL.
+
+## VALIDAÇÃO
+
+```
+✓ receita_tributaria.subtotal = impostos + taxas + contribuicoes_melhorias
+✓ receita_contribuicoes.subtotal == 1200.00 ARRECADADA
+✓ receita_patrimonial.subtotal == 1300.00 ARRECADADA  ⚠️ nova
+✓ soma_subtotais_categorias = soma de todos os subtotais de categoria
+✓ divergencia_total_receita_corrente = soma_subtotais_categorias - total_receita_corrente (reportar sempre, mesmo se zero)
+✓ subtotal_deducoes = soma de todas as deduções
+✓ rcl = total_receita_corrente (1000.00) - subtotal_deducoes
+✓ rcl deve ser > 0
+✓ receita_servicos.valor: verificar quantidade de colunas antes de registrar
+✓ rendimentos_aplicacoes = 1321.04.0.0.00.00 ARRECADADA
+```
+
+## SIMPLIFICAÇÃO
+
+Se Anexo 10 tem totalizadores prontos:
+- 1000.00.0.0.00.00 = total_receita_corrente (usar direto na RCL)
+- 1200.00.0.0.00.00 = receita_contribuicoes.subtotal
+- 1300.00.0.0.00.00 = receita_patrimonial.subtotal ⚠️ nova
+- 1900.00.0.0.00.00 = outras_receitas_correntes.subtotal
+- 91000.00.0.0.00.00 = deducao_formacao_fundeb (abs)
+- 1321.04.0.0.00.00 = rendimentos_aplicacoes_recursos_previdenciarios
+- RCL = total_receita_corrente - subtotal_deducoes
+
+OUTPUT: rcl_[municipio]_[ano].json (UTF-8, indent 2)

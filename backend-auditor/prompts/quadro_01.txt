@@ -1,0 +1,149 @@
+# PROMPT OTIMIZADO - JSON BASE DE CÁLCULO LEGISLATIVO (QUADRO 1)
+# VERSÃO B — EXTRAÇÃO ORGANIZADA (COLUNA ARRECADADA JÁ ISOLADA)
+
+Extraia do Anexo 10 e gere JSON:
+
+```json
+{
+  "municipio": "[extrair do cabeçalho]",
+  "exercicio": "[extrair ano]",
+  "receita_tributaria": {
+    "iptu": 0.00,
+    "itbi": 0.00,
+    "irrf": 0.00,
+    "iss": 0.00,
+    "taxas_poder_policia": 0.00,
+    "taxas_prestacao_servicos": 0.00,
+    "contribuicoes_melhorias": 0.00,
+    "divida_ativa_tributaria": 0.00,
+    "multas_juros_tributos": 0.00,
+    "cosip": 0.00,
+    "subtotal": 0.00
+  },
+  "transferencias_estado": {
+    "icms": 0.00,
+    "ipva": 0.00,
+    "ipi": 0.00,
+    "cide": 0.00,
+    "icms_desoneracao": 0.00,
+    "subtotal": 0.00
+  },
+  "transferencias_uniao": {
+    "fpm_cota_mensal": 0.00,
+    "fpm_cotas_extraordinarias": 0.00,
+    "fpm_total": 0.00,
+    "itr": 0.00,
+    "subtotal": 0.00
+  },
+  "deducao_fundeb": {
+    "valor": 0.00,
+    "aplicar": false
+  },
+  "totais": {
+    "base_calculo": 0.00,
+    "limite_anual": 0.00,
+    "limite_mensal": 0.00,
+    "percentual_aplicado": 7.0
+  }
+}
+```
+
+---
+
+## FORMATO DO ARQUIVO
+
+O arquivo já está organizado em três colunas limpas:
+
+```
+CÓDIGO                 DESCRIÇÃO                    ARRECADADA
+1112.50.0.0.00.00      IPTU                         XXX.XXX,XX
+1112.53.0.0.00.00      ITBI                         XXX.XXX,XX
+```
+
+**Instrução:** localizar o código, ler o valor da coluna ARRECADADA diretamente. Sem inferência, sem regras de colunas múltiplas. O valor que está na terceira coluna é o valor correto.
+
+Se a linha do código não existir no arquivo: usar **0.00**.
+
+---
+
+## MAPEAMENTO — CÓDIGOS E CAMPOS:
+
+| CAMPO | CÓDIGO | DESCRIÇÃO ESPERADA |
+|-------|--------|--------------------|
+| iptu | 1112.50.0.0.00.00 | IMPOSTO SOBRE A PROPRIEDADE PREDIAL |
+| itbi | 1112.53.0.0.00.00 | ITBI-"INTER VIVOS" |
+| irrf | 1113.03.0.0.00.00 | IMPOSTO SOBRE A RENDA - RETIDO NA FONTE |
+| iss | 1114.51.0.0.00.00 | IMPOSTOS SOBRE SERVIÇOS |
+| taxas_poder_policia | 1121.00.0.0.00.00 | TAXAS PELO EXERCÍCIO DO PODER DE POLÍCIA |
+| taxas_prestacao_servicos | 1122.00.0.0.00.00 | TAXAS PELA PRESTAÇÃO DE SERVIÇOS |
+| contribuicoes_melhorias | 1131.00.0.0.00.00 | CONTRIBUIÇÃO DE MELHORIA |
+| divida_ativa_tributaria | — | 0.00 |
+| multas_juros_tributos | — | 0.00 |
+| cosip | 1241.00.0.0.00.00 | CONTRIBUIÇÃO PARA O CUSTEIO DO SERVIÇO DE ILUMINAÇÃO PÚBLICA |
+| icms | 1721.50.0.0.00.00 | COTA-PARTE DO ICMS |
+| ipva | 1721.51.0.0.00.00 | COTA-PARTE DO IPVA |
+| ipi | 1721.52.0.0.00.00 | COTA-PARTE DO IPI – MUNICÍPIOS |
+| cide | 1721.53.0.0.00.00 | COTA-PARTE CONTRIBUIÇÃO INTERVENÇÃO DOMÍNIO ECONÔMICO |
+| icms_desoneracao | LC 87/96 | 0.00 se não encontrado |
+| fpm_cota_mensal | 1711.51.1.0.00.00 | COTA-PARTE DO FPM - COTA MENSAL |
+| fpm_cotas_extraordinarias | 1711.51.2.0.00.00 | COTA-PARTE DO FPM - COTAS EXTRAORDINÁRIAS |
+| itr | 1711.52.0.0.00.00 | COTA-PARTE DO IMPOSTO TERRITORIAL RURAL |
+
+---
+
+## REGRAS:
+
+1. Usar sempre contas **sintéticas** (código pai) — ex: `1112.50.0.0` e não `1112.50.0.1`
+2. IRRF = código `1113.03.0.0` — NÃO usar `1113.00.0.0` (inclui IRPJ)
+3. Ler o valor **diretamente** da coluna ARRECADADA — não inferir nada
+4. Código não encontrado = **0.00**
+5. Dedução FUNDEB = **0.00** (aplicar: false) para o legislativo
+6. Percentual fixo = **7%**
+7. Valores: decimal 2 casas
+
+---
+
+## CÁLCULOS:
+
+```javascript
+receita_tributaria.subtotal = iptu + itbi + irrf + iss
+                            + taxas_poder_policia
+                            + taxas_prestacao_servicos
+                            + contribuicoes_melhorias
+                            + divida_ativa_tributaria
+                            + multas_juros_tributos
+                            + cosip
+
+transferencias_estado.subtotal = icms + ipva + ipi + cide + icms_desoneracao
+
+transferencias_uniao.fpm_total = fpm_cota_mensal + fpm_cotas_extraordinarias
+transferencias_uniao.subtotal  = fpm_total + itr
+
+base_calculo  = receita_tributaria.subtotal
+              + transferencias_estado.subtotal
+              + transferencias_uniao.subtotal
+
+limite_anual  = base_calculo * 0.07
+limite_mensal = limite_anual / 12
+```
+
+---
+
+## VALIDAÇÕES:
+
+```javascript
+✓ irrf = código 1113.03.0.0 (NÃO usar 1113.00.0.0)
+✓ todos os valores lidos diretamente da coluna ARRECADADA
+✓ receita_tributaria.subtotal = soma dos seus componentes
+✓ transferencias_estado.subtotal = soma dos seus componentes
+✓ transferencias_uniao.fpm_total = fpm_mensal + fpm_extraordinario
+✓ transferencias_uniao.subtotal = fpm_total + itr
+✓ base_calculo = subtotal_tributaria + subtotal_estado + subtotal_uniao
+✓ base_calculo > 0
+✓ limite_anual = base_calculo * 0.07
+✓ limite_mensal = limite_anual / 12
+```
+
+---
+
+**OUTPUT:** `legislativo_[municipio]_[ano].json`

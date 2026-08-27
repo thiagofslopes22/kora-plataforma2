@@ -1,0 +1,41 @@
+# PROMPT OTIMIZADO - JSON RECEITAS DO FUNDEB
+
+Extraia do Anexo 10 (coluna ARRECADADA) e gere JSON:
+
+json {   "municipio": "[extrair do cabeçalho]",   "exercicio": "[extrair do cabeçalho]",   "receitas_fundeb": {     "receitas_recebidas": [       {"descricao": "Transferências de recursos do FUNDEB (B)", "valor": 0.00, "codigo": "1751.50.0.0.00.00"},       {"descricao": "FUNDEB - Complementação da União - VAAF", "valor": 0.00, "codigo": "1715.51.0.0.00.00"},       {"descricao": "FUNDEB - Complementação da União - VAAT", "valor": 0.00, "codigo": "1715.50.0.0.00.00"},       {"descricao": "FUNDEB - Complementação da União - VAAR", "valor": 0.00, "codigo": "1715.52.0.0.00.00"},       {"descricao": "FUNDEB - Complementação da União - ETI", "valor": 0.00, "codigo": "1715.53.0.0.00.00"},       {"descricao": "Receitas de aplicação financeira dos recursos do FUNDEB", "valor": 0.00, "observacao": "Se não encontrado: 0.00"},       {"descricao": "RECEITAS RECEBIDAS DO FUNDEB", "valor": 0.00, "destaque": true}     ],     "receitas_destinadas": {       "descricao": "20% - (FPM, ICMS destinada, ICMS-Desoneração, IPI-Exportação, ITR ou ITR, IPVA) RECEITAS DESTINADAS AO FUNDEB (A)",       "valor": 0.00,       "detalhamento": [         {"descricao": "20% FPM cota mensal", "valor": 0.00, "codigo": "91711.51.1.0.00.00"},         {"descricao": "20% ITR", "valor": 0.00, "codigo": "91711.52.0.0.00.00"},         {"descricao": "20% ICMS", "valor": 0.00, "codigo": "91721.50.0.0.00.00"},         {"descricao": "20% IPVA", "valor": 0.00, "codigo": "91721.51.0.0.00.00"},         {"descricao": "20% IPI", "valor": 0.00, "codigo": "91721.52.0.0.00.00"}       ]     },     "resultado_liquido": {       "descricao": "RESULTADO LÍQUIDO DAS TRANSFERÊNCIAS DO FUNDEB (B-A)",       "valor": 0.00,       "formula": "receitas_recebidas_fundeb - receitas_destinadas_ao_fundeb"     }   } } 
+
+---
+
+## EXTRAÇÃO — REGRA CRÍTICA DE LEITURA:
+
+Formato da linha: ORÇADA | ARRECADADA | DIFERENÇA | CÓDIGO | DESCRIÇÃO  REGRA 1 — Três valores distintos: usar o SEGUNDO valor (ARRECADADA) Ex: "60.468.635,30  69.378.813,85  8.910.178,55  1751.50.0.0" → ARRECADADA = 69.378.813,85  REGRA 2 — Dois valores iguais: ARRECADADA = 0,00 Ex: "2.993.617,38  2.993.617,38  1715.53.0.0" → ARRECADADA = 0,00  REGRA 3 — Um valor apenas: ARRECADADA = 0,00
+
+---
+
+## MAPEAMENTO:
+
+| CAMPO | CÓDIGO SINTÉTICO | OPERAÇÃO |
+|-------|-----------------|----------|
+| Transf. recursos FUNDEB (B) | 1751.50.0.0.00.00 | ARRECADADA |
+| Complementação VAAF | 1715.51.0.0.00.00 | ARRECADADA |
+| Complementação VAAT | 1715.50.0.0.00.00 | ARRECADADA |
+| Complementação VAAR | 1715.52.0.0.00.00 | ARRECADADA |
+| Complementação ETI | 1715.53.0.0.00.00 | ARRECADADA |
+| Aplicação financeira FUNDEB | buscar descrição | ARRECADADA ou 0.00 |
+| 20% FPM | 91711.51.1.0.00.00 | ARRECADADA (converter para positivo) |
+| 20% ITR | 91711.52.0.0.00.00 | ARRECADADA (converter para positivo) |
+| 20% ICMS | 91721.50.0.0.00.00 | ARRECADADA (converter para positivo) |
+| 20% IPVA | 91721.51.0.0.00.00 | ARRECADADA (converter para positivo) |
+| 20% IPI | 91721.52.0.0.00.00 | ARRECADADA (converter para positivo) |
+
+---
+
+## CÁLCULOS:
+
+javascript receitas_recebidas_fundeb = transf_recursos + vaaf + vaat + vaar + eti + aplic_financeira  receitas_destinadas_ao_fundeb = fpm_20 + itr_20 + icms_20 + ipva_20 + ipi_20 // Atenção: códigos 9xxxx aparecem negativos no Anexo 10 — converter para positivo  resultado_liquido = receitas_recebidas_fundeb - receitas_destinadas_ao_fundeb 
+
+---
+
+## EXEMPLO — PINHEIRO 2025:
+
+json {   "municipio": "Pinheiro",   "exercicio": "2025",   "receitas_fundeb": {     "receitas_recebidas": [       {"descricao": "Transferências de recursos do FUNDEB (B)", "valor": 69378813.85, "codigo": "1751.50.0.0.00.00"},       {"descricao": "FUNDEB - Complementação da União - VAAF", "valor": 46389009.08, "codigo": "1715.51.0.0.00.00"},       {"descricao": "FUNDEB - Complementação da União - VAAT", "valor": 45668962.32, "codigo": "1715.50.0.0.00.00"},       {"descricao": "FUNDEB - Complementação da União - VAAR", "valor": 325711.75, "codigo": "1715.52.0.0.00.00"},       {"descricao": "FUNDEB - Complementação da União - ETI", "valor": 2993617.38, "codigo": "1715.53.0.0.00.00"},       {"descricao": "Receitas de aplicação financeira dos recursos do FUNDEB", "valor": 0.00},       {"descricao": "RECEITAS RECEBIDAS DO FUNDEB", "valor": 164756114.38, "destaque": true}     ],     "receitas_destinadas": {       "descricao": "20% RECEITAS DESTINADAS AO FUNDEB (A)",       "valor": 19496877.67,       "detalhamento": [         {"descricao": "20% FPM cota mensal", "valor": 14688796.50, "codigo": "91711.51.1.0.00.00"},         {"descricao": "20% ITR", "valor": 1605.32, "codigo": "91711.52.0.0.00.00"},         {"descricao": "20% ICMS", "valor": 3695585.31, "codigo": "91721.50.0.0.00.00"},         {"descricao": "20% IPVA", "valor": 1086103.79, "codigo": "91721.51.0.0.00.00"},         {"descricao": "20% IPI", "valor": 24786.75, "codigo": "91721.52.0.0.00.00"}       ]     },     "resultado_liquido": {       "descricao": "RESULTADO LÍQUIDO DAS TRANSFERÊNCIAS DO FUNDEB (B-A)",       "valor": 49881936.18,       "formula": "69378813.85 - 19496877.67"     }   } } OUTPUT: receitas_fundeb_[municipio]_[ano].json

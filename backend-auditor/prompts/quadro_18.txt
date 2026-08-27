@@ -1,0 +1,71 @@
+# PROMPT OTIMIZADO - JSON RECEITA IMPOSTOS E TRANSFERÊNCIAS (SAÚDE)
+
+Extraia do Anexo 10 (coluna ARRECADADA) e gere JSON:
+
+json {   "municipio": "[extrair do cabeçalho]",   "exercicio": "[extrair do cabeçalho]",   "apuracao_receita_impostos_transferencias_saude": {     "receita_impostos": [       {"descricao": "Imposto Predial e Territorial Urbano - IPTU", "valor": 0.00, "codigo": "1112.50.0.0.00.00"},       {"descricao": "Multas, juros de mora, dívida ativa e outros encargos do IPTU", "valor": 0.00},       {"descricao": "Imposto sobre a Transmissão de Bens Intervivos - ITBI", "valor": 0.00, "codigo": "1112.53.0.0.00.00"},       {"descricao": "Multas, juros de mora, dívida ativa e outros encargos do ITBI", "valor": 0.00},       {"descricao": "Imposto sobre Serviços de Qualquer Natureza - ISS", "valor": 0.00, "codigo": "1114.51.0.0.00.00"},       {"descricao": "Multas, juros de mora, dívida ativa e outros encargos do ISS", "valor": 0.00},       {"descricao": "Imposto de Renda Retido na Fonte - IRRF", "valor": 0.00, "codigo": "1113.03.0.0.00.00"},       {"descricao": "Imposto Territorial Rural - ITR", "valor": 0.00, "observacao": "ITR é classificado como TRANSFERÊNCIA"},       {"descricao": "Multas, juros de mora, dívida ativa e outros encargos do ITR", "valor": 0.00},       {"descricao": "Multas, juros de mora e outros encargos dos impostos", "valor": 0.00},       {"descricao": "Dívida ativa dos impostos", "valor": 0.00},       {"descricao": "Multa, juros de mora e outros encargos da dívida ativa", "valor": 0.00},       {"descricao": "TOTAL DA RECEITA DE IMPOSTOS (A)", "valor": 0.00, "destaque": true}     ],     "receita_transferencias": [       {"descricao": "Cota-parte FPM", "valor": 0.00, "codigo": "1711.51.1.0.00.00"},       {"descricao": "Cota-parte ITR", "valor": 0.00, "codigo": "1711.52.0.0.00.00"},       {"descricao": "Cota-parte IPVA", "valor": 0.00, "codigo": "1721.51.0.0.00.00"},       {"descricao": "Cota-parte ICMS", "valor": 0.00, "codigo": "1721.50.0.0.00.00"},       {"descricao": "ICMS-Desoneração – LC nº 87/1996", "valor": 0.00},       {"descricao": "Cota-parte IPI-Exportação", "valor": 0.00, "codigo": "1721.52.0.0.00.00"},       {"descricao": "Cota-parte IOF-Ouro", "valor": 0.00},       {"descricao": "TOTAL DA RECEITA DE TRANSFERÊNCIAS CONSTITUCIONAIS E LEGAIS (B)", "valor": 0.00, "destaque": true}     ],     "base_calculo": {       "descricao": "TOTAL DA RECEITA RESULTANTE DE IMPOSTOS (Base de cálculo) (A+B)",       "valor": 0.00,       "formula": "total_impostos + total_transferencias",       "destaque": true     },     "calculo_minimo_saude": {       "base_calculo": 0.00,       "percentual_minimo": 15.00,       "aplicacao_minima_obrigatoria": 0.00,       "base_legal": "CF/88, art. 198, §2º, I c/c EC 29/2000"     },     "fpm_extraordinario_excluido": {       "codigo": "1711.51.2.0.00.00",       "descricao": "FPM - Cotas Extraordinárias",       "valor_excluido": 0.00,       "fundamentacao": "LC 141/2012 e jurisprudência TCE",       "impacto_aplicacao_minima": 0.00     }   } } 
+
+---
+
+## REGRA CRÍTICA DE LEITURA DO ANEXO 10
+
+### Estrutura da linha:
+ORÇADA | ARRECADADA | DIFERENÇA | CÓDIGO | DESCRIÇÃO
+
+### ⚠️ REGRA DE IDENTIFICAÇÃO DA COLUNA ARRECADADA:
+
+O Anexo 10 apresenta os valores em colunas nem sempre separadas por delimitadores claros. Aplicar a seguinte lógica para identificar o valor ARRECADADO:
+
+javascript // Cada linha tem formato: V1 V2 V3 CÓDIGO DESCRIÇÃO // onde: // V1 = ORÇADA // V2 = ARRECADADA (pode estar vazia/ausente) // V3 = DIFERENÇA (PARA MAIS ou PARA MENOS)  // REGRA 1 - Três valores distintos presentes: // Ex: "888.065,64  957.136,88  69.071,24  1112.50.0.1" // → ORÇADA=888.065,64 | ARRECADADA=957.136,88 | DIF=69.071,24 ✓  // REGRA 2 - Apenas dois valores iguais (sem arrecadada): // Ex: "562.005,00  562.005,00  1723.50.0.1" // → ORÇADA=562.005,00 | ARRECADADA=0,00 | DIF=562.005,00 // ⚠️ Quando V1 == V2 e não há V3, significa que ARRECADADA está vazia // O valor que parece "repetido" é ORÇADA e DIFERENÇA PARA MENOS  // REGRA 3 - Apenas um valor presente: // → ARRECADADA = 0,00 
+
+### Exemplos práticos:
+| Linha no PDF | ORÇADA | ARRECADADA | Interpretação |
+|---|---|---|---|
+| 888.065,64 957.136,88 69.071,24 1112.50.0.1 | 888.065,64 | 957.136,88 | 3 valores distintos → arrecadou |
+| 562.005,00 562.005,00 1723.50.0.1 | 562.005,00 | 0,00 | 2 valores iguais → não arrecadou |
+| 162.900,00 162.900,00 1114.51.1.2 | 162.900,00 | 0,00 | 2 valores iguais → não arrecadou |
+| 15.239.760,89 18.477.926,55 3.238.165,66 1721.50.0.1 | 15.239.760,89 | 18.477.926,55 | 3 valores distintos → arrecadou |
+
+---
+
+## MAPEAMENTO — CONTAS SINTÉTICAS:
+
+| CAMPO | CÓDIGO SINTÉTICO | REGRA |
+|-------|-----------------|-------|
+| IPTU | 1112.50.0.0.00.00 | extrair ARRECADADA |
+| ITBI | 1112.53.0.0.00.00 | extrair ARRECADADA |
+| ISS | 1114.51.0.0.00.00 | extrair ARRECADADA |
+| IRRF | 1113.03.0.0.00.00 | extrair ARRECADADA |
+| ITR (impostos) | — | 0.00 (é transferência) |
+| FPM cota mensal | 1711.51.1.0.00.00 | extrair ARRECADADA |
+| ITR transferência | 1711.52.0.0.00.00 | extrair ARRECADADA |
+| IPVA | 1721.51.0.0.00.00 | extrair ARRECADADA |
+| ICMS | 1721.50.0.0.00.00 | extrair ARRECADADA |
+| IPI exportação | 1721.52.0.0.00.00 | extrair ARRECADADA |
+| FPM extraordinário | 1711.51.2.0.00.00 | extrair ARRECADADA (excluído da base) |
+
+---
+
+## REGRAS GERAIS:
+
+1. Usar contas sintéticas (código pai) — nunca subcontas .0.1, .0.2 etc.
+2. Contas sintéticas já agregam principal + multas + dívida ativa
+3. FPM = somente cota mensal 1711.51.1.0 — excluir cotas extraordinárias 1711.51.2.0
+4. ITR = 0.00 nos impostos; extrair como transferência em 1711.52.0.0
+5. Não encontrado ou ARRECADADA vazia = 0.00
+6. Valores: decimal 2 casas
+
+---
+
+## CÁLCULOS:
+
+javascript total_impostos = iptu + itbi + iss + irrf total_transferencias = fpm_mensal + itr + ipva + icms + icms_desoneracao + ipi + iof_ouro base_calculo = total_impostos + total_transferencias aplicacao_minima = base_calculo * 0.15 impacto_fpm_extra = fpm_extraordinario * 0.15 
+
+---
+
+## EXEMPLO — PINHEIRO 2025:
+
+json {   "municipio": "Pinheiro",   "exercicio": "2025",   "apuracao_receita_impostos_transferencias_saude": {     "receita_impostos": [       {"descricao": "IPTU", "valor": 957136.88, "codigo": "1112.50.0.0.00.00"},       {"descricao": "Multas IPTU", "valor": 0.00},       {"descricao": "ITBI", "valor": 426394.26, "codigo": "1112.53.0.0.00.00"},       {"descricao": "Multas ITBI", "valor": 0.00},       {"descricao": "ISS", "valor": 7015931.13, "codigo": "1114.51.0.0.00.00"},       {"descricao": "Multas ISS", "valor": 0.00},       {"descricao": "IRRF", "valor": 13034379.57, "codigo": "1113.03.0.0.00.00"},       {"descricao": "ITR (impostos)", "valor": 0.00},       {"descricao": "TOTAL IMPOSTOS (A)", "valor": 21433841.84, "destaque": true}     ],     "receita_transferencias": [       {"descricao": "FPM cota mensal", "valor": 73443982.48, "codigo": "1711.51.1.0.00.00"},       {"descricao": "ITR", "valor": 8026.58, "codigo": "1711.52.0.0.00.00"},       {"descricao": "IPVA", "valor": 5430518.93, "codigo": "1721.51.0.0.00.00"},       {"descricao": "ICMS", "valor": 18477926.55, "codigo": "1721.50.0.0.00.00"},       {"descricao": "ICMS desoneração", "valor": 0.00},       {"descricao": "IPI exportação", "valor": 123933.75, "codigo": "1721.52.0.0.00.00"},       {"descricao": "IOF-Ouro", "valor": 0.00},       {"descricao": "TOTAL TRANSFERÊNCIAS (B)", "valor": 97484388.29, "destaque": true}     ],     "base_calculo": {"valor": 118918230.13, "destaque": true},     "calculo_minimo_saude": {       "base_calculo": 118918230.13,       "percentual_minimo": 15.00,       "aplicacao_minima_obrigatoria": 17837734.52,       "base_legal": "CF/88, art. 198, §2º, I c/c EC 29/2000"     },     "fpm_extraordinario_excluido": {       "codigo": "1711.51.2.0.00.00",       "valor_excluido": 9035312.64,       "impacto_aplicacao_minima": 1355296.90     }   } } 
+
+---
+
+OUTPUT: receita_impostos_saude_[municipio]_[ano].json

@@ -1,0 +1,38 @@
+# PROMPT OTIMIZADO - JSON EVOLUÇÃO PATRIMÔNIO LÍQUIDO (ANEXO 14)
+
+Extraia do Anexo 14 (Balanço Patrimonial) e gere JSON:
+json {   "municipio": "[extrair]",   "exercicio": "[ano]",   "evolucao_patrimonio_liquido": {     "patrimonio_liquido_anterior": 0.00,     "patrimonio_liquido_atual": 0.00,     "variacao_absoluta": 0.00,     "variacao_percentual": 0.00   } } 
+
+## EXTRAÇÃO:
+
+| CAMPO | LOCALIZAÇÃO ANEXO 14 | OPERAÇÃO |
+|-------|---------------------|----------|
+| patrimonio_liquido_anterior | Quadro Principal - "PATRIMÔNIO LÍQUIDO" ou "TOTAL PATRIMÔNIO LÍQUIDO" coluna "Exercício Anterior" | extrair |
+| patrimonio_liquido_atual | Quadro Principal - "PATRIMÔNIO LÍQUIDO" ou "TOTAL PATRIMÔNIO LÍQUIDO" coluna "Exercício Atual" | extrair |
+| variacao_absoluta | - | atual - anterior |
+| variacao_percentual | - | ((atual - anterior) / abs(anterior)) × 100 |
+
+## LOCALIZAÇÃO NO ANEXO 14:
+
+### QUADRO PRINCIPAL - PATRIMÔNIO LÍQUIDO:
+ANEXO 14 - BALANÇO PATRIMONIAL Página 2 (geralmente)  Seção: PATRIMÔNIO LÍQUIDO Linha final: "TOTAL PATRIMÔNIO LÍQUIDO"  Colunas: - "Exercício Anterior" = patrimonio_liquido_anterior - "Exercício Atual" = patrimonio_liquido_atualEstrutura típica:                           Exercício Anterior    Exercício Atual PATRIMÔNIO LÍQUIDO              -579.524,78       11.250.661,47   RESULTADOS ACUMULADOS         -579.524,78       11.250.661,47   ... TOTAL PATRIMÔNIO LÍQUIDO        -579.524,78       11.250.661,47
+
+## CÁLCULOS:
+javascript // Variação Absoluta variacao_absoluta = patrimonio_liquido_atual - patrimonio_liquido_anterior  // Variação Percentual if (patrimonio_liquido_anterior != 0) {   variacao_percentual = ((patrimonio_liquido_atual - patrimonio_liquido_anterior) / Math.abs(patrimonio_liquido_anterior)) * 100 } else {   variacao_percentual = 0 }  // Arredondar para 2 casas decimais variacao_percentual = Math.round(variacao_percentual * 100) / 100 
+
+## VALIDAÇÕES:
+javascript ✓ patrimonio_liquido_anterior existe (pode ser negativo) ✓ patrimonio_liquido_atual existe (pode ser negativo) ✓ variacao_absoluta = atual - anterior ✓ variacao_percentual calculado corretamente ✓ valores com 2 casas decimais 
+
+## REGRAS:
+
+1. Valores: decimal 2 casas
+2. Aceitar valores negativos (passivo a descoberto)
+3. Percentual: usar valor absoluto do anterior no denominador
+4. Se anterior = 0: percentual = 0
+5. Fonte: Quadro Principal (não Quadro B)
+
+## EXEMPLO DE EXTRAÇÃO:
+ANEXO 14 - Página 2  PATRIMÔNIO LÍQUIDO          Ex. Anterior    Ex. Atual RESULTADOS ACUMULADOS        -579.524,78    11.250.661,47 TOTAL PATRIMÔNIO LÍQUIDO     -579.524,78    11.250.661,47  EXTRAIR: patrimonio_liquido_anterior = -579524.78 patrimonio_liquido_atual = 11250661.47  CALCULAR: variacao_absoluta = 11250661.47 - (-579524.78) = 11830186.25 variacao_percentual = (11830186.25 / 579524.78) × 100 = 2041.36%
+
+## SIMPLIFICAÇÃO:
+ESSENCIAL: 1. Anexo 14 Quadro Principal (Página 2) 2. Buscar: "TOTAL PATRIMÔNIO LÍQUIDO" ou "PATRIMÔNIO LÍQUIDO" 3. Extrair 2 colunas (Exercício Anterior + Exercício Atual) 4. Calcular: variacao_absoluta = atual - anterior 5. Calcular: variacao_percentual = (variacao / |anterior|) × 100OUTPUT: evolucao_patrimonio_liquido_[ano].json

@@ -1,0 +1,52 @@
+# PROMPT OTIMIZADO - JSON BALANÇO GERAL FUNDEB 70% (ANEXO 06)
+
+Extraia do Anexo 06 (Unidade 22 — FUNDEB) e gere JSON:
+
+json {   "municipio": "[extrair do cabeçalho]",   "exercicio": "[extrair do cabeçalho]",   "fundeb_70_balanco_geral": {     "acoes": [       {"codigo": "12.361.0311.2011", "descricao": "FUNDEB 70% - MANUTENÇÃO E DESENVOLVIMENTO DO ENSINO FUNDAMENTAL", "valor": 0.00},       {"codigo": "12.361.0311.2741", "descricao": "FUNDEB 70% REMUNERAÇÃO DOS DOCENTES E PROFISSIONAIS", "valor": 0.00},       {"codigo": "12.361.0311.2763", "descricao": "FUNDEB 70% MANUTENÇÃO DAS ATIVIDADES DA EDUCAÇÃO EM TEMPO INTEGRAL", "valor": 0.00},       {"codigo": "12.365.0314.2021", "descricao": "FUNDEB 70% - MANUTENÇÃO E DESENVOLVIMENTO DO ENSINO INFANTIL", "valor": 0.00},       {"codigo": "12.365.0314.2501", "descricao": "FUNDEB 70% - MANUTENÇÃO DO FUNDEB COM RECURSO DO VAAT 50%", "valor": 0.00},       {"codigo": "12.365.0314.2742", "descricao": "FUNDEB 70% REMUNERAÇÃO DOS DOCENTES E PROFISSIONAIS DO ENSINO", "valor": 0.00},       {"codigo": "12.365.0314.2763", "descricao": "FUNDEB 70% MANUTENÇÃO DAS ATIVIDADES DA EDUCAÇÃO EM TEMPO INTEGRAL", "valor": 0.00},       {"codigo": "12.366.0311.2028", "descricao": "FUNDEB 70% - MANUTENÇÃO E FUNCIONAMENTO DA EJA", "valor": 0.00},       {"codigo": "12.367.0314.2022", "descricao": "FUNDEB 70% - MANUTENÇÃO E FUNCIONAMENTO DO AEE", "valor": 0.00}     ],     "total": 0.00   } } 
+
+---
+
+## ⚠️ REGRA CRÍTICA — LEITURA DO ANEXO 06
+
+O Anexo 06 apresenta três colunas numéricas:
+PROJETOS | ATIVIDADES | TOTAL  Usar sempre a coluna TOTAL (terceiro valor). Se a ação tiver apenas um valor → usar esse valor como TOTAL. Se a ação tiver valor zero → registrar 0.00.
+
+---
+
+## LOCALIZAÇÃO NO ANEXO 06:
+
+ÓRGÃO 02 — EXECUTIVO   └─ UNIDADE 22 — FUNDO DE DESENVOLVIMENTO DA EDUCAÇÃO BÁSICA - FUNDEB         └─ FUNÇÃO 12 — EDUCAÇÃO               └─ Buscar APENAS ações com descrição contendo "FUNDEB 70%"
+
+---
+
+## MAPEAMENTO DAS AÇÕES:
+
+| CÓDIGO DA AÇÃO | DESCRIÇÃO | SUBFUNÇÃO |
+|---|---|---|
+| 12.361.0311.2011 | FUNDEB 70% - MANUTENÇÃO E DESENVOLVIMENTO DO ENSINO FUNDAMENTAL | 361 |
+| 12.361.0311.2741 | FUNDEB 70% REMUNERAÇÃO DOS DOCENTES E PROFISSIONAIS | 361 |
+| 12.361.0311.2763 | FUNDEB 70% MANUTENÇÃO DAS ATIVIDADES DA EDUCAÇÃO EM TEMPO INTEGRAL | 361 |
+| 12.365.0314.2021 | FUNDEB 70% - MANUTENÇÃO E DESENVOLVIMENTO DO ENSINO INFANTIL | 365 |
+| 12.365.0314.2501 | FUNDEB 70% - MANUTENÇÃO DO FUNDEB COM RECURSO DO VAAT 50% | 365 |
+| 12.365.0314.2742 | FUNDEB 70% REMUNERAÇÃO DOS DOCENTES E PROFISSIONAIS DO ENSINO | 365 |
+| 12.365.0314.2763 | FUNDEB 70% MANUTENÇÃO DAS ATIVIDADES DA EDUCAÇÃO EM TEMPO INTEGRAL | 365 |
+| 12.366.0311.2028 | FUNDEB 70% - MANUTENÇÃO E FUNCIONAMENTO DA EJA | 366 |
+| 12.367.0314.2022 | FUNDEB 70% - MANUTENÇÃO E FUNCIONAMENTO DO AEE | 367 |
+
+---
+
+## REGRAS:
+
+1. Buscar SOMENTE na Unidade 22 (FUNDEB) — não incluir outras unidades
+2. Incluir APENAS ações com "FUNDEB 70%" na descrição
+3. Usar coluna TOTAL do Anexo 06
+4. Se ação não encontrada: 0.00
+5. Se município tiver ações FUNDEB 70% não listadas acima: incluir como item adicional
+
+javascript total = soma de todas as ações FUNDEB 70% 
+
+---
+
+## EXEMPLO — PINHEIRO 2025:
+
+json {   "municipio": "Pinheiro",   "exercicio": "2025",   "fundeb_70_balanco_geral": {     "acoes": [       {"codigo": "12.361.0311.2011", "descricao": "FUNDEB 70% - MANUTENÇÃO E DESENVOLVIMENTO DO ENSINO FUNDAMENTAL", "valor": 7514458.27},       {"codigo": "12.361.0311.2741", "descricao": "FUNDEB 70% REMUNERAÇÃO DOS DOCENTES E PROFISSIONAIS", "valor": 78355805.10},       {"codigo": "12.361.0311.2763", "descricao": "FUNDEB 70% MANUTENÇÃO DAS ATIVIDADES DA EDUCAÇÃO EM TEMPO INTEGRAL", "valor": 1390048.24},       {"codigo": "12.365.0314.2021", "descricao": "FUNDEB 70% - MANUTENÇÃO E DESENVOLVIMENTO DO ENSINO INFANTIL", "valor": 5215769.55},       {"codigo": "12.365.0314.2501", "descricao": "FUNDEB 70% - MANUTENÇÃO DO FUNDEB COM RECURSO DO VAAT 50%", "valor": 15123283.94},       {"codigo": "12.365.0314.2742", "descricao": "FUNDEB 70% REMUNERAÇÃO DOS DOCENTES E PROFISSIONAIS DO ENSINO", "valor": 2266719.00},       {"codigo": "12.365.0314.2763", "descricao": "FUNDEB 70% MANUTENÇÃO DAS ATIVIDADES DA EDUCAÇÃO EM TEMPO INTEGRAL", "valor": 199250.72},       {"codigo": "12.366.0311.2028", "descricao": "FUNDEB 70% - MANUTENÇÃO E FUNCIONAMENTO DA EJA", "valor": 3465552.25},       {"codigo": "12.367.0314.2022", "descricao": "FUNDEB 70% - MANUTENÇÃO E FUNCIONAMENTO DO AEE", "valor": 7307452.32}     ],     "total": 120838339.39   } } OUTPUT: fundeb_70_balanco_geral_[municipio]_[ano].json

@@ -1,0 +1,104 @@
+Você é um assistente especializado em extração de dados de documentos orçamentários brasileiros.
+
+Sua tarefa é extrair TODOS os valores dos elementos da tabela "RECEITAS ORÇAMENTÁRIAS" do texto fornecido e retornar APENAS um JSON válido, sem nenhum texto adicional, explicação ou formatação markdown.
+
+ELEMENTOS A EXTRAIR (cada um com 4 valores):
+1. Receitas Correntes (I)
+2. Receitas de Capital (II)
+3. SUBTOTAL DAS RECEITAS (III) = (I + II)
+4. Operações de Crédito/Refinanciamento (IV)
+5. SUBTOTAL COM REFINANCIAMENTO (V) = (III + IV)
+6. Déficit (VI)
+7. TOTAL (VII) = (V + VI)
+8. Saldos de Exercícios Anteriores (Utilizados Para Créditos Adicionais)
+9. Recursos Arrecadados em Exercícios Anteriores
+10. Superávit Financeiro
+11. Reabertura de Créditos Adicionais
+
+VALORES A EXTRAIR PARA CADA ELEMENTO:
+- Prevista Inicial (a)
+- Prevista Atualizada (b)
+- Realizada (c)
+- Saldo (d) = (c-b)
+
+FORMATO DE SAÍDA OBRIGATÓRIO (retorne APENAS este JSON, nada mais):
+
+{
+"receitas_correntes": {
+"prevista_inicial_a": "",
+"prevista_atualizada_b": "",
+"realizada_c": "",
+"saldo_d": ""
+},
+"receitas_capital": {
+"prevista_inicial_a": "",
+"prevista_atualizada_b": "",
+"realizada_c": "",
+"saldo_d": ""
+},
+"subtotal_receitas": {
+"prevista_inicial_a": "",
+"prevista_atualizada_b": "",
+"realizada_c": "",
+"saldo_d": ""
+},
+"operacoes_credito_refinanciamento": {
+"prevista_inicial_a": "",
+"prevista_atualizada_b": "",
+"realizada_c": "",
+"saldo_d": ""
+},
+"subtotal_com_refinanciamento": {
+"prevista_inicial_a": "",
+"prevista_atualizada_b": "",
+"realizada_c": "",
+"saldo_d": ""
+},
+"deficit": {
+"prevista_inicial_a": "",
+"prevista_atualizada_b": "",
+"realizada_c": "",
+"saldo_d": ""
+},
+"total": {
+"prevista_inicial_a": "",
+"prevista_atualizada_b": "",
+"realizada_c": "",
+"saldo_d": ""
+},
+"saldos_exercicios_anteriores": {
+"prevista_inicial_a": "",
+"prevista_atualizada_b": "",
+"realizada_c": "",
+"saldo_d": ""
+},
+"recursos_arrecadados_exercicios_anteriores": {
+"prevista_inicial_a": "",
+"prevista_atualizada_b": "",
+"realizada_c": "",
+"saldo_d": ""
+},
+"superavit_financeiro": {
+"prevista_inicial_a": "",
+"prevista_atualizada_b": "",
+"realizada_c": "",
+"saldo_d": ""
+},
+"reabertura_creditos_adicionais": {
+"prevista_inicial_a": "",
+"prevista_atualizada_b": "",
+"realizada_c": "",
+"saldo_d": ""
+}
+}
+
+REGRAS IMPORTANTES:
+- Mantenha os valores EXATAMENTE como aparecem no texto (com vírgulas e pontos)
+- Se um valor não for encontrado, use "0,00"
+- Retorne APENAS o JSON, sem ```json, sem explicações, sem texto adicional
+- O JSON deve ser válido e parseável
+
+TEXTO A PROCESSAR:
+[INSERIR AQUI O TEXTO EXTRAÍDO DO PDF]
+
+

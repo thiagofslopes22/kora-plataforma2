@@ -1,0 +1,1246 @@
+{
+  "municipio": "PINHEIRO",
+  "exercicio": "0620",
+  "periodo": "01/01/2025 ATÉ 31/12/2025",
+  "orgaos": {
+    "01": {
+      "nome": "LEGISLATIVO",
+      "total": 7539961.44,
+      "despesas_correntes": 7303297.44,
+      "pessoal_encargos": 5715654.29,
+      "outras_despesas_correntes": 1587643.15,
+      "despesas_capital": 236664.0,
+      "investimentos": 236664.0,
+      "amortizacao_divida": 0.0
+    },
+    "02": {
+      "nome": "EXECUTIVO",
+      "total": 381787008.59,
+      "despesas_correntes": 349460889.7,
+      "pessoal_encargos": 188231230.56,
+      "outras_despesas_correntes": 161229659.14,
+      "despesas_capital": 32326118.89,
+      "investimentos": 27612624.11,
+      "amortizacao_divida": 4713494.78
+    }
+  },
+  "total_geral": 389326970.03,
+  "itens": [
+    {
+      "orgao_codigo": "01",
+      "orgao_nome": "LEGISLATIVO",
+      "codigo": "3",
+      "descricao": "DESPESAS CORRENTES",
+      "valor": 7303297.44,
+      "nivel": 1
+    },
+    {
+      "orgao_codigo": "01",
+      "orgao_nome": "LEGISLATIVO",
+      "codigo": "3.1",
+      "descricao": "PESSOAL E ENCARGOS SOCIAIS",
+      "valor": 5715654.29,
+      "nivel": 2
+    },
+    {
+      "orgao_codigo": "01",
+      "orgao_nome": "LEGISLATIVO",
+      "codigo": "3.1.90",
+      "descricao": "APLICAÇÕES DIRETAS",
+      "valor": 5715654.29,
+      "nivel": 3
+    },
+    {
+      "orgao_codigo": "01",
+      "orgao_nome": "LEGISLATIVO",
+      "codigo": "3.1.90.04",
+      "descricao": "CONTRATAÇÃO POR TEMPO DETERMINADO",
+      "valor": 91575.11,
+      "nivel": 4
+    },
+    {
+      "orgao_codigo": "01",
+      "orgao_nome": "LEGISLATIVO",
+      "codigo": "3.1.90.04.01",
+      "descricao": "SALARIO CONTRATO TEMPORARIO",
+      "valor": 91575.11,
+      "nivel": 5
+    },
+    {
+      "orgao_codigo": "01",
+      "orgao_nome": "LEGISLATIVO",
+      "codigo": "3.1.90.11",
+      "descricao": "VENCIMENTOS E VANTAGENS FIXAS - PESSOAL CIV",
+      "valor": 4946666.96,
+      "nivel": 4
+    },
+    {
+      "orgao_codigo": "01",
+      "orgao_nome": "LEGISLATIVO",
+      "codigo": "3.1.90.11.01",
+      "descricao": "VENCIMENTOS E SALARIOS",
+      "valor": 2646566.96,
+      "nivel": 5
+    },
+    {
+      "orgao_codigo": "01",
+      "orgao_nome": "LEGISLATIVO",
+      "codigo": "3.1.90.11.75",
+      "descricao": "SUBSIDIOS – AGENTES POLÍTICOS",
+      "valor": 2300100.0,
+      "nivel": 5
+    },
+    {
+      "orgao_codigo": "01",
+      "orgao_nome": "LEGISLATIVO",
+      "codigo": "3.1.90.13",
+      "descricao": "OBRIGAÇÕES PATRONAIS",
+      "valor": 677412.22,
+      "nivel": 4
+    },
+    {
+      "orgao_codigo": "01",
+      "orgao_nome": "LEGISLATIVO",
+      "codigo": "3.1.90.13.02",
+      "descricao": "CONTRIBUICOES PREVIDENCIARIAS - INSS",
+      "valor": 677412.22,
+      "nivel": 5
+    },
+    {
+      "orgao_codigo": "01",
+      "orgao_nome": "LEGISLATIVO",
+      "codigo": "3.3",
+      "descricao": "OUTRAS DESPESAS CORRENTES",
+      "valor": 1587643.15,
+      "nivel": 2
+    },
+    {
+      "orgao_codigo": "01",
+      "orgao_nome": "LEGISLATIVO",
+      "codigo": "3.90",
+      "descricao": "APLICAÇÕES DIRETAS",
+      "valor": 1587643.15,
+      "nivel": 2
+    },
+    {
+      "orgao_codigo": "01",
+      "orgao_nome": "LEGISLATIVO",
+      "codigo": "3.90.30",
+      "descricao": "MATERIAL DE CONSUMO",
+      "valor": 368891.27,
+      "nivel": 3
+    },
+    {
+      "orgao_codigo": "01",
+      "orgao_nome": "LEGISLATIVO",
+      "codigo": "3.3.90.30.01",
+      "descricao": "COMBUSTÍVEIS E LUBRIFICANTES AUTOMOT",
+      "valor": 122142.76,
+      "nivel": 5
+    },
+    {
+      "orgao_codigo": "01",
+      "orgao_nome": "LEGISLATIVO",
+      "codigo": "3.3.90.30.07",
+      "descricao": "GÊNEROS DE ALIMENTAÇÃO",
+      "valor": 48995.47,
+      "nivel": 5
+    },
+    {
+      "orgao_codigo": "01",
+      "orgao_nome": "LEGISLATIVO",
+      "codigo": "3.3.90.30.16",
+      "descricao": "MATERIAL DE EXPEDIENTE",
+      "valor": 71460.48,
+      "nivel": 5
+    },
+    {
+      "orgao_codigo": "01",
+      "orgao_nome": "LEGISLATIVO",
+      "codigo": "3.3.90.30.21",
+      "descricao": "MATERIAL DE LIMPEZA E PRODUÇÃO DE HIG",
+      "valor": 72370.17,
+      "nivel": 5
+    },
+    {
+      "orgao_codigo": "01",
+      "orgao_nome": "LEGISLATIVO",
+      "codigo": "3.3.90.30.99",
+      "descricao": "OUTROS MATERIAIS DE CONSUMO",
+      "valor": 53922.39,
+      "nivel": 5
+    },
+    {
+      "orgao_codigo": "01",
+      "orgao_nome": "LEGISLATIVO",
+      "codigo": "3.90.35",
+      "descricao": "SERVIÇOS DE CONSULTORIA",
+      "valor": 291000.0,
+      "nivel": 3
+    },
+    {
+      "orgao_codigo": "01",
+      "orgao_nome": "LEGISLATIVO",
+      "codigo": "3.3.90.35.00",
+      "descricao": "SERVIÇOS DE CONSULTORIA",
+      "valor": 291000.0,
+      "nivel": 5
+    },
+    {
+      "orgao_codigo": "01",
+      "orgao_nome": "LEGISLATIVO",
+      "codigo": "3.90.39",
+      "descricao": "OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍD",
+      "valor": 924019.46,
+      "nivel": 3
+    },
+    {
+      "orgao_codigo": "01",
+      "orgao_nome": "LEGISLATIVO",
+      "codigo": "3.3.90.39.17",
+      "descricao": "MANUTENÇÃO E CONSERVAÇÃO DE MÁQUIN",
+      "valor": 30000.0,
+      "nivel": 5
+    },
+    {
+      "orgao_codigo": "01",
+      "orgao_nome": "LEGISLATIVO",
+      "codigo": "3.3.90.39.43",
+      "descricao": "SERVIÇOS DE ENERGIA ELÉTRICA",
+      "valor": 30732.27,
+      "nivel": 5
+    },
+    {
+      "orgao_codigo": "01",
+      "orgao_nome": "LEGISLATIVO",
+      "codigo": "3.3.90.39.44",
+      "descricao": "SERVIÇOS DE ÁGUA E ESGOTO",
+      "valor": 11206.19,
+      "nivel": 5
+    },
+    {
+      "orgao_codigo": "01",
+      "orgao_nome": "LEGISLATIVO",
+      "codigo": "3.3.90.39.77",
+      "descricao": "VIGILANCIA OSTENSIVA/MONITORADA",
+      "valor": 224529.6,
+      "nivel": 5
+    },
+    {
+      "orgao_codigo": "01",
+      "orgao_nome": "LEGISLATIVO",
+      "codigo": "3.3.90.39.90",
+      "descricao": "SERVICOS DE PUBLICIDADE",
+      "valor": 70750.0,
+      "nivel": 5
+    },
+    {
+      "orgao_codigo": "01",
+      "orgao_nome": "LEGISLATIVO",
+      "codigo": "3.3.90.39.99",
+      "descricao": "OUTROS SERVICOS DE TERCEIROS-PESSOA",
+      "valor": 556801.4,
+      "nivel": 5
+    },
+    {
+      "orgao_codigo": "01",
+      "orgao_nome": "LEGISLATIVO",
+      "codigo": "3.90.92",
+      "descricao": "DESPESAS DE EXERCÍCIOS ANTERIORES",
+      "valor": 3732.42,
+      "nivel": 3
+    },
+    {
+      "orgao_codigo": "01",
+      "orgao_nome": "LEGISLATIVO",
+      "codigo": "3.3.90.92.39",
+      "descricao": "OUTROS SERVICOS DE TERCEIROS - PJ",
+      "valor": 1630.76,
+      "nivel": 5
+    },
+    {
+      "orgao_codigo": "01",
+      "orgao_nome": "LEGISLATIVO",
+      "codigo": "3.3.90.92.99",
+      "descricao": "OUTRAS DESPESAS DE EXERCICIOS ANTERIO",
+      "valor": 2101.66,
+      "nivel": 5
+    },
+    {
+      "orgao_codigo": "01",
+      "orgao_nome": "LEGISLATIVO",
+      "codigo": "4",
+      "descricao": "DESPESAS DE CAPITAL",
+      "valor": 236664.0,
+      "nivel": 1
+    },
+    {
+      "orgao_codigo": "01",
+      "orgao_nome": "LEGISLATIVO",
+      "codigo": "4.4",
+      "descricao": "INVESTIMENTOS",
+      "valor": 236664.0,
+      "nivel": 2
+    },
+    {
+      "orgao_codigo": "01",
+      "orgao_nome": "LEGISLATIVO",
+      "codigo": "4.90",
+      "descricao": "APLICAÇÕES DIRETAS",
+      "valor": 236664.0,
+      "nivel": 2
+    },
+    {
+      "orgao_codigo": "01",
+      "orgao_nome": "LEGISLATIVO",
+      "codigo": "4.90.52",
+      "descricao": "EQUIPAMENTOS E MATERIAL PERMANENTE",
+      "valor": 236664.0,
+      "nivel": 3
+    },
+    {
+      "orgao_codigo": "01",
+      "orgao_nome": "LEGISLATIVO",
+      "codigo": "4.4.90.52.42",
+      "descricao": "MOBILIÁRIO EM GERAL",
+      "valor": 236664.0,
+      "nivel": 5
+    },
+    {
+      "orgao_codigo": "02",
+      "orgao_nome": "EXECUTIVO",
+      "codigo": "3",
+      "descricao": "DESPESAS CORRENTES",
+      "valor": 349460889.7,
+      "nivel": 1
+    },
+    {
+      "orgao_codigo": "02",
+      "orgao_nome": "EXECUTIVO",
+      "codigo": "3.1",
+      "descricao": "PESSOAL E ENCARGOS SOCIAIS",
+      "valor": 188231230.56,
+      "nivel": 2
+    },
+    {
+      "orgao_codigo": "02",
+      "orgao_nome": "EXECUTIVO",
+      "codigo": "3.1.90",
+      "descricao": "APLICAÇÕES DIRETAS",
+      "valor": 188231230.56,
+      "nivel": 3
+    },
+    {
+      "orgao_codigo": "02",
+      "orgao_nome": "EXECUTIVO",
+      "codigo": "3.1.90.04",
+      "descricao": "CONTRATAÇÃO POR TEMPO DETERMINADO",
+      "valor": 62107701.51,
+      "nivel": 4
+    },
+    {
+      "orgao_codigo": "02",
+      "orgao_nome": "EXECUTIVO",
+      "codigo": "3.1.90.04.01",
+      "descricao": "SALARIO CONTRATO TEMPORARIO",
+      "valor": 5960872.24,
+      "nivel": 5
+    },
+    {
+      "orgao_codigo": "02",
+      "orgao_nome": "EXECUTIVO",
+      "codigo": "3.1.90.04.13",
+      "descricao": "13. SALARIO - CONTRATO TEMPORARIO",
+      "valor": 606933.88,
+      "nivel": 5
+    },
+    {
+      "orgao_codigo": "02",
+      "orgao_nome": "EXECUTIVO",
+      "codigo": "3.1.90.04.99",
+      "descricao": "OUTRAS CONTRATAÇÕES POR TEMPO DETE",
+      "valor": 55539895.39,
+      "nivel": 5
+    },
+    {
+      "orgao_codigo": "02",
+      "orgao_nome": "EXECUTIVO",
+      "codigo": "3.1.90.11",
+      "descricao": "VENCIMENTOS E VANTAGENS FIXAS - PESSOAL CIV",
+      "valor": 111680845.14,
+      "nivel": 4
+    },
+    {
+      "orgao_codigo": "02",
+      "orgao_nome": "EXECUTIVO",
+      "codigo": "3.1.90.11.01",
+      "descricao": "VENCIMENTOS E SALARIOS",
+      "valor": 100668170.46,
+      "nivel": 5
+    },
+    {
+      "orgao_codigo": "02",
+      "orgao_nome": "EXECUTIVO",
+      "codigo": "3.1.90.11.43",
+      "descricao": "13. SALARIO",
+      "valor": 6222290.45,
+      "nivel": 5
+    },
+    {
+      "orgao_codigo": "02",
+      "orgao_nome": "EXECUTIVO",
+      "codigo": "3.1.90.11.51",
+      "descricao": "OUTROS ADICIONAIS, VANTAGENS,GRATIFIC",
+      "valor": 2781850.0,
+      "nivel": 5
+    },
+    {
+      "orgao_codigo": "02",
+      "orgao_nome": "EXECUTIVO",
+      "codigo": "3.1.90.11.99",
+      "descricao": "OUTRAS DESPESAS FIXAS - PESSOAL CIVIL",
+      "valor": 2008534.23,
+      "nivel": 5
+    },
+    {
+      "orgao_codigo": "02",
+      "orgao_nome": "EXECUTIVO",
+      "codigo": "3.1.90.13",
+      "descricao": "OBRIGAÇÕES PATRONAIS",
+      "valor": 6304234.86,
+      "nivel": 4
+    },
+    {
+      "orgao_codigo": "02",
+      "orgao_nome": "EXECUTIVO",
+      "codigo": "3.1.90.13.01",
+      "descricao": "FGTS",
+      "valor": 0.0,
+      "nivel": 5
+    },
+    {
+      "orgao_codigo": "02",
+      "orgao_nome": "EXECUTIVO",
+      "codigo": "3.1.90.13.02",
+      "descricao": "CONTRIBUICOES PREVIDENCIARIAS - INSS",
+      "valor": 6118051.46,
+      "nivel": 5
+    },
+    {
+      "orgao_codigo": "02",
+      "orgao_nome": "EXECUTIVO",
+      "codigo": "3.1.90.13.08",
+      "descricao": "CONTRIBUICOES PREVIDENCIARIAS - RPPS -",
+      "valor": 50398.15,
+      "nivel": 5
+    },
+    {
+      "orgao_codigo": "02",
+      "orgao_nome": "EXECUTIVO",
+      "codigo": "3.1.90.13.99",
+      "descricao": "OUTRAS OBRIGACOES PATRONAIS",
+      "valor": 135785.25,
+      "nivel": 5
+    },
+    {
+      "orgao_codigo": "02",
+      "orgao_nome": "EXECUTIVO",
+      "codigo": "3.1.90.91",
+      "descricao": "SENTENÇAS JUDICIAIS",
+      "valor": 1075493.48,
+      "nivel": 4
+    },
+    {
+      "orgao_codigo": "02",
+      "orgao_nome": "EXECUTIVO",
+      "codigo": "3.1.90.91.01",
+      "descricao": "PRECATORIOS - ATIVO CIVIL",
+      "valor": 3696.68,
+      "nivel": 5
+    },
+    {
+      "orgao_codigo": "02",
+      "orgao_nome": "EXECUTIVO",
+      "codigo": "3.1.90.91.99",
+      "descricao": "OUTRAS SENTENCAS JUDICIAIS",
+      "valor": 1071796.8,
+      "nivel": 5
+    },
+    {
+      "orgao_codigo": "02",
+      "orgao_nome": "EXECUTIVO",
+      "codigo": "3.1.90.92",
+      "descricao": "DESPESAS DE EXERCÍCIOS ANTERIORES",
+      "valor": 7062955.57,
+      "nivel": 4
+    },
+    {
+      "orgao_codigo": "02",
+      "orgao_nome": "EXECUTIVO",
+      "codigo": "3.1.90.92.11",
+      "descricao": "VENCIMENTOS E VANTAGENS FIXAS - PESSO",
+      "valor": 6378709.72,
+      "nivel": 5
+    },
+    {
+      "orgao_codigo": "02",
+      "orgao_nome": "EXECUTIVO",
+      "codigo": "3.1.90.92.16",
+      "descricao": "OUTRAS DESPESAS VARIAVEIS - PESSOAL C",
+      "valor": 663104.9,
+      "nivel": 5
+    },
+    {
+      "orgao_codigo": "02",
+      "orgao_nome": "EXECUTIVO",
+      "codigo": "3.1.90.92.99",
+      "descricao": "OUTRAS DESPESAS DE EXERCICIOS ANTERIO",
+      "valor": 21140.95,
+      "nivel": 5
+    },
+    {
+      "orgao_codigo": "02",
+      "orgao_nome": "EXECUTIVO",
+      "codigo": "3.3",
+      "descricao": "OUTRAS DESPESAS CORRENTES",
+      "valor": 161229659.14,
+      "nivel": 2
+    },
+    {
+      "orgao_codigo": "02",
+      "orgao_nome": "EXECUTIVO",
+      "codigo": "3.50",
+      "descricao": "TRANSFERÊNCIAS A INSTITUIÇÕES PRIVADAS SEM FINS LU",
+      "valor": 5744882.37,
+      "nivel": 2
+    },
+    {
+      "orgao_codigo": "02",
+      "orgao_nome": "EXECUTIVO",
+      "codigo": "3.50.43",
+      "descricao": "SUBVENÇÕES SOCIAIS",
+      "valor": 5744882.37,
+      "nivel": 3
+    },
+    {
+      "orgao_codigo": "02",
+      "orgao_nome": "EXECUTIVO",
+      "codigo": "3.3.50.43.06",
+      "descricao": "INSTITUIÇÃO DE CARÁTER DE ASSISTÊNCIA S",
+      "valor": 3756800.59,
+      "nivel": 5
+    },
+    {
+      "orgao_codigo": "02",
+      "orgao_nome": "EXECUTIVO",
+      "codigo": "3.3.50.43.08",
+      "descricao": "INSTITUIÇÃO DE CARÁTER EDUCACIONAL",
+      "valor": 1988081.78,
+      "nivel": 5
+    },
+    {
+      "orgao_codigo": "02",
+      "orgao_nome": "EXECUTIVO",
+      "codigo": "3.90",
+      "descricao": "APLICAÇÕES DIRETAS",
+      "valor": 155484776.77,
+      "nivel": 2
+    },
+    {
+      "orgao_codigo": "02",
+      "orgao_nome": "EXECUTIVO",
+      "codigo": "3.90.04",
+      "descricao": "CONTRATAÇÃO POR TEMPO DETERMINADO",
+      "valor": 3832.36,
+      "nivel": 3
+    },
+    {
+      "orgao_codigo": "02",
+      "orgao_nome": "EXECUTIVO",
+      "codigo": "3.3.90.04.00",
+      "descricao": "CONTRATAÇÃO POR TEMPO DETERMINADO",
+      "valor": 3832.36,
+      "nivel": 5
+    },
+    {
+      "orgao_codigo": "02",
+      "orgao_nome": "EXECUTIVO",
+      "codigo": "3.90.14",
+      "descricao": "DIÁRIAS - CIVIL",
+      "valor": 324200.0,
+      "nivel": 3
+    },
+    {
+      "orgao_codigo": "02",
+      "orgao_nome": "EXECUTIVO",
+      "codigo": "3.3.90.14.00",
+      "descricao": "DIÁRIAS - CIVIL",
+      "valor": 324200.0,
+      "nivel": 5
+    },
+    {
+      "orgao_codigo": "02",
+      "orgao_nome": "EXECUTIVO",
+      "codigo": "3.90.18",
+      "descricao": "AUXÍLIO FINANCEIRO A ESTUDANTES",
+      "valor": 176200.0,
+      "nivel": 3
+    },
+    {
+      "orgao_codigo": "02",
+      "orgao_nome": "EXECUTIVO",
+      "codigo": "3.3.90.18.00",
+      "descricao": "AUXÍLIO FINANCEIRO A ESTUDANTES",
+      "valor": 176200.0,
+      "nivel": 5
+    },
+    {
+      "orgao_codigo": "02",
+      "orgao_nome": "EXECUTIVO",
+      "codigo": "3.90.28",
+      "descricao": "REMUNERAÇÃO DE COTAS DE FUNDOS AUTÁRQUIC",
+      "valor": 0.0,
+      "nivel": 3
+    },
+    {
+      "orgao_codigo": "02",
+      "orgao_nome": "EXECUTIVO",
+      "codigo": "3.3.90.28.00",
+      "descricao": "REMUNERAÇÃO DE COTAS DE FUNDOS AUTÁ",
+      "valor": 0.0,
+      "nivel": 5
+    },
+    {
+      "orgao_codigo": "02",
+      "orgao_nome": "EXECUTIVO",
+      "codigo": "3.90.30",
+      "descricao": "MATERIAL DE CONSUMO",
+      "valor": 36548891.61,
+      "nivel": 3
+    },
+    {
+      "orgao_codigo": "02",
+      "orgao_nome": "EXECUTIVO",
+      "codigo": "3.3.90.30.01",
+      "descricao": "COMBUSTÍVEIS E LUBRIFICANTES AUTOMOT",
+      "valor": 9500077.27,
+      "nivel": 5
+    },
+    {
+      "orgao_codigo": "02",
+      "orgao_nome": "EXECUTIVO",
+      "codigo": "3.3.90.30.07",
+      "descricao": "GÊNEROS DE ALIMENTAÇÃO",
+      "valor": 4949618.53,
+      "nivel": 5
+    },
+    {
+      "orgao_codigo": "02",
+      "orgao_nome": "EXECUTIVO",
+      "codigo": "3.3.90.30.09",
+      "descricao": "MATERIAL FARMACOLOGICO",
+      "valor": 2659019.81,
+      "nivel": 5
+    },
+    {
+      "orgao_codigo": "02",
+      "orgao_nome": "EXECUTIVO",
+      "codigo": "3.3.90.30.10",
+      "descricao": "MATERIAL ODONTOLOGICO",
+      "valor": 1787591.76,
+      "nivel": 5
+    },
+    {
+      "orgao_codigo": "02",
+      "orgao_nome": "EXECUTIVO",
+      "codigo": "3.3.90.30.16",
+      "descricao": "MATERIAL DE EXPEDIENTE",
+      "valor": 5019521.52,
+      "nivel": 5
+    },
+    {
+      "orgao_codigo": "02",
+      "orgao_nome": "EXECUTIVO",
+      "codigo": "3.3.90.30.21",
+      "descricao": "MATERIAL DE LIMPEZA E PRODUÇÃO DE HIG",
+      "valor": 1917869.23,
+      "nivel": 5
+    },
+    {
+      "orgao_codigo": "02",
+      "orgao_nome": "EXECUTIVO",
+      "codigo": "3.3.90.30.36",
+      "descricao": "MATERIAL HOSPITALAR",
+      "valor": 1954534.45,
+      "nivel": 5
+    },
+    {
+      "orgao_codigo": "02",
+      "orgao_nome": "EXECUTIVO",
+      "codigo": "3.3.90.30.39",
+      "descricao": "MATERIAL PARA MANUTENÇÃO DE VEÍCULOS",
+      "valor": 249667.98,
+      "nivel": 5
+    },
+    {
+      "orgao_codigo": "02",
+      "orgao_nome": "EXECUTIVO",
+      "codigo": "3.3.90.30.99",
+      "descricao": "OUTROS MATERIAIS DE CONSUMO",
+      "valor": 8510991.06,
+      "nivel": 5
+    },
+    {
+      "orgao_codigo": "02",
+      "orgao_nome": "EXECUTIVO",
+      "codigo": "3.90.31",
+      "descricao": "PREMIAÇÕES CULTURAIS, ARTÍSTICAS, CIENTÍFICAS",
+      "valor": 10000.0,
+      "nivel": 3
+    },
+    {
+      "orgao_codigo": "02",
+      "orgao_nome": "EXECUTIVO",
+      "codigo": "3.3.90.31.00",
+      "descricao": "PREMIAÇÕES CULTURAIS, ARTÍSTICAS, CIEN",
+      "valor": 10000.0,
+      "nivel": 5
+    },
+    {
+      "orgao_codigo": "02",
+      "orgao_nome": "EXECUTIVO",
+      "codigo": "3.90.32",
+      "descricao": "MATERIAL, BEM OU SERVIÇO PARA DISTRIBUIÇÃO G",
+      "valor": 433734.0,
+      "nivel": 3
+    },
+    {
+      "orgao_codigo": "02",
+      "orgao_nome": "EXECUTIVO",
+      "codigo": "3.3.90.32.99",
+      "descricao": "OUTROS MATERIAIS DE DISTRIBUICAO GRAT",
+      "valor": 433734.0,
+      "nivel": 5
+    },
+    {
+      "orgao_codigo": "02",
+      "orgao_nome": "EXECUTIVO",
+      "codigo": "3.90.33",
+      "descricao": "PASSAGENS E DESPESAS COM LOCOMOÇÃO",
+      "valor": 11810.0,
+      "nivel": 3
+    },
+    {
+      "orgao_codigo": "02",
+      "orgao_nome": "EXECUTIVO",
+      "codigo": "3.3.90.33.00",
+      "descricao": "PASSAGENS E DESPESAS COM LOCOMOÇÃO",
+      "valor": 11810.0,
+      "nivel": 5
+    },
+    {
+      "orgao_codigo": "02",
+      "orgao_nome": "EXECUTIVO",
+      "codigo": "3.90.34",
+      "descricao": "OUTRAS DESPESAS DE PESSOAL DECORRENTES D",
+      "valor": 13717697.64,
+      "nivel": 3
+    },
+    {
+      "orgao_codigo": "02",
+      "orgao_nome": "EXECUTIVO",
+      "codigo": "3.3.90.34.00",
+      "descricao": "OUTRAS DESPESAS DE PESSOAL DECORREN",
+      "valor": 13717697.64,
+      "nivel": 5
+    },
+    {
+      "orgao_codigo": "02",
+      "orgao_nome": "EXECUTIVO",
+      "codigo": "3.90.35",
+      "descricao": "SERVIÇOS DE CONSULTORIA",
+      "valor": 171000.0,
+      "nivel": 3
+    },
+    {
+      "orgao_codigo": "02",
+      "orgao_nome": "EXECUTIVO",
+      "codigo": "3.3.90.35.00",
+      "descricao": "SERVIÇOS DE CONSULTORIA",
+      "valor": 171000.0,
+      "nivel": 5
+    },
+    {
+      "orgao_codigo": "02",
+      "orgao_nome": "EXECUTIVO",
+      "codigo": "3.90.36",
+      "descricao": "OUTROS SERVIÇOS DE TERCEIROS - PESSOA FÍSICA",
+      "valor": 767025.41,
+      "nivel": 3
+    },
+    {
+      "orgao_codigo": "02",
+      "orgao_nome": "EXECUTIVO",
+      "codigo": "3.3.90.36.99",
+      "descricao": "OUTROS SERVICOS",
+      "valor": 767025.41,
+      "nivel": 5
+    },
+    {
+      "orgao_codigo": "02",
+      "orgao_nome": "EXECUTIVO",
+      "codigo": "3.90.37",
+      "descricao": "LOCAÇÃO DE MÃO-DE-OBRA",
+      "valor": 0.0,
+      "nivel": 3
+    },
+    {
+      "orgao_codigo": "02",
+      "orgao_nome": "EXECUTIVO",
+      "codigo": "3.3.90.37.00",
+      "descricao": "LOCAÇÃO DE MÃO-DE-OBRA",
+      "valor": 0.0,
+      "nivel": 5
+    },
+    {
+      "orgao_codigo": "02",
+      "orgao_nome": "EXECUTIVO",
+      "codigo": "3",
+      "descricao": "DESPESAS CORRENTES",
+      "valor": 349460889.7,
+      "nivel": 1
+    },
+    {
+      "orgao_codigo": "02",
+      "orgao_nome": "EXECUTIVO",
+      "codigo": "3.3",
+      "descricao": "OUTRAS DESPESAS CORRENTES",
+      "valor": 161229659.14,
+      "nivel": 2
+    },
+    {
+      "orgao_codigo": "02",
+      "orgao_nome": "EXECUTIVO",
+      "codigo": "3.90",
+      "descricao": "APLICAÇÕES DIRETAS",
+      "valor": 155484776.77,
+      "nivel": 2
+    },
+    {
+      "orgao_codigo": "02",
+      "orgao_nome": "EXECUTIVO",
+      "codigo": "3.90.39",
+      "descricao": "OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍD",
+      "valor": 92445722.25,
+      "nivel": 3
+    },
+    {
+      "orgao_codigo": "02",
+      "orgao_nome": "EXECUTIVO",
+      "codigo": "3.3.90.39.17",
+      "descricao": "MANUTENÇÃO E CONSERVAÇÃO DE MÁQUIN",
+      "valor": 15505.0,
+      "nivel": 5
+    },
+    {
+      "orgao_codigo": "02",
+      "orgao_nome": "EXECUTIVO",
+      "codigo": "3.3.90.39.25",
+      "descricao": "TAXA DE ADMINISTRAÇÃO*",
+      "valor": 6.54,
+      "nivel": 5
+    },
+    {
+      "orgao_codigo": "02",
+      "orgao_nome": "EXECUTIVO",
+      "codigo": "3.3.90.39.32",
+      "descricao": "TRANSPORTE ESCOLAR",
+      "valor": 1355960.24,
+      "nivel": 5
+    },
+    {
+      "orgao_codigo": "02",
+      "orgao_nome": "EXECUTIVO",
+      "codigo": "3.3.90.39.43",
+      "descricao": "SERVIÇOS DE ENERGIA ELÉTRICA",
+      "valor": 4738735.84,
+      "nivel": 5
+    },
+    {
+      "orgao_codigo": "02",
+      "orgao_nome": "EXECUTIVO",
+      "codigo": "3.3.90.39.44",
+      "descricao": "SERVIÇOS DE ÁGUA E ESGOTO",
+      "valor": 128179.9,
+      "nivel": 5
+    },
+    {
+      "orgao_codigo": "02",
+      "orgao_nome": "EXECUTIVO",
+      "codigo": "3.3.90.39.78",
+      "descricao": "LIMPEZA E CONSERVACAO",
+      "valor": 847412.26,
+      "nivel": 5
+    },
+    {
+      "orgao_codigo": "02",
+      "orgao_nome": "EXECUTIVO",
+      "codigo": "3.3.90.39.90",
+      "descricao": "SERVICOS DE PUBLICIDADE",
+      "valor": 134098.68,
+      "nivel": 5
+    },
+    {
+      "orgao_codigo": "02",
+      "orgao_nome": "EXECUTIVO",
+      "codigo": "3.3.90.39.99",
+      "descricao": "OUTROS SERVICOS DE TERCEIROS-PESSOA",
+      "valor": 85225823.79,
+      "nivel": 5
+    },
+    {
+      "orgao_codigo": "02",
+      "orgao_nome": "EXECUTIVO",
+      "codigo": "3.90.41",
+      "descricao": "CONTRIBUIÇÕES",
+      "valor": 0.0,
+      "nivel": 3
+    },
+    {
+      "orgao_codigo": "02",
+      "orgao_nome": "EXECUTIVO",
+      "codigo": "3.3.90.41.00",
+      "descricao": "CONTRIBUIÇÕES",
+      "valor": 0.0,
+      "nivel": 5
+    },
+    {
+      "orgao_codigo": "02",
+      "orgao_nome": "EXECUTIVO",
+      "codigo": "3.90.47",
+      "descricao": "OBRIGAÇÕES TRIBUTÁRIAS E CONTRIBUTIVAS",
+      "valor": 3083114.18,
+      "nivel": 3
+    },
+    {
+      "orgao_codigo": "02",
+      "orgao_nome": "EXECUTIVO",
+      "codigo": "3.3.90.47.00",
+      "descricao": "OBRIGAÇÕES TRIBUTÁRIAS E CONTRIBUTIVA",
+      "valor": 3083114.18,
+      "nivel": 5
+    },
+    {
+      "orgao_codigo": "02",
+      "orgao_nome": "EXECUTIVO",
+      "codigo": "3.90.48",
+      "descricao": "OUTROS AUXÍLIOS FINANCEIROS A PESSOA FÍSICA",
+      "valor": 921132.03,
+      "nivel": 3
+    },
+    {
+      "orgao_codigo": "02",
+      "orgao_nome": "EXECUTIVO",
+      "codigo": "3.3.90.48.99",
+      "descricao": "Demais Auxílios Financeiros a Pessoas Físicas",
+      "valor": 921132.03,
+      "nivel": 5
+    },
+    {
+      "orgao_codigo": "02",
+      "orgao_nome": "EXECUTIVO",
+      "codigo": "3.90.91",
+      "descricao": "SENTENÇAS JUDICIAIS",
+      "valor": 209395.2,
+      "nivel": 3
+    },
+    {
+      "orgao_codigo": "02",
+      "orgao_nome": "EXECUTIVO",
+      "codigo": "3.3.90.91.03",
+      "descricao": "PRECATORIOS JUDICIAS",
+      "valor": 10878.36,
+      "nivel": 5
+    },
+    {
+      "orgao_codigo": "02",
+      "orgao_nome": "EXECUTIVO",
+      "codigo": "3.3.90.91.04",
+      "descricao": "SENTENCAS JUDICIAIS - Outras despesas",
+      "valor": 21545.78,
+      "nivel": 5
+    },
+    {
+      "orgao_codigo": "02",
+      "orgao_nome": "EXECUTIVO",
+      "codigo": "3.3.90.91.34",
+      "descricao": "SENTENÇAS JUDICIAIS - TERCEIRIZACAO (AR",
+      "valor": 104500.0,
+      "nivel": 5
+    },
+    {
+      "orgao_codigo": "02",
+      "orgao_nome": "EXECUTIVO",
+      "codigo": "3.3.90.91.99",
+      "descricao": "OUTROS TIPOS DE SENTENCAS JUDICIAIS",
+      "valor": 72471.06,
+      "nivel": 5
+    },
+    {
+      "orgao_codigo": "02",
+      "orgao_nome": "EXECUTIVO",
+      "codigo": "3.90.92",
+      "descricao": "DESPESAS DE EXERCÍCIOS ANTERIORES",
+      "valor": 2580891.57,
+      "nivel": 3
+    },
+    {
+      "orgao_codigo": "02",
+      "orgao_nome": "EXECUTIVO",
+      "codigo": "3.3.90.92.04",
+      "descricao": "CONTRATACAO POR TEMPO DETERMINADO",
+      "valor": 58.37,
+      "nivel": 5
+    },
+    {
+      "orgao_codigo": "02",
+      "orgao_nome": "EXECUTIVO",
+      "codigo": "3.3.90.92.99",
+      "descricao": "OUTRAS DESPESAS DE EXERCICIOS ANTERIO",
+      "valor": 2580833.2,
+      "nivel": 5
+    },
+    {
+      "orgao_codigo": "02",
+      "orgao_nome": "EXECUTIVO",
+      "codigo": "3.90.93",
+      "descricao": "INDENIZAÇÕES E RESTITUIÇÕES",
+      "valor": 513080.72,
+      "nivel": 3
+    },
+    {
+      "orgao_codigo": "02",
+      "orgao_nome": "EXECUTIVO",
+      "codigo": "3.3.90.93.01",
+      "descricao": "INDENIZACOES",
+      "valor": 151330.0,
+      "nivel": 5
+    },
+    {
+      "orgao_codigo": "02",
+      "orgao_nome": "EXECUTIVO",
+      "codigo": "3.3.90.93.99",
+      "descricao": "OUTRAS INDENIZACOES E RESTITUICOES",
+      "valor": 361750.72,
+      "nivel": 5
+    },
+    {
+      "orgao_codigo": "02",
+      "orgao_nome": "EXECUTIVO",
+      "codigo": "3.90.95",
+      "descricao": "INDENIZAÇÕES PELA EXECUÇÃO DE TRABALHOS DE",
+      "valor": 3567049.8,
+      "nivel": 3
+    },
+    {
+      "orgao_codigo": "02",
+      "orgao_nome": "EXECUTIVO",
+      "codigo": "3.3.90.95.00",
+      "descricao": "INDENIZAÇÃO PELA EXECUÇÃO DE TRABALH",
+      "valor": 3567049.8,
+      "nivel": 5
+    },
+    {
+      "orgao_codigo": "02",
+      "orgao_nome": "EXECUTIVO",
+      "codigo": "4",
+      "descricao": "DESPESAS DE CAPITAL",
+      "valor": 32326118.89,
+      "nivel": 1
+    },
+    {
+      "orgao_codigo": "02",
+      "orgao_nome": "EXECUTIVO",
+      "codigo": "4.4",
+      "descricao": "INVESTIMENTOS",
+      "valor": 27612624.11,
+      "nivel": 2
+    },
+    {
+      "orgao_codigo": "02",
+      "orgao_nome": "EXECUTIVO",
+      "codigo": "4.90",
+      "descricao": "APLICAÇÕES DIRETAS",
+      "valor": 27612624.11,
+      "nivel": 2
+    },
+    {
+      "orgao_codigo": "02",
+      "orgao_nome": "EXECUTIVO",
+      "codigo": "4.90.20",
+      "descricao": "AUXÍLIO FINANCEIRO A PESQUISADORES",
+      "valor": 2812701.58,
+      "nivel": 3
+    },
+    {
+      "orgao_codigo": "02",
+      "orgao_nome": "EXECUTIVO",
+      "codigo": "4.4.90.20.00",
+      "descricao": "AUXÍLIO FINANCEIRO A PESQUISADORES",
+      "valor": 2812701.58,
+      "nivel": 5
+    },
+    {
+      "orgao_codigo": "02",
+      "orgao_nome": "EXECUTIVO",
+      "codigo": "4.90.51",
+      "descricao": "OBRAS E INSTALAÇÕES",
+      "valor": 22259111.98,
+      "nivel": 3
+    },
+    {
+      "orgao_codigo": "02",
+      "orgao_nome": "EXECUTIVO",
+      "codigo": "4.4.90.51.91",
+      "descricao": "OBRAS EM ANDAMENTO",
+      "valor": 2752241.61,
+      "nivel": 5
+    },
+    {
+      "orgao_codigo": "02",
+      "orgao_nome": "EXECUTIVO",
+      "codigo": "4.4.90.51.99",
+      "descricao": "OUTRAS OBRAS E INSTALACOES",
+      "valor": 19506870.37,
+      "nivel": 5
+    },
+    {
+      "orgao_codigo": "02",
+      "orgao_nome": "EXECUTIVO",
+      "codigo": "4.90.52",
+      "descricao": "EQUIPAMENTOS E MATERIAL PERMANENTE",
+      "valor": 2540810.55,
+      "nivel": 3
+    },
+    {
+      "orgao_codigo": "02",
+      "orgao_nome": "EXECUTIVO",
+      "codigo": "4.4.90.52.42",
+      "descricao": "MOBILIÁRIO EM GERAL",
+      "valor": 98339.42,
+      "nivel": 5
+    },
+    {
+      "orgao_codigo": "02",
+      "orgao_nome": "EXECUTIVO",
+      "codigo": "4.4.90.52.99",
+      "descricao": "OUTROS MATERIAIS PERMANENTES",
+      "valor": 2442471.13,
+      "nivel": 5
+    },
+    {
+      "orgao_codigo": "02",
+      "orgao_nome": "EXECUTIVO",
+      "codigo": "4.6",
+      "descricao": "AMORTIZAÇÃO DA DÍVIDA",
+      "valor": 4713494.78,
+      "nivel": 2
+    },
+    {
+      "orgao_codigo": "02",
+      "orgao_nome": "EXECUTIVO",
+      "codigo": "4.6.90",
+      "descricao": "APLICAÇÕES DIRETAS",
+      "valor": 4713494.78,
+      "nivel": 3
+    },
+    {
+      "orgao_codigo": "02",
+      "orgao_nome": "EXECUTIVO",
+      "codigo": "4.6.90.71",
+      "descricao": "PRINCIPAL DA DÍVIDA CONTRATUAL RESGATADA",
+      "valor": 4306241.16,
+      "nivel": 4
+    },
+    {
+      "orgao_codigo": "02",
+      "orgao_nome": "EXECUTIVO",
+      "codigo": "4.6.90.71.01",
+      "descricao": "AMORTIZACAO DA DIVIDA CONTRATUAL",
+      "valor": 3625221.56,
+      "nivel": 5
+    },
+    {
+      "orgao_codigo": "02",
+      "orgao_nome": "EXECUTIVO",
+      "codigo": "4.6.90.71.99",
+      "descricao": "OUTRAS AMORTIZACOES DA DIVIDA CONTRA",
+      "valor": 681019.6,
+      "nivel": 5
+    },
+    {
+      "orgao_codigo": "02",
+      "orgao_nome": "EXECUTIVO",
+      "codigo": "4.6.90.73",
+      "descricao": "CORREÇÃO MONETÁRIA OU CAMBIAL DA DÍVIDA CO",
+      "valor": 0.0,
+      "nivel": 4
+    },
+    {
+      "orgao_codigo": "02",
+      "orgao_nome": "EXECUTIVO",
+      "codigo": "4.6.90.73.00",
+      "descricao": "CORREÇÃO MONETÁRIA OU CAMBIAL DA DÍV",
+      "valor": 0.0,
+      "nivel": 5
+    },
+    {
+      "orgao_codigo": "02",
+      "orgao_nome": "EXECUTIVO",
+      "codigo": "4.6.90.74",
+      "descricao": "CORREÇÃO MONETÁRIA OU CAMBIAL DA DÍVIDA MO",
+      "valor": 0.0,
+      "nivel": 4
+    },
+    {
+      "orgao_codigo": "02",
+      "orgao_nome": "EXECUTIVO",
+      "codigo": "4.6.90.74.00",
+      "descricao": "CORREÇÃO MONETÁRIA OU CAMBIAL DA DÍV",
+      "valor": 0.0,
+      "nivel": 5
+    },
+    {
+      "orgao_codigo": "02",
+      "orgao_nome": "EXECUTIVO",
+      "codigo": "4.6.90.76",
+      "descricao": "PRINCIPAL CORRIGIDO DA DÍVIDA MOBILIÁRIA REFIN",
+      "valor": 407253.62,
+      "nivel": 4
+    },
+    {
+      "orgao_codigo": "02",
+      "orgao_nome": "EXECUTIVO",
+      "codigo": "4.6.90.76.99",
+      "descricao": "OUTROS REFINANCIAMENTOS DA DIVIDA MO",
+      "valor": 407253.62,
+      "nivel": 5
+    },
+    {
+      "orgao_codigo": "02",
+      "orgao_nome": "EXECUTIVO",
+      "codigo": "4.6.90.77",
+      "descricao": "PRINCIPAL CORRIGIDO DA DÍVIDA CONTRATUAL RE",
+      "valor": 0.0,
+      "nivel": 4
+    },
+    {
+      "orgao_codigo": "02",
+      "orgao_nome": "EXECUTIVO",
+      "codigo": "4.6.90.77.99",
+      "descricao": "OUTROS VALORES DIVIDA CONTRATUAL REF",
+      "valor": 0.0,
+      "nivel": 5
+    }
+  ]
+}

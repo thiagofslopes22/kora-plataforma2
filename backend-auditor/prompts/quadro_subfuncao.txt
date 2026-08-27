@@ -1,0 +1,65 @@
+# PROMPT OTIMIZADO - JSON DESPESAS EDUCAÇÃO FUNÇÃO 12 (ANEXO 06)
+
+Extraia do Anexo 06 (coluna TOTAL) todas as despesas da Função 12 e gere JSON:
+
+json {   "municipio": "[extrair do cabeçalho]",   "exercicio": "[extrair do cabeçalho]",   "despesas_educacao_funcao_12": {     "semed": {       "descricao": "Secretaria Municipal de Educação",       "subfuncoes": [         {"codigo": "122", "descricao": "Administração Geral", "valor": 0.00},         {"codigo": "361", "descricao": "Ensino Fundamental", "valor": 0.00},         {"codigo": "365", "descricao": "Educação Infantil", "valor": 0.00},         {"codigo": "366", "descricao": "Educação de Jovens e Adultos - EJA", "valor": 0.00},         {"codigo": "367", "descricao": "Educação Especial", "valor": 0.00}       ],       "subtotal": 0.00     },     "fundeb": {       "descricao": "Fundo de Desenvolvimento da Educação Básica - FUNDEB",       "subfuncoes": [         {"codigo": "361", "descricao": "Ensino Fundamental", "valor": 0.00},         {"codigo": "365", "descricao": "Educação Infantil", "valor": 0.00},         {"codigo": "366", "descricao": "Educação de Jovens e Adultos - EJA", "valor": 0.00},         {"codigo": "367", "descricao": "Educação Especial", "valor": 0.00}       ],       "subtotal": 0.00     },     "total_geral_funcao_12": 0.00,     "consolidado_por_subfuncao": [       {"codigo": "122", "descricao": "Administração Geral", "semed": 0.00, "fundeb": 0.00, "total": 0.00},       {"codigo": "361", "descricao": "Ensino Fundamental", "semed": 0.00, "fundeb": 0.00, "total": 0.00},       {"codigo": "365", "descricao": "Educação Infantil", "semed": 0.00, "fundeb": 0.00, "total": 0.00},       {"codigo": "366", "descricao": "EJA", "semed": 0.00, "fundeb": 0.00, "total": 0.00},       {"codigo": "367", "descricao": "Educação Especial", "semed": 0.00, "fundeb": 0.00, "total": 0.00}     ]   } } 
+
+---
+
+## EXTRAÇÃO — COMO LER O ANEXO 06:
+
+O Anexo 06 apresenta despesas organizadas por:
+ÓRGÃO → UNIDADE ORÇAMENTÁRIA → FUNÇÃO → SUBFUNÇÃO → PROGRAMA → AÇÃO
+
+Cada linha de subfunção tem o formato:
+PROJETOS | ATIVIDADES | TOTAL
+Usar sempre a coluna TOTAL (terceiro valor).
+
+---
+
+## MAPEAMENTO:
+
+### SEMED — Localizar: Unidade "SECRETARIA MUNICIPAL DE EDUCAÇÃO" (Órgão 02, Unidade 12)
+Buscar dentro dessa unidade as linhas com Função 12:
+
+| Subfunção | Descrição | Como identificar |
+|---|---|---|
+| 122 | Administração Geral | linha 12 Educação → 122 Administração Geral |
+| 361 | Ensino Fundamental | linha 12 Educação → 361 Ensino Fundamental |
+| 365 | Educação Infantil | linha 12 Educação → 365 Educação Infantil |
+| 366 | EJA | linha 12 Educação → 366 Educação de Jovens e Adultos |
+| 367 | Educação Especial | linha 12 Educação → 367 Educação Especial |
+
+Extrair: o valor TOTAL da linha da subfunção (não somar ações individuais — usar o total já consolidado da subfunção).
+
+---
+
+### FUNDEB — Localizar: Unidade "FUNDO DE DESENVOLVIMENTO DA EDUCAÇÃO BÁSICA - FUNDEB" (Órgão 02, Unidade 22)
+Buscar dentro dessa unidade as linhas com Função 12:
+
+| Subfunção | Descrição |
+|---|---|
+| 361 | Ensino Fundamental |
+| 365 | Educação Infantil |
+| 366 | EJA |
+| 367 | Educação Especial |
+
+---
+
+## CÁLCULOS:
+
+javascript // Subtotais semed.subtotal = soma de todas as subfunções da SEMED fundeb.subtotal = soma de todas as subfunções do FUNDEB  // Total geral total_geral = semed.subtotal + fundeb.subtotal  // Consolidado por subfunção para cada subfunção:   total = semed_valor + fundeb_valor 
+
+---
+
+## REGRAS:
+
+1. Usar sempre o TOTAL da linha da subfunção — não somar as ações individualmente
+2. Se subfunção não existir na unidade: 0.00
+3. O TOTAL do Anexo 06 já agrega projetos + atividades
+
+---
+
+## EXEMPLO — PINHEIRO 2025:
+
+json {   "municipio": "Pinheiro",   "exercicio": "2025",   "despesas_educacao_funcao_12": {     "semed": {       "descricao": "Secretaria Municipal de Educação",       "subfuncoes": [         {"codigo": "122", "descricao": "Administração Geral", "valor": 18600390.13},         {"codigo": "361", "descricao": "Ensino Fundamental", "valor": 3121672.42},         {"codigo": "365", "descricao": "Educação Infantil", "valor": 4138255.37},         {"codigo": "366", "descricao": "EJA", "valor": 412113.80},         {"codigo": "367", "descricao": "Educação Especial", "valor": 37960.70}       ],       "subtotal": 26310392.42     },     "fundeb": {       "descricao": "FUNDEB",       "subfuncoes": [         {"codigo": "361", "descricao": "Ensino Fundamental", "valor": 120845291.56},         {"codigo": "365", "descricao": "Educação Infantil", "valor": 41723570.45},         {"codigo": "366", "descricao": "EJA", "valor": 4898642.64},         {"codigo": "367", "descricao": "Educação Especial", "valor": 8594008.07}       ],       "subtotal": 176061512.72     },     "total_geral_funcao_12": 202371905.14,     "consolidado_por_subfuncao": [       {"codigo": "122", "semed": 18600390.13, "fundeb": 0.00, "total": 18600390.13},       {"codigo": "361", "semed": 3121672.42, "fundeb": 120845291.56, "total": 123966963.98},       {"codigo": "365", "semed": 4138255.37, "fundeb": 41723570.45, "total": 45861825.82},       {"codigo": "366", "semed": 412113.80, "fundeb": 4898642.64, "total": 5310756.44},       {"codigo": "367", "semed": 37960.70, "fundeb": 8594008.07, "total": 8631968.77}     ]   } } OUTPUT: despesas_educacao_funcao12_[municipio]_[ano].json

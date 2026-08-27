@@ -1,0 +1,176 @@
+MUNICIPIO: PINHEIRO | EXERCICIO: 0620 | PERIODO: 01/01/2025 ATÉ 31/12/2025
+TOTAL GERAL: 389,326,970.03
+
+ORGAO 01 - LEGISLATIVO
+  Total:                            7,539,961.44
+  Despesas Correntes:               7,303,297.44
+  Pessoal e Encargos:               5,715,654.29
+  Outras Despesas Correntes:        1,587,643.15
+  Despesas de Capital:                236,664.00
+  Investimentos:                      236,664.00
+  Amortizacao Divida:                       0.00
+
+ORGAO 02 - EXECUTIVO
+  Total:                          381,787,008.59
+  Despesas Correntes:             349,460,889.70
+  Pessoal e Encargos:             188,231,230.56
+  Outras Despesas Correntes:      161,229,659.14
+  Despesas de Capital:             32,326,118.89
+  Investimentos:                   27,612,624.11
+  Amortizacao Divida:               4,713,494.78
+
+ITENS DETALHADOS (152 registros):
+  ORGAO CODIGO             NIV              VALOR  DESCRICAO
+  ------------------------------------------------------------------------------------------
+  01     3                  1         7,303,297.44  DESPESAS CORRENTES
+  01     3.1                2         5,715,654.29  PESSOAL E ENCARGOS SOCIAIS
+  01     3.1.90             3         5,715,654.29  APLICAÇÕES DIRETAS
+  01     3.1.90.04          4            91,575.11  CONTRATAÇÃO POR TEMPO DETERMINADO
+  01     3.1.90.04.01       5            91,575.11  SALARIO CONTRATO TEMPORARIO
+  01     3.1.90.11          4         4,946,666.96  VENCIMENTOS E VANTAGENS FIXAS - PESSOAL CIV
+  01     3.1.90.11.01       5         2,646,566.96  VENCIMENTOS E SALARIOS
+  01     3.1.90.11.75       5         2,300,100.00  SUBSIDIOS – AGENTES POLÍTICOS
+  01     3.1.90.13          4           677,412.22  OBRIGAÇÕES PATRONAIS
+  01     3.1.90.13.02       5           677,412.22  CONTRIBUICOES PREVIDENCIARIAS - INSS
+  01     3.3                2         1,587,643.15  OUTRAS DESPESAS CORRENTES
+  01     3.90               2         1,587,643.15  APLICAÇÕES DIRETAS
+  01     3.90.30            3           368,891.27  MATERIAL DE CONSUMO
+  01     3.3.90.30.01       5           122,142.76  COMBUSTÍVEIS E LUBRIFICANTES AUTOMOT
+  01     3.3.90.30.07       5            48,995.47  GÊNEROS DE ALIMENTAÇÃO
+  01     3.3.90.30.16       5            71,460.48  MATERIAL DE EXPEDIENTE
+  01     3.3.90.30.21       5            72,370.17  MATERIAL DE LIMPEZA E PRODUÇÃO DE HIG
+  01     3.3.90.30.99       5            53,922.39  OUTROS MATERIAIS DE CONSUMO
+  01     3.90.35            3           291,000.00  SERVIÇOS DE CONSULTORIA
+  01     3.3.90.35.00       5           291,000.00  SERVIÇOS DE CONSULTORIA
+  01     3.90.39            3           924,019.46  OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍD
+  01     3.3.90.39.17       5            30,000.00  MANUTENÇÃO E CONSERVAÇÃO DE MÁQUIN
+  01     3.3.90.39.43       5            30,732.27  SERVIÇOS DE ENERGIA ELÉTRICA
+  01     3.3.90.39.44       5            11,206.19  SERVIÇOS DE ÁGUA E ESGOTO
+  01     3.3.90.39.77       5           224,529.60  VIGILANCIA OSTENSIVA/MONITORADA
+  01     3.3.90.39.90       5            70,750.00  SERVICOS DE PUBLICIDADE
+  01     3.3.90.39.99       5           556,801.40  OUTROS SERVICOS DE TERCEIROS-PESSOA
+  01     3.90.92            3             3,732.42  DESPESAS DE EXERCÍCIOS ANTERIORES
+  01     3.3.90.92.39       5             1,630.76  OUTROS SERVICOS DE TERCEIROS - PJ
+  01     3.3.90.92.99       5             2,101.66  OUTRAS DESPESAS DE EXERCICIOS ANTERIO
+  01     4                  1           236,664.00  DESPESAS DE CAPITAL
+  01     4.4                2           236,664.00  INVESTIMENTOS
+  01     4.90               2           236,664.00  APLICAÇÕES DIRETAS
+  01     4.90.52            3           236,664.00  EQUIPAMENTOS E MATERIAL PERMANENTE
+  01     4.4.90.52.42       5           236,664.00  MOBILIÁRIO EM GERAL
+  02     3                  1       349,460,889.70  DESPESAS CORRENTES
+  02     3.1                2       188,231,230.56  PESSOAL E ENCARGOS SOCIAIS
+  02     3.1.90             3       188,231,230.56  APLICAÇÕES DIRETAS
+  02     3.1.90.04          4        62,107,701.51  CONTRATAÇÃO POR TEMPO DETERMINADO
+  02     3.1.90.04.01       5         5,960,872.24  SALARIO CONTRATO TEMPORARIO
+  02     3.1.90.04.13       5           606,933.88  13. SALARIO - CONTRATO TEMPORARIO
+  02     3.1.90.04.99       5        55,539,895.39  OUTRAS CONTRATAÇÕES POR TEMPO DETE
+  02     3.1.90.11          4       111,680,845.14  VENCIMENTOS E VANTAGENS FIXAS - PESSOAL CIV
+  02     3.1.90.11.01       5       100,668,170.46  VENCIMENTOS E SALARIOS
+  02     3.1.90.11.43       5         6,222,290.45  13. SALARIO
+  02     3.1.90.11.51       5         2,781,850.00  OUTROS ADICIONAIS, VANTAGENS,GRATIFIC
+  02     3.1.90.11.99       5         2,008,534.23  OUTRAS DESPESAS FIXAS - PESSOAL CIVIL
+  02     3.1.90.13          4         6,304,234.86  OBRIGAÇÕES PATRONAIS
+  02     3.1.90.13.01       5                 0.00  FGTS
+  02     3.1.90.13.02       5         6,118,051.46  CONTRIBUICOES PREVIDENCIARIAS - INSS
+  02     3.1.90.13.08       5            50,398.15  CONTRIBUICOES PREVIDENCIARIAS - RPPS -
+  02     3.1.90.13.99       5           135,785.25  OUTRAS OBRIGACOES PATRONAIS
+  02     3.1.90.91          4         1,075,493.48  SENTENÇAS JUDICIAIS
+  02     3.1.90.91.01       5             3,696.68  PRECATORIOS - ATIVO CIVIL
+  02     3.1.90.91.99       5         1,071,796.80  OUTRAS SENTENCAS JUDICIAIS
+  02     3.1.90.92          4         7,062,955.57  DESPESAS DE EXERCÍCIOS ANTERIORES
+  02     3.1.90.92.11       5         6,378,709.72  VENCIMENTOS E VANTAGENS FIXAS - PESSO
+  02     3.1.90.92.16       5           663,104.90  OUTRAS DESPESAS VARIAVEIS - PESSOAL C
+  02     3.1.90.92.99       5            21,140.95  OUTRAS DESPESAS DE EXERCICIOS ANTERIO
+  02     3.3                2       161,229,659.14  OUTRAS DESPESAS CORRENTES
+  02     3.50               2         5,744,882.37  TRANSFERÊNCIAS A INSTITUIÇÕES PRIVADAS SEM FI
+  02     3.50.43            3         5,744,882.37  SUBVENÇÕES SOCIAIS
+  02     3.3.50.43.06       5         3,756,800.59  INSTITUIÇÃO DE CARÁTER DE ASSISTÊNCIA S
+  02     3.3.50.43.08       5         1,988,081.78  INSTITUIÇÃO DE CARÁTER EDUCACIONAL
+  02     3.90               2       155,484,776.77  APLICAÇÕES DIRETAS
+  02     3.90.04            3             3,832.36  CONTRATAÇÃO POR TEMPO DETERMINADO
+  02     3.3.90.04.00       5             3,832.36  CONTRATAÇÃO POR TEMPO DETERMINADO
+  02     3.90.14            3           324,200.00  DIÁRIAS - CIVIL
+  02     3.3.90.14.00       5           324,200.00  DIÁRIAS - CIVIL
+  02     3.90.18            3           176,200.00  AUXÍLIO FINANCEIRO A ESTUDANTES
+  02     3.3.90.18.00       5           176,200.00  AUXÍLIO FINANCEIRO A ESTUDANTES
+  02     3.90.28            3                 0.00  REMUNERAÇÃO DE COTAS DE FUNDOS AUTÁRQUIC
+  02     3.3.90.28.00       5                 0.00  REMUNERAÇÃO DE COTAS DE FUNDOS AUTÁ
+  02     3.90.30            3        36,548,891.61  MATERIAL DE CONSUMO
+  02     3.3.90.30.01       5         9,500,077.27  COMBUSTÍVEIS E LUBRIFICANTES AUTOMOT
+  02     3.3.90.30.07       5         4,949,618.53  GÊNEROS DE ALIMENTAÇÃO
+  02     3.3.90.30.09       5         2,659,019.81  MATERIAL FARMACOLOGICO
+  02     3.3.90.30.10       5         1,787,591.76  MATERIAL ODONTOLOGICO
+  02     3.3.90.30.16       5         5,019,521.52  MATERIAL DE EXPEDIENTE
+  02     3.3.90.30.21       5         1,917,869.23  MATERIAL DE LIMPEZA E PRODUÇÃO DE HIG
+  02     3.3.90.30.36       5         1,954,534.45  MATERIAL HOSPITALAR
+  02     3.3.90.30.39       5           249,667.98  MATERIAL PARA MANUTENÇÃO DE VEÍCULOS
+  02     3.3.90.30.99       5         8,510,991.06  OUTROS MATERIAIS DE CONSUMO
+  02     3.90.31            3            10,000.00  PREMIAÇÕES CULTURAIS, ARTÍSTICAS, CIENTÍFICAS
+  02     3.3.90.31.00       5            10,000.00  PREMIAÇÕES CULTURAIS, ARTÍSTICAS, CIEN
+  02     3.90.32            3           433,734.00  MATERIAL, BEM OU SERVIÇO PARA DISTRIBUIÇÃO G
+  02     3.3.90.32.99       5           433,734.00  OUTROS MATERIAIS DE DISTRIBUICAO GRAT
+  02     3.90.33            3            11,810.00  PASSAGENS E DESPESAS COM LOCOMOÇÃO
+  02     3.3.90.33.00       5            11,810.00  PASSAGENS E DESPESAS COM LOCOMOÇÃO
+  02     3.90.34            3        13,717,697.64  OUTRAS DESPESAS DE PESSOAL DECORRENTES D
+  02     3.3.90.34.00       5        13,717,697.64  OUTRAS DESPESAS DE PESSOAL DECORREN
+  02     3.90.35            3           171,000.00  SERVIÇOS DE CONSULTORIA
+  02     3.3.90.35.00       5           171,000.00  SERVIÇOS DE CONSULTORIA
+  02     3.90.36            3           767,025.41  OUTROS SERVIÇOS DE TERCEIROS - PESSOA FÍSICA
+  02     3.3.90.36.99       5           767,025.41  OUTROS SERVICOS
+  02     3.90.37            3                 0.00  LOCAÇÃO DE MÃO-DE-OBRA
+  02     3.3.90.37.00       5                 0.00  LOCAÇÃO DE MÃO-DE-OBRA
+  02     3                  1       349,460,889.70  DESPESAS CORRENTES
+  02     3.3                2       161,229,659.14  OUTRAS DESPESAS CORRENTES
+  02     3.90               2       155,484,776.77  APLICAÇÕES DIRETAS
+  02     3.90.39            3        92,445,722.25  OUTROS SERVIÇOS DE TERCEIROS - PESSOA JURÍD
+  02     3.3.90.39.17       5            15,505.00  MANUTENÇÃO E CONSERVAÇÃO DE MÁQUIN
+  02     3.3.90.39.25       5                 6.54  TAXA DE ADMINISTRAÇÃO*
+  02     3.3.90.39.32       5         1,355,960.24  TRANSPORTE ESCOLAR
+  02     3.3.90.39.43       5         4,738,735.84  SERVIÇOS DE ENERGIA ELÉTRICA
+  02     3.3.90.39.44       5           128,179.90  SERVIÇOS DE ÁGUA E ESGOTO
+  02     3.3.90.39.78       5           847,412.26  LIMPEZA E CONSERVACAO
+  02     3.3.90.39.90       5           134,098.68  SERVICOS DE PUBLICIDADE
+  02     3.3.90.39.99       5        85,225,823.79  OUTROS SERVICOS DE TERCEIROS-PESSOA
+  02     3.90.41            3                 0.00  CONTRIBUIÇÕES
+  02     3.3.90.41.00       5                 0.00  CONTRIBUIÇÕES
+  02     3.90.47            3         3,083,114.18  OBRIGAÇÕES TRIBUTÁRIAS E CONTRIBUTIVAS
+  02     3.3.90.47.00       5         3,083,114.18  OBRIGAÇÕES TRIBUTÁRIAS E CONTRIBUTIVA
+  02     3.90.48            3           921,132.03  OUTROS AUXÍLIOS FINANCEIROS A PESSOA FÍSICA
+  02     3.3.90.48.99       5           921,132.03  Demais Auxílios Financeiros a Pessoas Físicas
+  02     3.90.91            3           209,395.20  SENTENÇAS JUDICIAIS
+  02     3.3.90.91.03       5            10,878.36  PRECATORIOS JUDICIAS
+  02     3.3.90.91.04       5            21,545.78  SENTENCAS JUDICIAIS - Outras despesas
+  02     3.3.90.91.34       5           104,500.00  SENTENÇAS JUDICIAIS - TERCEIRIZACAO (AR
+  02     3.3.90.91.99       5            72,471.06  OUTROS TIPOS DE SENTENCAS JUDICIAIS
+  02     3.90.92            3         2,580,891.57  DESPESAS DE EXERCÍCIOS ANTERIORES
+  02     3.3.90.92.04       5                58.37  CONTRATACAO POR TEMPO DETERMINADO
+  02     3.3.90.92.99       5         2,580,833.20  OUTRAS DESPESAS DE EXERCICIOS ANTERIO
+  02     3.90.93            3           513,080.72  INDENIZAÇÕES E RESTITUIÇÕES
+  02     3.3.90.93.01       5           151,330.00  INDENIZACOES
+  02     3.3.90.93.99       5           361,750.72  OUTRAS INDENIZACOES E RESTITUICOES
+  02     3.90.95            3         3,567,049.80  INDENIZAÇÕES PELA EXECUÇÃO DE TRABALHOS DE
+  02     3.3.90.95.00       5         3,567,049.80  INDENIZAÇÃO PELA EXECUÇÃO DE TRABALH
+  02     4                  1        32,326,118.89  DESPESAS DE CAPITAL
+  02     4.4                2        27,612,624.11  INVESTIMENTOS
+  02     4.90               2        27,612,624.11  APLICAÇÕES DIRETAS
+  02     4.90.20            3         2,812,701.58  AUXÍLIO FINANCEIRO A PESQUISADORES
+  02     4.4.90.20.00       5         2,812,701.58  AUXÍLIO FINANCEIRO A PESQUISADORES
+  02     4.90.51            3        22,259,111.98  OBRAS E INSTALAÇÕES
+  02     4.4.90.51.91       5         2,752,241.61  OBRAS EM ANDAMENTO
+  02     4.4.90.51.99       5        19,506,870.37  OUTRAS OBRAS E INSTALACOES
+  02     4.90.52            3         2,540,810.55  EQUIPAMENTOS E MATERIAL PERMANENTE
+  02     4.4.90.52.42       5            98,339.42  MOBILIÁRIO EM GERAL
+  02     4.4.90.52.99       5         2,442,471.13  OUTROS MATERIAIS PERMANENTES
+  02     4.6                2         4,713,494.78  AMORTIZAÇÃO DA DÍVIDA
+  02     4.6.90             3         4,713,494.78  APLICAÇÕES DIRETAS
+  02     4.6.90.71          4         4,306,241.16  PRINCIPAL DA DÍVIDA CONTRATUAL RESGATADA
+  02     4.6.90.71.01       5         3,625,221.56  AMORTIZACAO DA DIVIDA CONTRATUAL
+  02     4.6.90.71.99       5           681,019.60  OUTRAS AMORTIZACOES DA DIVIDA CONTRA
+  02     4.6.90.73          4                 0.00  CORREÇÃO MONETÁRIA OU CAMBIAL DA DÍVIDA CO
+  02     4.6.90.73.00       5                 0.00  CORREÇÃO MONETÁRIA OU CAMBIAL DA DÍV
+  02     4.6.90.74          4                 0.00  CORREÇÃO MONETÁRIA OU CAMBIAL DA DÍVIDA MO
+  02     4.6.90.74.00       5                 0.00  CORREÇÃO MONETÁRIA OU CAMBIAL DA DÍV
+  02     4.6.90.76          4           407,253.62  PRINCIPAL CORRIGIDO DA DÍVIDA MOBILIÁRIA REFI
+  02     4.6.90.76.99       5           407,253.62  OUTROS REFINANCIAMENTOS DA DIVIDA MO
+  02     4.6.90.77          4                 0.00  PRINCIPAL CORRIGIDO DA DÍVIDA CONTRATUAL RE
+  02     4.6.90.77.99       5                 0.00  OUTROS VALORES DIVIDA CONTRATUAL REF

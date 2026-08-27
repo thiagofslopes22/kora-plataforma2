@@ -1,0 +1,14 @@
+# KORA — segredos e artefatos locais
+.env
+.env.*
+!.env.example
+venv/
+__pycache__/
+node_modules/
+*.db
+dist/
+
+# logs de instalacao/execucao — ruido local
+*.log
+# resquicio do prototipo: base de usuarios em arquivo, substituida pelo Postgres
+backend-conciliador/users.json

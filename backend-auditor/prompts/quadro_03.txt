@@ -1,0 +1,58 @@
+# PROMPT OTIMIZADO - JSON RESULTADO ORÇAMENTÁRIO (ANEXO 12)
+
+Extraia do Anexo 12 (Balanço Orçamentário) e gere JSON:
+
+json {   "receita_realizada": 0.00,   "despesa_empenhada": 0.00,   "resultado": 0.00,   "situacao": "" } 
+
+## EXTRAÇÃO:
+
+| CAMPO | LOCALIZAÇÃO | OPERAÇÃO |
+|-------|-------------|----------|
+| receita_realizada | Linha "TOTAL (VII)" coluna "RECEITAS REALIZADAS" (c) | extrair |
+| despesa_empenhada | Linha "SUBTOTAL COM REFINANCIAMENTO (XIII)" coluna "DESPESAS EMPENHADAS" (g) | extrair |
+| resultado | receita_realizada − despesa_empenhada | calcular |
+| situacao | se resultado > 0 = "superavitário", senão = "deficitário" | calcular |
+
+## CÁLCULO:
+
+javascript resultado = receita_realizada - despesa_empenhada situacao  = resultado > 0 ? "superavitário" : "deficitário" 
+
+## REGRAS:
+1. Valores: decimal 2 casas
+2. Situação: texto minúsculo
+3. Receita = linha TOTAL (VII), coluna (c) RECEITAS REALIZADAS
+4. Despesa = linha SUBTOTAL COM REFINANCIAMENTO (XIII), coluna (g) DESPESAS EMPENHADAS
+5. Não usar SUBTOTAL DAS DESPESAS (XI) — este exclui o refinanciamento
+
+## VALIDAÇÃO:
+
+javascript ✓ receita_realizada > 0 ✓ despesa_empenhada > 0 ✓ resultado = receita_realizada - despesa_empenhada ✓ situacao = "superavitário" OU "deficitário" OUTPUT: resultado_orcamentario_[municipio]_[ano].json (UTF-8, indent 2)
+
+OBS:
+
+Formato de cada linha do Anexo 10:
+ORÇADA | ARRECADADA | DIFERENÇA | CÓDIGO | DESCRIÇÃO
+
+ANTES de registrar qualquer valor, aplicar obrigatoriamente:
+
+PASSO 1 — Contar os valores numéricos na linha:
+
+CASO 1 — Três valores DISTINTOS presentes:
+Ex: "1.158.822,81  8.055.193,38  6.896.370,57  1714.50.0.0"
+→ ORÇADA=1.158.822,81 | ARRECADADA=8.055.193,38 | DIF=6.896.370,57
+→ USAR: 8.055.193,38 ✓
+
+CASO 2 — Dois valores IGUAIS (sem arrecadada):
+Ex: "237.712,37  237.712,37  1714.51.0.0"
+→ ORÇADA=237.712,37 | ARRECADADA=vazia | DIF=237.712,37
+→ USAR: 0,00 ✓
+
+CASO 3 — Um único valor:
+Ex: "237.712,37  1714.51.0.0"
+→ USAR: 0,00 ✓
+
+REGRA RESUMIDA:
+
+- V1 ≠ V2 ≠ V3 → ARRECADADA = V2
+- V1 = V2 → ARRECADADA = 0,00
+- Só V1 → ARRECADADA = 0,00

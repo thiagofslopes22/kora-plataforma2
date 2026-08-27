@@ -1,0 +1,161 @@
+# PROMPT: ALOCAÇÃO DOS RECURSOS DESTINADOS À FORMAÇÃO DO FUNDEB
+
+## OBJETIVO
+Extrair e calcular os valores da tabela de alocação de recursos destinados à formação do FUNDEB, conforme Anexos 1, 2, 10 e 13 da Lei nº 4.320/1964.
+
+## TABELA A SER PREENCHIDA
+
+| DESCRIÇÃO | VALOR (R$) |
+|-----------|------------|
+| 2.1.1- Cota-parte FPM (Parcela referente à CF, art. 159, I, alínea b) | ? |
+| 2.2- Cota-parte ICMS | ? |
+| 2.3- Cota-parte IPI-Exportação | ? |
+| 2.4- Cota-parte ITR ou ITR Arrecadado | ? |
+| 2.5- Cota-parte IPVA | ? |
+| 2.7- Compensações Financeiras Provenientes de Impostos e Transferências Constitucionais | ? |
+| RECEITAS DESTINADAS AO FUNDEB (A)=(2.1.1)+(2.2)+(2.3)+(2.4)+(2.5)+(2.7) | ? |
+| TOTAL EXCEDIDO AO FUNDEB (B) 20% DE (2.1.1) + (2.2) + (2.3) + (2.4) + (2.5) + (2.7) | ? |
+| TOTAL DESTINADO AO FUNDEB APURADO (C) | ? |
+| *PERCENTUAL DESTINADO AO FUNDEB (D)=(C)/(A)100 | ? |
+
+---
+
+## PASSO A PASSO PARA EXTRAÇÃO
+
+### PASSO 1: EXTRAIR RECEITAS BASE (100%) - Anexo 10
+
+Objetivo: Extrair os valores TOTAIS (100%) das receitas que compõem o FUNDEB.
+
+Códigos a buscar no Anexo 10 (Coluna "ARRECADADA"):2.1.1 - FPM Cota-parte mensal Código: 1711.51.1.1.00.00 Descrição: "COTA-PARTE DO FPM - COTA MENSAL" Atenção: NÃO incluir FPM Extraordinário (1711.51.2.1.00.00)  2.2 - ICMS Código: 1721.50.0.1.00.00 Descrição: "COTA-PARTE DO ICMS"  2.3 - IPI-Exportação Código: 1721.52.0.1.00.00 Descrição: "COTA-PARTE DO IPI - EXPORTAÇÃO"  2.4 - ITR ou ICMS Desoneração LC 87/96 Código: Buscar "DESONERAÇÃO" ou "LC 87/96" Obs: Geralmente R$ 0,00  2.5 - IPVA Código: 1721.51.0.1.00.00 Descrição: "COTA-PARTE DO IPVA"  2.7 - ITR (Compensações Financeiras) Código: 1711.52.0.1.00.00 Descrição: "COTA-PARTE DO ITR"Saída JSON - PASSO 1:json {   "receitas_base_100_porcento": {     "fpm_cota_mensal": {       "item": "2.1.1",       "codigo": "1711.51.1.1.00.00",       "valor": 0.00,       "fonte": "Anexo 10"     },     "icms": {       "item": "2.2",       "codigo": "1721.50.0.1.00.00",       "valor": 0.00,       "fonte": "Anexo 10"     },     "ipi_exportacao": {       "item": "2.3",       "codigo": "1721.52.0.1.00.00",       "valor": 0.00,       "fonte": "Anexo 10"     },     "itr_desoneracao": {       "item": "2.4",       "codigo": "LC 87/96",       "valor": 0.00,       "fonte": "Anexo 10"     },     "ipva": {       "item": "2.5",       "codigo": "1721.51.0.1.00.00",       "valor": 0.00,       "fonte": "Anexo 10"     },     "itr": {       "item": "2.7",       "codigo": "1711.52.0.1.00.00",       "valor": 0.00,       "fonte": "Anexo 10"     }   } } 
+
+---
+
+### PASSO 2: CALCULAR 20% DE CADA RECEITA (FUNDEB)
+
+Objetivo: Calcular 20% de cada receita extraída no PASSO 1.
+
+Fórmula:valor_fundeb = valor_base × 0.20Validação:
+- Conferir com Anexo 1: linha "(R) DEDUÇÕES DO FUNDEB"
+- Conferir com Anexo 10: códigos que iniciam com "9" (ex: 91711.51.1.1.00.00)
+
+Saída JSON - PASSO 2:json {   "receitas_destinadas_fundeb_20_porcento": {     "fpm_20": {       "item": "2.1.1",       "valor_base": 0.00,       "percentual": 20.00,       "valor_fundeb": 0.00,       "codigo_deducao": "91711.51.1.1.00.00"     },     "icms_20": {       "item": "2.2",       "valor_base": 0.00,       "percentual": 20.00,       "valor_fundeb": 0.00,       "codigo_deducao": "91721.50.0.1.00.00"     },     "ipi_20": {       "item": "2.3",       "valor_base": 0.00,       "percentual": 20.00,       "valor_fundeb": 0.00,       "codigo_deducao": "91721.52.0.1.00.00"     },     "itr_desoneracao_20": {       "item": "2.4",       "valor_base": 0.00,       "percentual": 20.00,       "valor_fundeb": 0.00     },     "ipva_20": {       "item": "2.5",       "valor_base": 0.00,       "percentual": 20.00,       "valor_fundeb": 0.00,       "codigo_deducao": "91721.51.0.1.00.00"     },     "itr_20": {       "item": "2.7",       "valor_base": 0.00,       "percentual": 20.00,       "valor_fundeb": 0.00,       "codigo_deducao": "91711.52.0.1.00.00"     }   } } 
+
+---
+
+### PASSO 3: SOMAR RECEITAS DESTINADAS AO FUNDEB (A)
+
+Objetivo: Somar todos os 20% calculados no PASSO 2.
+
+Fórmula:RECEITAS DESTINADAS AO FUNDEB (A) =    FPM_20% + ICMS_20% + IPI_20% + ITR_Desoneração_20% + IPVA_20% + ITR_20%Validação obrigatória:Anexo 1: "(R) DEDUÇÕES DO FUNDEB" DEVE SER IGUAL ao total calculadoSaída JSON - PASSO 3:json {   "receitas_destinadas_ao_fundeb": {     "descricao": "RECEITAS DESTINADAS AO FUNDEB (A)=(2.1.1)+(2.2)+(2.3)+(2.4)+(2.5)+(2.7)",     "valor": 0.00,     "formula": "soma_20_porcento",     "validacao_anexo_1": {       "valor_anexo_1": 0.00,       "diferenca": 0.00,       "status": "CONFERIDO/DIVERGENTE"     }   } } 
+
+---
+
+### PASSO 4: CALCULAR TOTAL EXCEDIDO AO FUNDEB (B)
+
+Objetivo: Calcular 20% do total das receitas base.
+
+Fórmula:TOTAL EXCEDIDO (B) = 20% × (soma de 2.1.1 + 2.2 + 2.3 + 2.4 + 2.5 + 2.7 a 100%)Observação: Este valor deve ser IGUAL ao calculado no PASSO 3.
+
+Saída JSON - PASSO 4:json {   "total_excedido_fundeb": {     "descricao": "TOTAL EXCEDIDO AO FUNDEB (B) 20% DE (2.1.1) + (2.2) + (2.3) + (2.4) + (2.5) + (2.7)",     "total_base": 0.00,     "percentual": 20.00,     "valor": 0.00,     "formula": "total_base × 0.20"   } } 
+
+---
+
+### PASSO 5: CALCULAR TOTAL DESTINADO AO FUNDEB APURADO (C)
+
+Objetivo: Extrair o total de recursos que o município RECEBEU do FUNDEB.
+
+Fontes possíveis:
+
+1. Anexo 13 - Balanço Financeiro:
+- Linha: "RECURSOS VINCULADOS À EDUCAÇÃO"
+- Valor: Ingressos/Receita Orçamentária
+
+2. Cálculo alternativo:
+- Buscar transferências do FUNDEB recebidas
+- Incluir complementação da União (VAAT, VAAF, VAAR)
+
+Componentes:FUNDEB Recebido = Transferências FUNDEB + Complementação UniãoSaída JSON - PASSO 5:json {   "total_destinado_fundeb_apurado": {     "descricao": "TOTAL DESTINADO AO FUNDEB APURADO (C)",     "valor": 0.00,     "detalhamento": {       "transferencias_fundeb": 0.00,       "complementacao_uniao": {         "vaat": 0.00,         "vaaf": 0.00,         "vaar": 0.00,         "total": 0.00       },       "outras_receitas": 0.00     },     "fonte": "Anexo 13 ou cálculo de transferências"   } } 
+
+---
+
+### PASSO 6: CALCULAR PERCENTUAL DESTINADO AO FUNDEB (D)
+
+Objetivo: Calcular o percentual que representa o FUNDEB recebido sobre o total destinado.
+
+Fórmula:PERCENTUAL (D) = (C / A) × 100
+
+Onde:
+- C = Total Destinado ao FUNDEB Apurado (RECEBIDO)
+- A = Receitas Destinadas ao FUNDEB (CONTRIBUÍDO)
+
+Saída JSON - PASSO 6:json {   "percentual_destinado_fundeb": {     "descricao": "PERCENTUAL DESTINADO AO FUNDEB (D)=(C)/(A)*100",     "total_apurado_c": 0.00,     "receitas_destinadas_a": 0.00,     "percentual": 0.00,     "formula": "(C / A) × 100",     "interpretacao": "Município beneficiário/contribuinte líquido"   } } 
+
+---
+
+## ESTRUTURA JSON FINAL COMPLETA
+json {   "municipio": "Nome do Município",   "exercicio": "2024",   "alocacao_recursos_fundeb": {     "receitas_base_100_porcento": [       {         "item": "2.1.1",         "descricao": "Cota-parte FPM (Parcela referente à CF, art. 159, I, alínea b)",         "codigo": "1711.51.1.1.00.00",         "valor": 0.00,         "fonte": "Anexo 10"       },       {         "item": "2.2",         "descricao": "Cota-parte ICMS",         "codigo": "1721.50.0.1.00.00",         "valor": 0.00,         "fonte": "Anexo 10"       },       {         "item": "2.3",         "descricao": "Cota-parte IPI-Exportação",         "codigo": "1721.52.0.1.00.00",         "valor": 0.00,         "fonte": "Anexo 10"       },       {         "item": "2.4",         "descricao": "Cota-parte ITR ou ITR Arrecadado",         "codigo": "LC 87/96 ou similar",         "valor": 0.00,         "fonte": "Anexo 10"       },       {         "item": "2.5",         "descricao": "Cota-parte IPVA",         "codigo": "1721.51.0.1.00.00",         "valor": 0.00,         "fonte": "Anexo 10"       },       {         "item": "2.7",         "descricao": "Compensações Financeiras Provenientes de Impostos e Transferências Constitucionais",         "codigo": "1711.52.0.1.00.00",         "valor": 0.00,         "fonte": "Anexo 10"       }     ],     "total_receitas_base": {       "descricao": "Total das receitas base (100%)",       "valor": 0.00,       "formula": "soma de 2.1.1 a 2.7"     },     "receitas_destinadas_fundeb_20_porcento": [       {         "item": "2.1.1",         "descricao": "20% FPM",         "valor_base": 0.00,         "percentual": 20.00,         "valor_fundeb": 0.00,         "codigo_deducao": "91711.51.1.1.00.00"       },       {         "item": "2.2",         "descricao": "20% ICMS",         "valor_base": 0.00,         "percentual": 20.00,         "valor_fundeb": 0.00,         "codigo_deducao": "91721.50.0.1.00.00"       },       {         "item": "2.3",         "descricao": "20% IPI-Exportação",         "valor_base": 0.00,         "percentual": 20.00,         "valor_fundeb": 0.00,         "codigo_deducao": "91721.52.0.1.00.00"       },       {         "item": "2.4",         "descricao": "20% ITR/Desoneração",         "valor_base": 0.00,         "percentual": 20.00,         "valor_fundeb": 0.00       },       {         "item": "2.5",         "descricao": "20% IPVA",         "valor_base": 0.00,         "percentual": 20.00,         "valor_fundeb": 0.00,         "codigo_deducao": "91721.51.0.1.00.00"       },       {         "item": "2.7",         "descricao": "20% ITR",         "valor_base": 0.00,         "percentual": 20.00,         "valor_fundeb": 0.00,         "codigo_deducao": "91711.52.0.1.00.00"       }     ],     "receitas_destinadas_ao_fundeb_a": {       "descricao": "RECEITAS DESTINADAS AO FUNDEB (A)=(2.1.1)+(2.2)+(2.3)+(2.4)+(2.5)+(2.7)",       "valor": 0.00,       "destaque": true,       "formula": "soma dos 20%",       "validacao": {         "anexo_1_deducao_fundeb": 0.00,         "diferenca": 0.00,         "status": "CONFERIDO"       }     },     "total_excedido_fundeb_b": {       "descricao": "TOTAL EXCEDIDO AO FUNDEB (B) 20% DE (2.1.1) + (2.2) + (2.3) + (2.4) + (2.5) + (2.7)",       "total_base": 0.00,       "percentual": 20.00,       "valor": 0.00,       "destaque": true,       "formula": "total_base × 0.20"     },     "total_destinado_fundeb_apurado_c": {       "descricao": "TOTAL DESTINADO AO FUNDEB APURADO (C)",       "valor": 0.00,       "destaque": true,       "detalhamento": {         "transferencias_regulares_fundeb": 0.00,         "complementacao_uniao": {           "vaat": 0.00,           "vaaf": 0.00,           "vaar": 0.00,           "total": 0.00         }       },       "fonte": "Anexo 13 ou cálculo"     },     "percentual_destinado_fundeb_d": {       "descricao": "PERCENTUAL DESTINADO AO FUNDEB (D)=(C)/(A)*100",       "total_apurado_c": 0.00,       "receitas_destinadas_a": 0.00,       "percentual": 0.00,       "destaque": true,       "formula": "(C / A) × 100",       "interpretacao": "Município beneficiário se > 100% | Contribuinte líquido se = 100%"     }   },   "validacoes": {     "receitas_destinadas_igual_excedido": {       "valor_a": 0.00,       "valor_b": 0.00,       "diferenca": 0.00,       "status": "OK/ERRO"     },     "deducao_fundeb_anexo_1": {       "valor_anexo_1": 0.00,       "valor_calculado": 0.00,       "diferenca": 0.00,       "status": "CONFERIDO/DIVERGENTE"     }   } } 
+
+---
+
+## VALIDAÇÕES OBRIGATÓRIAS
+
+1. Receitas Destinadas (A) = Total Excedido (B)
+- Os dois valores devem ser IGUAIS
+- Ambos representam os 20% das receitas
+
+2. Validação com Anexo 1
+- "(R) DEDUÇÕES DO FUNDEB" = Receitas Destinadas (A)
+- Diferença deve ser R$ 0,00
+
+3. Códigos de dedução no Anexo 10
+- Verificar se existem códigos iniciados com "9"
+- Ex: 91711.51.1.1.00.00 (dedução FPM)
+
+4. Percentual mínimo 20%
+- Todas as receitas devem ter 20% destinados ao FUNDEB
+
+---
+
+## REGRAS CRÍTICAS
+
+### ⚠️ NÃO INCLUIR:
+
+1. FPM Extraordinário
+- Código: 1711.51.2.1.00.00
+- NÃO entra no cálculo do FUNDEB
+
+2. Impostos próprios
+- IPTU, ISS, ITBI, IRRF
+- NÃO compõem o FUNDEB
+
+### ✓ INCLUIR OBRIGATORIAMENTE:
+
+1. FPM - Cota Mensal (1711.51.1.1.00.00)
+2. ICMS (1721.50.0.1.00.00)
+3. IPI-Exportação (1721.52.0.1.00.00)
+4. IPVA (1721.51.0.1.00.00)
+5. ITR (1711.52.0.1.00.00)
+
+---
+
+## EXEMPLO DE USO DO PROMPT
+
+Entrada:
+- Anexo 1: (R) DEDUÇÕES DO FUNDEB = R$ 6.846.310,24
+- Anexo 10: Receitas detalhadas
+- Anexo 13: Recursos Vinculados à Educação
+
+Saída esperada:
+- JSON completo com todos os valores preenchidos
+- Validações conferidas
+- Status: CONFERIDO
+
+---
+
+## OBSERVAÇÕES FINAIS
+
+1. Todos os valores em formato numérico com 2 casas decimais
+2. Usar "." como separador decimal
+3. Não usar separador de milhares no JSON
+4. Incluir campos "fonte" para rastreabilidade
+5. Marcar campos principais com "destaque": true

@@ -1,0 +1,49 @@
+# Template processado pelo nginx:alpine no boot (envsubst sobre /etc/nginx/templates).
+#
+# O frontend serve os arquivos estaticos E faz proxy para os dois backends,
+# espelhando os proxies do Vite em desenvolvimento (/api -> auditor,
+# /conc -> conciliador). Isso mantem TUDO na mesma origem, entao nao existe
+# CORS em producao e o navegador nunca precisa saber a URL dos backends.
+#
+# Variaveis exigidas no ambiente do servico:
+#   PORT             injetada pelo Railway
+#   AUDITOR_URL      ex.: http://auditor.railway.internal:8000
+#   CONCILIADOR_URL  ex.: http://conciliador.railway.internal:8001
+
+server {
+    listen ${PORT};
+    root /usr/share/nginx/html;
+    index index.html;
+
+    # Upload de anexos em PDF/planilha: o padrao do nginx (1M) rejeitaria.
+    client_max_body_size 100M;
+
+    # Conciliacao e auditoria processam arquivos e podem passar de 60s.
+    proxy_connect_timeout 30s;
+    proxy_send_timeout    300s;
+    proxy_read_timeout    300s;
+
+    location /api/ {
+        proxy_pass ${AUDITOR_URL};
+        proxy_set_header Host              $host;
+        proxy_set_header X-Real-IP         $remote_addr;
+        proxy_set_header X-Forwarded-For   $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+
+    # O backend conciliador nao tem prefixo /conc nas rotas — ele responde em
+    # /auth/login, /prefeituras... Entao o prefixo e removido aqui (a barra
+    # final em proxy_pass faz exatamente isso), igual ao rewrite do Vite.
+    location /conc/ {
+        proxy_pass ${CONCILIADOR_URL}/;
+        proxy_set_header Host              $host;
+        proxy_set_header X-Real-IP         $remote_addr;
+        proxy_set_header X-Forwarded-For   $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+
+    # SPA: qualquer rota desconhecida devolve o index para o router do React.
+    location / {
+        try_files $uri $uri/ /index.html;
+    }
+}

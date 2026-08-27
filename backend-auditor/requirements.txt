@@ -1,0 +1,12 @@
+fastapi==0.115.0
+uvicorn==0.30.6
+python-multipart==0.0.9
+anthropic>=0.50.0
+PyMuPDF==1.24.14
+openpyxl==3.1.5
+python-dotenv==1.0.1
+camelot-py[cv]==0.11.0
+ghostscript
+jinja2>=3.1.0
+chevron>=0.14.0
+pdfplumber>=0.11.0

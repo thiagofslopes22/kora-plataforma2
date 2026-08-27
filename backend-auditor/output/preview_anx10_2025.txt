@@ -1,0 +1,223 @@
+ANEXO 10 — COMPARATIVO DA RECEITA ORÇADA COM A ARRECADADA
+MUNICÍPIO: PINHEIRO | EXERCÍCIO: 2025
+
+CÓDIGO                 DESCRIÇÃO                                                       ARRECADADA
+-------------------------------------------------------------------------------------------------
+1000.00.0.0.00.00      RECEITAS CORRENTES.                                         401.389.456,79
+1100.00.0.0.00.00      IMPOSTOS, TAXAS E CONTRIBUIÇÕES DE                           24.533.893,68
+1110.00.0.0.00.00      IMPOSTOS                                                     21.481.867,41
+1112.00.0.0.00.00      IMPOSTOS SOBRE O PATRIMÔNIO                                   1.383.531,14
+1112.50.0.0.00.00      IMPOSTO SOBRE A PROPRIEDADE PREDIAL E                           957.136,88
+1112.50.0.1.00.00      IPTU - PRINCIPAL                                                957.136,88
+1112.50.0.2.00.00      IPTU - MULTAS E JUROS                                            17.760,44
+1112.50.0.3.00.00      IPTU - DIVIDA ATIVA                                              26.641,75
+1112.50.0.4.00.00      IPTU- DIVIDA ATIVA MULTAS JUROS                                   5.430,00
+1112.53.0.0.00.00      ITBI-"INTER VIVOS"                                              426.394,26
+1112.53.0.1.00.00      ITBI-"INTER VIVOS"-PRINCIPAL                                    426.374,51
+1112.53.0.2.00.00      ITBI-"INTER VIVOS"-MULTAS E JUROS                                    19,75
+1112.53.0.3.00.00      ITBI-"INTER VIVOS"- DIVIDA ATIVA                                 10.944,71
+1112.53.0.4.00.00      ITBI-"INTER VIVOS"-DIVIDA ATIVA MULTAS JUROS                      2.172,00
+1113.00.0.0.00.00      IMPOSTOS SOBRE A RENDA E PROVENTOS DE                        13.082.405,14
+1113.02.0.0.00.00      IRPJ - LIQUIDO INCENTIVOS                                        48.025,57
+1113.02.0.1.00.00      IRPJ - LIQUIDO INCENTIVOS-PRINCIPAL                               3.172,94
+1113.02.0.2.00.00      IRPJ - LIQUIDO INCENTIVOS-MULTAS E JUROS                         58.644,00
+1113.02.0.3.00.00      IRPJ - LIQUIDO INCENTIVOS- DIVIDA ATIVA                          43.440,00
+1113.02.0.4.00.00      IRPJ - LIQUIDO INCENTIVOS-DIVIDA ATIVA MULTAS                    44.852,63
+1113.03.0.0.00.00      IMPOSTO SOBRE A RENDA - RETIDO NA FONTE                      13.034.379,57
+1113.03.1.0.00.00      IMPOSTO SOBRE A RENDA - RETIDO NA FONTE -                    13.033.679,19
+1113.03.1.1.00.00      IRRF-TRABALHO-PRINCIPAL                                      13.033.679,19
+1113.03.1.2.00.00      IRRF-TRABALHO-MULTAS E JUROS                                      5.430,00
+1113.03.1.3.00.00      IRRF-TRABALHO- DIVIDA ATIVA                                       4.344,00
+1113.03.1.4.00.00      IRRF-TRABALHO-DIVIDA ATIVA MULTAS JUROS                           1.629,00
+1113.03.4.0.00.00      IRRF- OUTROS RENDIMENTOS                                            700,38
+1113.03.4.1.00.00      IRRF- OUTROS RENDIMENTOS-PRINCIPAL                               25.083,34
+1113.03.4.2.00.00      IRRF- OUTROS RENDIMENTOS-MULTAS E JUROS                           2.715,00
+1113.03.4.3.00.00      IRRF- OUTROS RENDIMENTOS- DIVIDA ATIVA                              700,38
+1113.03.4.4.00.00      IRRF- OUTROS RENDIMENTOS-DIVIDA ATIVA                             2.932,20
+1114.00.0.0.00.00      IMPOSTO PRODUÇÃO CIRCULAÇÃO                                   7.015.931,13
+1114.51.0.0.00.00      IMPOSTOS SOBRE SERVIÇOS                                       7.015.931,13
+1114.51.1.0.00.00      IMPOSTO SOBRE SERVIÇOS DE QUALQUER                            7.015.931,13
+1114.51.1.1.00.00      ISSQN - PRINCIPAL                                             7.015.931,13
+1114.51.1.2.00.00      ISSQN -MULTAS E JUROS                                           162.900,00
+1114.51.1.3.00.00      ISSQN - DIVIDA ATIVA                                            271.500,00
+1114.51.1.4.00.00      ISSQN -DIVIDA ATIVA MULTAS JUROS                                195.480,00
+1120.00.0.0.00.00      TAXAS                                                         2.690.714,11
+1121.00.0.0.00.00      TAXAS PELO EXERCÍCIO DO PODER DE POLÍCIA                      2.628.365,22
+1121.01.0.0.00.00      TAXAS DE INSPEÇÃO, CONTROLE E FISCALIZAÇÃO                    2.628.365,22
+1121.01.0.1.00.00      TAXAS DE INSPEÇÃO, CONTROLE E FISCALIZAÇÃO                    2.628.365,22
+1122.00.0.0.00.00      TAXAS PELA PRESTAÇÃO DE SERVIÇOS                                 62.348,89
+1122.01.0.0.00.00      TAXAS PELA PRESTAÇÃO DE SERVIÇOS EM                              62.348,89
+1122.01.0.1.00.00      TAXAS PELA PRESTAÇÃO DE SERVIÇOS EM                              62.348,89
+1130.00.0.0.00.00      CONTRIBUIÇÃO DE MELHORIA                                        361.312,16
+1131.00.0.0.00.00      CONTRIBUIÇÃO DE MELHORIA                                        361.312,16
+1131.99.0.0.00.00      OUTRAS CONTRIBUIÇÕES DE MELHORIA                                361.312,16
+1131.99.0.1.00.00      OUTRAS CONTRIBUIÇÕES DE MELHORIA -                              361.312,16
+1200.00.0.0.00.00      CONTRIBUIÇÕES                                                11.368.359,02
+1240.00.0.0.00.00      CONTRIBUIÇÃO PARA O CUSTEIO DO SERVIÇO DE                    11.368.359,02
+1241.00.0.0.00.00      CONTRIBUIÇÃO PARA O CUSTEIO DO SERVIÇO DE                    11.368.359,02
+1241.50.0.0.00.00      CONTRIBUIÇÃO PARA O CUSTEIO DO SERVIÇO DE                    11.368.359,02
+1241.50.0.1.00.00      CONTRIB.SERV.ILUMINAÇÃO PÚBLICA-PRINCIPAL                    11.368.359,02
+1300.00.0.0.00.00      RECEITA PATRIMONIAL                                           3.813.189,07
+1320.00.0.0.00.00      VALORES MOBILIÁRIOS                                           3.750.156,28
+1321.00.0.0.00.00      JUROS E CORREÇÕES MONETÁRIAS                                  3.750.156,28
+1321.01.0.0.00.00      REMUNERAÇÃO DE DEPÓSITOS BANCÁRIOS                            3.750.154,82
+1321.01.0.1.00.00      REMUNERAÇÃO DE DEPÓSITOS BANCÁRIOS -                          3.750.154,82
+1321.02.0.0.00.00      REMUNERAÇÃO DE DEPÓSITOS ESPECIAIS                                    1,46
+1321.02.0.1.00.00      REMUNERAÇÃO DE DEPÓSITOS ESPECIAIS -                                  1,46
+1390.00.0.0.00.00      DEMAIS RECEITAS PATRIMONIAIS                                     63.032,79
+1399.00.0.0.00.00      OUTRAS RECEITAS PATRIMONIAIS                                     63.032,79
+1399.99.0.0.00.00      OUTRAS RECEITAS PATRIMONIAIS                                     63.032,79
+1399.99.0.1.00.00      OUTRAS RECEITAS PATRIMONIAIS - PRINCIPAL                         63.032,79
+1600.00.0.0.00.00      RECEITA DE SERVIÇOS                                           2.747.301,26
+1610.00.0.0.00.00      SERVIÇOS ADMINISTRATIVOS E COMERCIAIS                         1.345.468,21
+1611.00.0.0.00.00      SERVIÇOS ADMINISTRATIVOS E COMERCIAIS                         1.345.468,21
+1611.02.0.0.00.00      INSCRIÇÃO EM CONCURSOS E PROCESSOS                            1.345.468,21
+1611.02.0.1.00.00      INSC.CONC.PROC.SELETIVOS–PRINCIPAL                            1.345.468,21
+1690.00.0.0.00.00      OUTROS SERVIÇOS                                               1.401.833,05
+1699.00.0.0.00.00      OUTROS SERVIÇOS                                               1.401.833,05
+1699.99.0.0.00.00      OUTROS SERVIÇOS                                               1.401.833,05
+1699.99.0.1.00.00      OUTROS SERVIÇOS – PRINCIPAL                                   1.401.833,05
+1700.00.0.0.00.00      TRANSFERÊNCIAS CORRENTES                                    361.594.750,45
+1710.00.0.0.00.00      TRANSFERÊNCIAS DA UNIÃO E DE SUAS                           265.063.380,90
+1711.00.0.0.00.00      TRANSFERÊNCIAS DECORRENTES DE                                82.487.321,70
+1711.51.0.0.00.00      COTA-PARTE DO FUNDO DE PARTICIPAÇÃO DOS                      82.479.295,12
+1711.51.1.0.00.00      COTA-PARTE DO FUNDO DE PARTICIPAÇÃO DOS                      73.443.982,48
+1711.51.1.1.00.00      COTA-PARTE DO FPM- COTA MENSAL - PRINCIPAL                   73.443.982,48
+1711.51.2.0.00.00      COTA-PARTE DO FUNDO DE PARTICIPAÇÃO DOS                       9.035.312,64
+1711.51.2.1.00.00      COTA-PARTE DO FPM- COTAS EXTRAORDINARIAS                      9.035.312,64
+1711.52.0.0.00.00      COTA-PARTE DO IMPOSTO SOBRE A                                     8.026,58
+1711.52.0.1.00.00      COTA-PARTE DO IMP. PROPRIED.TERRIT.RURAL -                        8.026,58
+1712.00.0.0.00.00      TRANSF.COMPENS.FINANC.EXPL.RECURSOS                           1.414.353,74
+1712.51.0.0.00.00      COTA-PARTE COMPENS.FINANC.EXPL.RECURSOS                              11,32
+1712.51.0.1.00.00      CFEM - PRINCIPAL                                                     11,32
+1712.52.0.0.00.00      COTA-PARTE COMPENSAÇÃO FINANCEIRA                             1.414.342,42
+1712.52.4.0.00.00      COTA-PARTE DO FUNDO ESPECIAL DO PETRÓLEO                      1.414.342,42
+1712.52.4.1.00.00      COTA - PARTE FEP– PRINCIPAL                                   1.414.342,42
+1712.99.0.0.00.00      OUTRAS TRANSF.COMP.FINANC.EXPLORAÇÃO DE                         134.890,97
+1712.99.0.1.00.00      OUTR.TRANS.COMP.FINAN.EXPL.RECUR.NAT.-PRIN                      134.890,97
+1713.00.0.0.00.00      TRANSFERÊNCIAS RECURSOS SISTEMA ÚNICO                        69.280.627,26
+1713.50.0.0.00.00      TRANSF.SUS-FUNDO A FUNDO - BLOCO DE                          59.984.462,51
+1713.50.1.0.00.00      TRANSF.SUS-FUNDO A FUNDO - BLOCO DE                          27.404.521,68
+1713.50.1.1.00.00      TRANS.SUS-BLOCO                                              27.404.521,68
+1713.50.2.0.00.00      TRANSF.SUS- BLOCO MANUTENÇÃO-ATENÇÃO                         30.609.399,89
+1713.50.2.1.00.00      TRANS.SUS-BLOCO                                              30.609.399,89
+1713.50.3.0.00.00      TRANSF.SUS- BLOCO MANUTENÇÃO-VIGILÂNCIA                       1.294.799,94
+1713.50.3.1.00.00      TRANS.SUS-BLOCO MANUT-VIGILÂNCIA                              1.294.799,94
+1713.50.4.0.00.00      TRANSF.SUS- BLOCO MANUTENÇÃO-ASSISTÊNCIA                        675.741,00
+1713.50.4.1.00.00      TRANS.SUS- BLOCO                                                675.741,00
+1713.50.5.0.00.00      TRANSF.SUS- BLOCO MANUTENÇÃO- GESTÃO DO                       1.487.110,82
+1713.50.5.1.00.00      TRANS.SUS- BLOCO MANUT.-GESTÃO                                1.487.110,82
+1713.50.9.0.00.00      TRANSF.SUS- BLOCO MANUTENÇÃO- OUTROS                          3.162.051,90
+1713.50.9.1.00.00      TRANS.SUS-BLOCO MANUT.-OUTROS                                 3.162.051,90
+1713.51.0.0.00.00      TRANSF.SUS-FUNDO A FUNDO - BLOCO DE                           4.911.715,19
+1713.51.1.0.00.00      TRANSF.SUS-FUNDO FUNDO-BLOCO                                  1.536.244,74
+1713.51.1.1.00.00      TRANS.SUS-BLOCO                                               1.536.244,74
+1713.51.2.0.00.00      TRANSF.SUS- BLOCO ESTRUTURAÇÃO-ATENÇÃO                        2.803.237,50
+1713.51.2.1.00.00      TRANS.SUS-BLOCO ESTRUT.-ATENÇÃO                               2.803.237,50
+1713.51.9.0.00.00      TRANSF.SUS- BLOCO ESTRUTURAÇÃO-OUTROS                           572.232,95
+1713.51.9.1.00.00      TRANS.SUS- BLOCO ESTRUT.-OUTROS                                 572.232,95
+1713.99.0.0.00.00      OUTRAS TRANSFERÊNCIAS RECURSOS SISTEMA                        9.296.164,75
+1713.99.0.1.00.00      OUTRAS TRANSF. RECURSO-SUS- PRINCIPAL                         9.296.164,75
+1714.00.0.0.00.00      TRANSF.RECURSOS FUNDO                                        10.948.310,24
+1714.50.0.0.00.00      TRANSFERÊNCIAS DO SALÁRIO-EDUCAÇÃO                            8.055.193,38
+1714.50.0.1.00.00      TRANSF.SALÁRIO-EDUCAÇÃO– PRINCIPAL                            8.055.193,38
+1714.51.0.0.00.00      TRANSFERÊNCIAS FNDE- PROGR.DINH.DIRETO NA                       237.712,37
+1714.51.0.1.00.00      TRANSF.FNDE-PROGR.DINH.DIRETO                                   237.712,37
+1714.52.0.0.00.00      TRANSF.PROGRAMA NACIONAL ALIMENTAÇÃO                          2.099.628,00
+1714.52.0.1.00.00      TRANSF.PROGR.NAC.                                             2.099.628,00
+1714.53.0.0.00.00      TRANSF.PROG.NACIONAL APOIOTRANSPORTE DO                         764.805,65
+1714.53.0.1.00.00      TRANSF.PROG.NAC.TRANSP.ESCOLAR-PNATE-PRI                        764.805,65
+1714.99.0.0.00.00      OUTRAS TRANSF.DIRETAS FUNDO NACIONAL                             28.683,21
+1714.99.0.1.00.00      OUTRAS TRANSF. FNDE- PRINCIPAL                                   28.683,21
+1715.00.0.0.00.00      TRANSFERÊNCIAS COMPLEMENTAÇÃO DA UNIÃO                       95.377.300,53
+1715.50.0.0.00.00      TRANSFERÊNCIAS COMPLEMENTAÇÃO UNIÃO                          45.668.962,32
+1715.50.0.1.00.00      TRANSF.COMP.UNIÃO FUNDEB-VAAT-PRINCIPAL                      45.668.962,32
+1715.51.0.0.00.00      TRANSFERÊNCIAS COMPLEMENTAÇÃO UNIÃO                          46.389.009,08
+1715.51.0.1.00.00      TRANSF.COMP.UNIÃO FUNDEB-VAAF-PRINCIPAL                      46.389.009,08
+1715.52.0.0.00.00      TRANSFERÊNCIAS COMPLEMENTAÇÃO UNIÃO                             325.711,75
+1715.52.0.1.00.00      TRANSF.COMP.UNIÃO FUNDEB-VAAR-PRINCIPAL                         325.711,75
+1715.53.0.0.00.00      TRANSF. DE REC. DO FUNDEB DEST À CRIAÇÃO                      2.993.617,38
+1715.53.0.1.00.00      TRANSF. RECUR.FUNDEB DEST.CRIAÇÃO                             2.993.617,38
+1716.00.0.0.00.00      TRANSF.RECURSOS FUNDO NACIONAL                                2.287.894,18
+1716.50.0.0.00.00      TRANSF.RECURSOS FUNDO NACIONAL                                2.287.894,18
+1716.50.0.1.00.00      TRANSF.RECUR.-FNAS-PRINCIPAL                                  2.287.894,18
+1717.00.0.0.00.00      TRANSFERÊNCIAS DE CONVÊNIOS DA UNIÃO E DE                     7.999.139,34
+1717.51.0.0.00.00      TRANSF.CONVÊNIOS UNIÃO PROGRAMAS DE                           2.085.608,70
+1717.51.0.1.00.00      TRANSF.CONV.UNIÃO- PROGR.EDUC.-PRINCIPAL                      2.085.608,70
+1717.52.0.0.00.00      TRANSF.CONVÊNIOS UNIÃO PROGRAMAS                              1.468.815,00
+1717.52.0.1.00.00      TRANSF.CONV.UNIÃO                                             1.468.815,00
+1717.54.0.0.00.00      TRANSF.CONV.UNIÃO PROGRAMAS SANEAMENTO                        2.772.169,21
+1717.54.0.1.00.00      TRANSF.CONV.UNIÃO                                             2.772.169,21
+1717.99.0.0.00.00      OUTRAS TRANSF.CONVÊNIOS UNIÃO ENTIDADES                       1.672.546,43
+1717.99.0.1.00.00      OUTRAS TRANSF.CONV.UNIÃO                                      1.672.546,43
+1719.00.0.0.00.00      OUTRAS TRANSFERÊNCIAS RECURSOS UNIÃO E                        3.267.573,25
+1719.56.0.0.00.00      TRANSF.DECISÃO JUDICIAL                                      73.590.075,00
+1719.56.0.1.00.00      TRANSF.DECISÃO JUDICIAL                                      73.590.075,00
+1719.58.0.0.00.00      TRANSF.OBRIG.LEI COMPLEMENTAR Nº 176/2020                       107.570,47
+1719.58.0.1.00.00      TRANSF.OBRIG.LEI COMPLEM.Nº                                     107.570,47
+1719.60.0.0.00.00      TRANSFERÊNCIAS ALDIR BLANC LEI Nº 14.399/2022                   837.440,66
+1719.60.0.1.00.00      TRANSF.ALDIR BLANC LEI Nº                                       837.440,66
+1719.61.0.0.00.00      AUX.FINANC.-CRÉD.TRIBUT.ICMS- EC Nº 123/2022                    212.597,53
+1719.61.0.1.00.00      AUX.FINAN-CRÉD.TRIB.ICMS- EC Nº                                 212.597,53
+1719.99.0.0.00.00      OUTRAS TRANSF.RECURSOS UNIÃO ENTIDADES                        3.267.573,25
+1719.99.0.1.00.00      OUTRAS TRANSF.RECUR.UNIÃO ENTID.-PRINCIPAL                    3.267.573,25
+1720.00.0.0.00.00      TRANSFERÊNCIAS ESTADOS DISTRITO FEDERAL                      27.057.118,79
+1721.00.0.0.00.00      PARTICIPAÇÃO NA RECEITA DOS ESTADOS E                        24.052.152,15
+1721.50.0.0.00.00      COTA-PARTE DO ICMS                                           18.477.926,55
+1721.50.0.1.00.00      COTA-PARTE DO ICMS – PRINCIPAL                               18.477.926,55
+1721.51.0.0.00.00      COTA-PARTE DO IPVA                                            5.430.518,93
+1721.51.0.1.00.00      COTA-PARTE DO IPVA – PRINCIPAL                                5.430.518,93
+1721.52.0.0.00.00      COTA-PARTE DO IPI – MUNICÍPIOS                                  123.933,75
+1721.52.0.1.00.00      COTA-PARTE DO IPI – MUNICÍPIOS – PRINCIPAL                      123.933,75
+1721.53.0.0.00.00      COTA-PARTE CONTRIBUIÇÃO INTERVENÇÃO                              19.772,92
+1721.53.0.1.00.00      COTA-PARTE-CIDE-PRINCIPAL                                        19.772,92
+1723.00.0.0.00.00      TRANSFERÊNCIAS RECURSOS SISTEMA ÚNICO                           562.005,00
+1723.50.0.0.00.00      TRANSFERÊNCIAS RECURSOS SISTEMA ÚNICO                           562.005,00
+1723.50.0.1.00.00      TRANSF.RECURSOS-SUS-PRINCIPAL                                   562.005,00
+1724.00.0.0.00.00      TRANSF.CONVÊNIOS ESTADOS E DF ENTIDADES                       2.253.802,95
+1724.50.0.0.00.00      TRANSF.CONV.ESTADOS E DF PARA SUS                               683.989,95
+1724.50.0.1.00.00      TRANSF.CONV.ESTADOS E DF PARA                                   683.989,95
+1724.51.0.0.00.00      TRANSF. CONVÊNIOS ESTADOS PROGRAMA                            1.009.165,50
+1724.51.0.1.00.00      TRANSF.CONV.ESTADOS                                           1.009.165,50
+1724.99.0.0.00.00      OUTRAS TRANSF.CONV.ESTADOS E DF E                               560.647,50
+1724.99.0.1.00.00      OUTRAS TRANSF.CONV.EST.E DF E                                   560.647,50
+1729.00.0.0.00.00      OUTRAS TRANSFERÊNCIAS DOS ESTADOS E                           3.004.966,64
+1729.51.0.0.00.00      TRANSFERÊNCIAS DE ESTADOS DESTINADAS À                          168.601,50
+1729.51.0.1.00.00      TRANSF.ESTADOS ASSIST.SOCIAL-PRINCIPAL                          168.601,50
+1729.99.0.0.00.00      OUTRAS TRANSFERÊNCIAS DOS ESTADOS E DF                        3.004.966,64
+1729.99.0.1.00.00      OUTRAS TRANSF. ESTADOS E DF-PRINCIPAL                         3.004.966,64
+1730.00.0.0.00.00      TRANSFERÊNCIAS DOS MUNICÍPIOS E DE SUAS                          95.436,91
+1739.00.0.0.00.00      OUTRAS TRANSFERÊNCIAS DOS MUNICÍPIOS                             95.436,91
+1739.99.0.0.00.00      OUTRAS TRANSFERÊNCIAS DOS MUNICÍPIOS                             95.436,91
+1739.99.0.1.00.00      OUTRAS TRANSF.MUNICÍPIOS-PRINCIPAL                               95.436,91
+1750.00.0.0.00.00      TRANSFERÊNCIAS DE OUTRAS INSTITUIÇÕES                        69.378.813,85
+1751.00.0.0.00.00      TRANSF.RECURSOS FUNDO MANUTENÇÃO                             69.378.813,85
+1751.50.0.0.00.00      TRANSF.RECURSOS FUNDO MANUTENÇÃO                             69.378.813,85
+1751.50.0.1.00.00      TRANSF.RECURSOS FUNDEB-PRINCIPAL                             69.378.813,85
+1900.00.0.0.00.00      OUTRAS RECEITAS CORRENTES                                        79.264,57
+1920.00.0.0.00.00      INDENIZAÇÕES, RESTITUIÇÕES E                                     79.264,57
+1921.00.0.0.00.00      INDENIZAÇÕES                                                     79.264,57
+1921.99.0.0.00.00      OUTRAS INDENIZAÇÕES                                              79.264,57
+1921.99.0.1.00.00      OUTRAS INDENIZAÇÕES – PRINCIPAL                                  79.264,57
+91000.00.0.0.00.00     (R) DEDUCOES DA RECEITAS CORRENTES. -                        19.496.877,67
+91700.00.0.0.00.00     (R) DEDUCOES DA TRANSFERÊNCIAS -                             19.496.877,67
+91710.00.0.0.00.00     (R) DEDUCOES DA TRANSFERÊNCIAS DA UNIÃO E -                  14.690.401,82
+91711.00.0.0.00.00     (R) DEDUCOES DA TRANSFERÊNCIAS -                             14.690.401,82
+91711.51.0.0.00.00     (R) DEDUCOES DA COTA-PARTE DO FUNDO DE -                     14.688.796,50
+91711.51.1.0.00.00     (R) DEDUCOES DA COTA-PARTE DO FUNDO DE -                     14.688.796,50
+91711.51.1.1.00.00     (R) DEDUCOES DA COTA-PARTE DO FPM- COTA -                    14.688.796,50
+91711.52.0.0.00.00     (R) DEDUCOES DA COTA-PARTE DO IMPOSTO -                           1.605,32
+91711.52.0.1.00.00     (R) DEDUCOES DA COTA-PARTE DO IMP. -                              1.605,32
+91719.00.0.0.00.00     (R) DEDUCOES DA OUTRAS TRANSFERÊNCIAS -                          39.152,00
+91719.61.0.0.00.00     (R) DEDUCOES DA -                                                39.152,00
+91719.61.0.1.00.00     (R) DEDUCOES DA AUX.FINAN-CRÉD.TRIB.ICMS- -                      39.152,00
+91720.00.0.0.00.00     (R) DEDUCOES DA TRANSFERÊNCIAS ESTADOS -                      4.806.475,85
+91721.00.0.0.00.00     (R) DEDUCOES DA PARTICIPAÇÃO NA RECEITA -                     4.806.475,85
+91721.50.0.0.00.00     (R) DEDUCOES DA COTA-PARTE DO ICMS -                          3.695.585,31
+91721.50.0.1.00.00     (R) DEDUCOES DA COTA-PARTE DO ICMS – -                        3.695.585,31
+91721.51.0.0.00.00     (R) DEDUCOES DA COTA-PARTE DO IPVA -                          1.086.103,79
+91721.51.0.1.00.00     (R) DEDUCOES DA COTA-PARTE DO IPVA – -                        1.086.103,79
+91721.52.0.0.00.00     (R) DEDUCOES DA COTA-PARTE DO IPI – -                            24.786,75
+91721.52.0.1.00.00     (R) DEDUCOES DA COTA-PARTE DO IPI – -                            24.786,75
+-------------------------------------------------------------------------------------------------
+Total de registros: 216

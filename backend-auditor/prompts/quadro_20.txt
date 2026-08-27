@@ -1,0 +1,101 @@
+# PROMPT OTIMIZADO - JSON DESPESAS MDE (MANUTENÇÃO E DESENVOLVIMENTO DO ENSINO)
+
+Extraia dos Anexos 06 e 10 e gere JSON:
+
+json {   "municipio": "[extrair do cabeçalho]",   "exercicio": "[extrair do cabeçalho]",   "despesas_mde": {     "total_fundeb_impostos_transferencias": 0.00,     "total_fundeb_primeiro_quadrimestre": 0.00,     "educacao_infantil": 0.00,     "ensino_fundamental": 0.00,     "total_acoes_tipicas_mde": 0.00,     "resultado_liquido_fundeb": 0.00,     "complementacao_fundeb_exercicio": 0.00,     "receita_aplicacao_financeira_fundeb": 0.00,     "superavit_exercicio_anterior_fundeb": 0.00,     "outros_recursos": 0.00,     "rp_sem_disponibilidade_financeira": 0.00,     "cancelamento_rp_com_disponibilidade": 0.00,     "total_despesas_para_fins_de_limite": 0.00,     "base_calculo_informada": 0.00,     "percentual_aplicacao_ensino": 0.00   } } 
+
+---
+
+## ⚠️ REGRA CRÍTICA — LEITURA DA COLUNA ARRECADADA (OBRIGATÓRIA PARA TODOS OS CÓDIGOS)
+
+Formato de cada linha do Anexo 10: ORÇADA | ARRECADADA | DIFERENÇA | CÓDIGO | DESCRIÇÃO  CASO 1 — Três valores DISTINTOS: Ex: "1.158.822,81  8.055.193,38  6.896.370,57  1714.50.0.0" → ARRECADADA = 8.055.193,38 ✓  CASO 2 — Dois valores IGUAIS: Ex: "237.712,37  237.712,37  1714.51.0.0" → ARRECADADA = 0,00 ✓  CASO 3 — Um único valor: → ARRECADADA = 0,00 ✓
+
+---
+
+## EXTRAÇÃO DETALHADA:
+
+### 1. TOTAL FUNDEB — IMPOSTOS E TRANSFERÊNCIAS
+Fonte: Anexo 06
+Somar todas as despesas da Função 12 de TODAS as unidades orçamentárias:
+- Unidade SEMED (subfunções 122, 361, 365, 366, 367)
+- Unidade FUNDEB (subfunções 361, 365, 366, 367)
+- Usar coluna TOTAL do Anexo 06
+
+javascript total_fundeb = semed_subtotal + fundeb_subtotal 
+
+---
+
+### 2. VALOR APLICADO ATÉ O PRIMEIRO QUADRIMESTRE
+Buscar no relatório quadrimestral. Se não disponível: 0.00
+
+---
+
+### 3. EDUCAÇÃO INFANTIL
+Fonte: Anexo 06 — Subfunção 365javascript educacao_infantil = semed_365 + fundeb_365 
+
+---
+
+### 4. ENSINO FUNDAMENTAL
+Fonte: Anexo 06 — Subfunção 361javascript ensino_fundamental = semed_361 + fundeb_361 
+
+---
+
+### 5. TOTAL DAS DESPESAS COM AÇÕES TÍPICAS DE MDE
+javascript total_acoes_tipicas_mde = total_fundeb_impostos_transferencias 
+
+---
+
+### 6. RESULTADO LÍQUIDO DAS TRANSFERÊNCIAS DO FUNDEB
+Fonte: Anexo 10javascript // Receitas FUNDEB recebidas fundeb_recebido = transf_recursos_fundeb (1751.50.0.0)                 + vaaf (1715.51.0.0)                 + vaat (1715.50.0.0)                 + vaar (1715.52.0.0)                 + eti (1715.53.0.0)                 + aplic_financeira_fundeb  // 20% destinado ao FUNDEB (códigos 9xxxx — converter para positivo) fundeb_destinado = fpm_20 (91711.51.1.0)                  + itr_20 (91711.52.0.0)                  + icms_20 (91721.50.0.0)                  + ipva_20 (91721.51.0.0)                  + ipi_20 (91721.52.0.0)  resultado_liquido_fundeb = transf_recursos_fundeb - fundeb_destinado // Usar SOMENTE 1751.50.0.0 menos o 20% destinado 
+
+---
+
+### 7. COMPLEMENTAÇÃO DO FUNDEB NO EXERCÍCIO
+Fonte: Anexo 10 — coluna ARRECADADA (aplicar regra crítica)javascript complementacao = vaaf (1715.51.0.0)                + vaat (1715.50.0.0)                + vaar (1715.52.0.0)                + eti (1715.53.0.0) 
+
+---
+
+### 8. RECEITA DE APLICAÇÃO FINANCEIRA FUNDEB
+Buscar no Anexo 10 código relacionado a rendimentos FUNDEB.
+Se não encontrado: 0.00
+
+---
+
+### 9. SUPERÁVIT FINANCEIRO EXERCÍCIO ANTERIOR FUNDEB
+javascript // Calcular somente se despesas > receitas FUNDEB receitas_fundeb_total = fundeb_recebido (itens 6) despesas_fundeb_total = fundeb_subtotal (Anexo 06)  if (despesas_fundeb_total > receitas_fundeb_total):     superavit_anterior = despesas_fundeb_total - receitas_fundeb_total else:     superavit_anterior = 0.00 
+
+---
+
+### 10. DESPESAS CUSTEADAS COM OUTROS RECURSOS
+Fonte: Anexo 10 — coluna ARRECADADA (aplicar regra crítica em CADA código)javascript outros_recursos = salario_educacao (1714.50.0.0)                 + pnae (1714.52.0.0)                 + pnate (1714.53.0.0)                 + outras_fnde (1714.99.0.0)                 + fnde_capital (2412.00.0.0) // NÃO incluir PDDE (1714.51.0.0) — repassado diretamente às escolas  // ⚠️ APLICAR REGRA CRÍTICA: se dois valores iguais → 0.00 
+
+---
+
+### 11. RP SEM DISPONIBILIDADE FINANCEIRA
+Buscar no RGF. Se não disponível: 0.00
+
+---
+
+### 12. CANCELAMENTO DE RP
+Buscar no RGF. Se não disponível: 0.00
+
+---
+
+### 13. TOTAL DAS DESPESAS PARA FINS DE LIMITE
+javascript total_limite = total_acoes_tipicas_mde              - resultado_liquido_fundeb              - complementacao_fundeb              - receita_aplic_financeira              - superavit_anterior              - outros_recursos              - rp_sem_disponibilidade              - cancelamento_rp 
+
+---
+
+### 14. BASE DE CÁLCULO
+Fonte: Anexo 10 — BASE BRUTA (com FPM extraordinário, SEM deduzir FUNDEB)javascript base_calculo = total_impostos (A)              + total_transferencias (B)              + fpm_extraordinario (1711.51.2.0) // NÃO deduzir FUNDEB para MDE 
+
+---
+
+### 15. PERCENTUAL DE APLICAÇÃO NO ENSINO
+javascript percentual = (total_limite / base_calculo) * 100 // Mínimo constitucional: 25% (CF/88, art. 212) 
+
+---
+
+## EXEMPLO — PINHEIRO 2025:
+
+json {   "municipio": "Pinheiro",   "exercicio": "2025",   "despesas_mde": {     "total_fundeb_impostos_transferencias": 202371905.14,     "total_fundeb_primeiro_quadrimestre": 0.00,     "educacao_infantil": 45861825.82,     "ensino_fundamental": 123966963.98,     "total_acoes_tipicas_mde": 202371905.14,     "resultado_liquido_fundeb": 49881936.18,     "complementacao_fundeb_exercicio": 95377300.53,     "receita_aplicacao_financeira_fundeb": 0.00,     "superavit_exercicio_anterior_fundeb": 11305398.34,     "outros_recursos": 11385103.51,     "rp_sem_disponibilidade_financeira": 0.00,     "cancelamento_rp_com_disponibilidade": 0.00,     "total_despesas_para_fins_de_limite": 34422166.58,     "base_calculo_informada": 127953542.77,     "percentual_aplicacao_ensino": 26.90   } } OUTPUT: despesas_mde_[municipio]_[ano].json

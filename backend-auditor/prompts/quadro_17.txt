@@ -1,0 +1,80 @@
+# PROMPT OTIMIZADO - JSON RECEITA IMPOSTOS E TRANSFERÊNCIAS (SAÚDE)
+
+Extraia do Anexo 10 (coluna ARRECADADA) e gere JSON:
+
+json {   "municipio": "[extrair do cabeçalho]",   "exercicio": "[extrair do cabeçalho]",   "apuracao_receita_impostos_transferencias_saude": {     "receita_impostos": [       {         "descricao": "Imposto Predial e Territorial Urbano - IPTU",         "valor": 0.00,         "codigo": "1112.50.0.0.00.00"       },       {         "descricao": "Multas, juros de mora, dívida ativa e outros encargos do IPTU",         "valor": 0.00,         "observacao": "Incluídos na conta sintética 1112.50.0.0"       },       {         "descricao": "Imposto sobre a Transmissão de Bens Intervivos - ITBI",         "valor": 0.00,         "codigo": "1112.53.0.0.00.00"       },       {         "descricao": "Multas, juros de mora, dívida ativa e outros encargos do ITBI",         "valor": 0.00,         "observacao": "Incluídos na conta sintética 1112.53.0.0"       },       {         "descricao": "Imposto sobre Serviços de Qualquer Natureza - ISS",         "valor": 0.00,         "codigo": "1114.51.0.0.00.00"       },       {         "descricao": "Multas, juros de mora, dívida ativa e outros encargos do ISS",         "valor": 0.00,         "observacao": "Incluídos na conta sintética 1114.51.0.0"       },       {         "descricao": "Imposto de Renda Retido na Fonte - IRRF",         "valor": 0.00,         "codigo": "1113.03.0.0.00.00"       },       {         "descricao": "Imposto Territorial Rural - ITR",         "valor": 0.00,         "observacao": "ITR é classificado como TRANSFERÊNCIA, não como imposto próprio"       },       {         "descricao": "Multas, juros de mora, dívida ativa e outros encargos do ITR",         "valor": 0.00,         "observacao": "Incluídos na conta sintética 1113.03.0.0 — usar 0.00"       },       {         "descricao": "Multas, juros de mora e outros encargos dos impostos",         "valor": 0.00,         "observacao": "Incluídos nas contas sintéticas acima — usar 0.00"       },       {         "descricao": "Dívida ativa dos impostos",         "valor": 0.00,         "observacao": "Incluída nas contas sintéticas acima — usar 0.00"       },       {         "descricao": "Multa, juros de mora e outros encargos da dívida ativa",         "valor": 0.00,         "observacao": "Incluída nas contas sintéticas acima — usar 0.00"       },       {         "descricao": "TOTAL DA RECEITA DE IMPOSTOS (A)",         "valor": 0.00,         "destaque": true       }     ],     "receita_transferencias": [       {         "descricao": "Cota-parte FPM",         "valor": 0.00,         "codigo": "1711.51.1.0.00.00",         "observacao": "SOMENTE FPM Regular (Cota Mensal) — NÃO incluir cotas extraordinárias"       },       {         "descricao": "Cota-parte ITR",         "valor": 0.00,         "codigo": "1711.52.0.0.00.00"       },       {         "descricao": "Cota-parte IPVA",         "valor": 0.00,         "codigo": "1721.51.0.0.00.00"       },       {         "descricao": "Cota-parte ICMS",         "valor": 0.00,         "codigo": "1721.50.0.0.00.00"       },       {         "descricao": "ICMS-Desoneração – LC nº 87/1996",         "valor": 0.00,         "observacao": "Se não encontrado: 0.00"       },       {         "descricao": "Cota-parte IPI-Exportação",         "valor": 0.00,         "codigo": "1721.52.0.0.00.00"       },       {         "descricao": "Cota-parte IOF-Ouro",         "valor": 0.00,         "observacao": "Se não encontrado: 0.00"       },       {         "descricao": "TOTAL DA RECEITA DE TRANSFERÊNCIAS CONSTITUCIONAIS E LEGAIS (B)",         "valor": 0.00,         "destaque": true       }     ],     "base_calculo": {       "descricao": "TOTAL DA RECEITA RESULTANTE DE IMPOSTOS (Base de cálculo) (A+B)",       "valor": 0.00,       "formula": "total_impostos + total_transferencias",       "destaque": true     },     "calculo_minimo_saude": {       "base_calculo": 0.00,       "percentual_minimo": 15.00,       "aplicacao_minima_obrigatoria": 0.00,       "base_legal": "CF/88, art. 198, §2º, I c/c EC 29/2000"     },     "fpm_extraordinario_excluido": {       "codigo": "1711.51.2.0.00.00",       "descricao": "FPM - Cotas Extraordinárias",       "valor_excluido": 0.00,       "fundamentacao": "LC 141/2012 e jurisprudência TCE",       "impacto_aplicacao_minima": 0.00     }   } } 
+
+---
+
+## MAPEAMENTO — CONTAS SINTÉTICAS:
+
+| CAMPO | CÓDIGO SINTÉTICO | OPERAÇÃO |
+|-------|-----------------|----------|
+| IPTU | 1112.50.0.0.00.00 | extrair ARRECADADA |
+| IPTU multas/encargos | incluso no pai | 0.00 |
+| ITBI | 1112.53.0.0.00.00 | extrair ARRECADADA |
+| ITBI multas/encargos | incluso no pai | 0.00 |
+| ISS | 1114.51.0.0.00.00 | extrair ARRECADADA |
+| ISS multas/encargos | incluso no pai | 0.00 |
+| IRRF | 1113.03.0.0.00.00 | extrair ARRECADADA |
+| ITR (impostos) | — | 0.00 (é transferência) |
+| Demais multas/encargos | incluso nos pais | 0.00 |
+| Dívida ativa impostos | incluso nos pais | 0.00 |
+| FPM cota mensal | 1711.51.1.0.00.00 | extrair ARRECADADA |
+| ITR transferência | 1711.52.0.0.00.00 | extrair ARRECADADA |
+| IPVA | 1721.51.0.0.00.00 | extrair ARRECADADA |
+| ICMS | 1721.50.0.0.00.00 | extrair ARRECADADA |
+| ICMS desoneração | LC 87/96 | extrair ou 0.00 |
+| IPI exportação | 1721.52.0.0.00.00 | extrair ARRECADADA |
+| IOF-Ouro | — | extrair ou 0.00 |
+| FPM extraordinário | 1711.51.2.0.00.00 | extrair (excluído da base) |
+
+---
+
+## REGRAS CRÍTICAS:
+
+1. Usar sempre contas sintéticas (código pai) — nunca subcontas com sufixo .0.1, .0.2, .0.3, .0.4
+2. As contas sintéticas já agregam principal + multas + dívida ativa — não somar separadamente
+3. IRRF = código 1113.03.0.0.00.00 (agrega trabalho + outros rendimentos)
+4. ISS = código 1114.51.0.0.00.00 (não usar 1114.51.1.0)
+5. FPM = somente cota mensal 1711.51.1.0.00.00 — excluir cotas extraordinárias 1711.51.2.0
+6. ITR = 0.00 nos impostos; extrair como transferência em 1711.52.0.0
+7. Coluna: sempre ARRECADADA — nunca a coluna ORÇADA
+8. Não encontrado = 0.00
+9. Valores: decimal 2 casas
+
+---
+
+## CÁLCULOS:
+
+javascript // Receita de impostos total_impostos = iptu + itbi + iss + irrf // (multas, dívida ativa e encargos = 0.00 pois já incluídos nas sintéticas)  // Transferências constitucionais total_transferencias = fpm_mensal + itr + ipva + icms                      + icms_desoneracao + ipi + iof_ouro  // Base de cálculo base_calculo = total_impostos + total_transferencias  // Mínimo saúde aplicacao_minima = base_calculo * 0.15  // FPM extraordinário (informativo — excluído da base) impacto_fpm_extra = fpm_extraordinario * 0.15 
+
+---
+
+## VALIDAÇÕES:
+
+javascript ✓ iptu   = código 1112.50.0.0 ARRECADADA ✓ itbi   = código 1112.53.0.0 ARRECADADA ✓ iss    = código 1114.51.0.0 ARRECADADA ✓ irrf   = código 1113.03.0.0 ARRECADADA ✓ fpm    = código 1711.51.1.0 ARRECADADA (NÃO usar 1711.51.2.0) ✓ itr    = código 1711.52.0.0 ARRECADADA ✓ ipva   = código 1721.51.0.0 ARRECADADA ✓ icms   = código 1721.50.0.0 ARRECADADA ✓ ipi    = código 1721.52.0.0 ARRECADADA ✓ total_impostos > 0 ✓ total_transferencias > 0 ✓ base_calculo = total_impostos + total_transferencias ✓ aplicacao_minima = base_calculo * 0.15 ✓ fpm_extraordinario registrado mas NÃO somado na base 
+
+---
+
+## EXEMPLO — PINHEIRO 2025:
+
+json {   "municipio": "Pinheiro",   "exercicio": "2025",   "apuracao_receita_impostos_transferencias_saude": {     "receita_impostos": [       {"descricao": "Imposto Predial e Territorial Urbano - IPTU", "valor": 957136.88, "codigo": "1112.50.0.0.00.00"},       {"descricao": "Multas, juros de mora, dívida ativa e outros encargos do IPTU", "valor": 0.00},       {"descricao": "Imposto sobre a Transmissão de Bens Intervivos - ITBI", "valor": 426394.26, "codigo": "1112.53.0.0.00.00"},       {"descricao": "Multas, juros de mora, dívida ativa e outros encargos do ITBI", "valor": 0.00},       {"descricao": "Imposto sobre Serviços de Qualquer Natureza - ISS", "valor": 7015931.13, "codigo": "1114.51.0.0.00.00"},       {"descricao": "Multas, juros de mora, dívida ativa e outros encargos do ISS", "valor": 0.00},       {"descricao": "Imposto de Renda Retido na Fonte - IRRF", "valor": 13034379.57, "codigo": "1113.03.0.0.00.00"},       {"descricao": "Imposto Territorial Rural - ITR", "valor": 0.00, "observacao": "ITR é classificado como TRANSFERÊNCIA"},       {"descricao": "Multas, juros de mora, dívida ativa e outros encargos do ITR", "valor": 0.00},       {"descricao": "Multas, juros de mora e outros encargos dos impostos", "valor": 0.00},       {"descricao": "Dívida ativa dos impostos", "valor": 0.00},       {"descricao": "Multa, juros de mora e outros encargos da dívida ativa", "valor": 0.00},       {"descricao": "TOTAL DA RECEITA DE IMPOSTOS (A)", "valor": 21433841.84, "destaque": true}     ],     "receita_transferencias": [       {"descricao": "Cota-parte FPM", "valor": 73443982.48, "codigo": "1711.51.1.0.00.00"},       {"descricao": "Cota-parte ITR", "valor": 8026.58, "codigo": "1711.52.0.0.00.00"},       {"descricao": "Cota-parte IPVA", "valor": 5430518.93, "codigo": "1721.51.0.0.00.00"},       {"descricao": "Cota-parte ICMS", "valor": 18477926.55, "codigo": "1721.50.0.0.00.00"},       {"descricao": "ICMS-Desoneração – LC nº 87/1996", "valor": 0.00},       {"descricao": "Cota-parte IPI-Exportação", "valor": 123933.75, "codigo": "1721.52.0.0.00.00"},       {"descricao": "Cota-parte IOF-Ouro", "valor": 0.00},       {"descricao": "TOTAL DA RECEITA DE TRANSFERÊNCIAS CONSTITUCIONAIS E LEGAIS (B)", "valor": 97484388.29, "destaque": true}     ],     "base_calculo": {       "descricao": "TOTAL DA RECEITA RESULTANTE DE IMPOSTOS (Base de cálculo) (A+B)",       "valor": 118918230.13,       "formula": "21433841.84 + 97484388.29",       "destaque": true     },     "calculo_minimo_saude": {       "base_calculo": 118918230.13,       "percentual_minimo": 15.00,       "aplicacao_minima_obrigatoria": 17837734.52,       "base_legal": "CF/88, art. 198, §2º, I c/c EC 29/2000"     },     "fpm_extraordinario_excluido": {       "codigo": "1711.51.2.0.00.00",       "descricao": "FPM - Cotas Extraordinárias",       "valor_excluido": 9035312.64,       "fundamentacao": "LC 141/2012 e jurisprudência TCE",       "impacto_aplicacao_minima": 1355296.90     }   } } 
+
+---
+
+## CHECKLIST FINAL:
+
+- [ ] Todos os valores extraídos da coluna ARRECADADA
+- [ ] Todos os códigos são sintéticos (sem sufixo .0.1, .0.2 etc.)
+- [ ] IRRF = 1113.03.0.0 (não 1113.03.1.0 nem 1113.03.4.0)
+- [ ] ISS = 1114.51.0.0 (não 1114.51.1.0)
+- [ ] FPM = somente cota mensal 1711.51.1.0
+- [ ] FPM extraordinário 1711.51.2.0 registrado mas excluído da base
+- [ ] ITR = 0.00 nos impostos; valor em 1711.52.0.0 nas transferências
+- [ ] Multas e encargos = 0.00 (incluídos nas sintéticas)
+- [ ] base_calculo = Total A + Total B
+- [ ] aplicacao_minima = base_calculo × 15%
+- [ ] impacto_fpm_extra = fpm_extraordinario × 15%
+
+OUTPUT: receita_impostos_saude_[municipio]_[ano].json (UTF-8, indent 2)

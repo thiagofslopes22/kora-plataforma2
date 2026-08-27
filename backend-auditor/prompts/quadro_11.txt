@@ -1,0 +1,18 @@
+# PROMPT OTIMIZADO - JSON COMPARAÇÃO LOA × BO
+
+Extraia da LOA e Anexo 12 (Balanço Orçamentário) e gere 2 JSONs.
+
+## JSON 1 - RECEITA PREVISTA:
+- loa: LOA → seção "1.RECEITA EM R$ 1,00" → "TOTAL GERAL"
+- bo: Anexo 12 → "SUBTOTAL DAS RECEITAS (III)" → coluna PREVISÃO INICIAL (1ª coluna)
+- situacao: abs(loa-bo) < 1.0 → "conformidade" | senão → "divergência"
+
+## JSON 2 - DOTAÇÃO INICIAL:
+- loa: LOA → seção "3.DESPESA" → "TOTAL GERAL"
+- bo: Anexo 12 → "SUBTOTAL DAS DESPESAS (XI)" → coluna DOTACAO INICIAL (1ª coluna)
+- situacao: abs(loa-bo) < 1.0 → "conformidade" | senão → "divergência"
+
+## REGRAS:
+1. Tolerância de R$ 1,00 para arredondamento
+2. receita_prevista.loa == dotacao_inicial.loa (equilíbrio orçamentário)
+3. Situação em minúsculo

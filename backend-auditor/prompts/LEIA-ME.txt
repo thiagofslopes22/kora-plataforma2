@@ -1,0 +1,31 @@
+Adicione aqui os arquivos .txt com os prompts de cada tabela RIT.
+Um arquivo por tabela, com os seguintes nomes:
+
+quadro_01.txt  → Base de Cálculo para Repasse à Câmara Municipal
+quadro_02.txt  → Repasses Financeiros à Câmara Municipal (Duodécimo)
+quadro_03.txt  → Resultado Orçamentário
+quadro_04.txt  → Receita Corrente Líquida
+quadro_05.txt  → Despesa com Pessoal
+quadro_06.txt  → Comportamento da Despesa com Pessoal no Exercício
+quadro_07.txt  → Dívida Consolidada e Mobiliária
+quadro_08.txt  → Balanço Orçamentário - Receitas
+quadro_09.txt  → Balanço Orçamentário - Despesas
+quadro_10.txt  → Efetividade na Arrecadação de Receitas
+quadro_11.txt  → Comparativo LOA x Balanço Orçamentário
+quadro_12.txt  → Apuração do Resultado Financeiro
+quadro_13.txt  → Evolução do Patrimônio Líquido
+quadro_14.txt  → Apuração do Fluxo de Caixa do Período
+quadro_15.txt  → Suficiência de Caixa
+quadro_16.txt  → Análise de Depósitos Restituíveis e Valores Vinculados
+quadro_17.txt  → Base de Cálculo do Índice de Saúde
+quadro_18.txt  → Despesas com Ações e Serviços de Saúde
+quadro_19.txt  → Base de Cálculo do Índice de MDE
+quadro_20.txt  → Despesas com Manutenção e Desenvolvimento do Ensino (MDE)
+quadro_21.txt  → Recursos Destinados à Formação do FUNDEB
+quadro_22.txt  → Transferências de Recursos ao FUNDEB
+quadro_subfuncao.txt → Despesas por Subfunção — Educação Função 12
+quadro_23.txt  → Aplicação de 70% do FUNDEB na Remuneração
+quadro_fundeb_70.txt → Balanço Geral FUNDEB 70%
+
+O sistema detecta automaticamente quais arquivos existem e gera
+apenas as tabelas cujos prompts estão configurados.
