@@ -21,6 +21,7 @@ COPY backend-conciliador/requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
 # camada de dados compartilhada (pool kora_app + contexto de tenant p/ a RLS)
+COPY serve.py /app/serve.py
 COPY kora_db/ /app/kora_db/
 # schema + runner de migracao (permite rodar a migracao a partir do container)
 COPY db/ /app/db/
@@ -36,8 +37,7 @@ ENV PYTHONPATH=/app
 # roteador bate numa porta onde ninguem escuta.
 EXPOSE 8001
 # Railway injeta $PORT; sem ele (docker local) cai em 8001.
-# Bind em `::` (IPv6) e nao 0.0.0.0: a rede privada do Railway e IPv6-only,
-# entao um servico preso a IPv4 fica inalcancavel pelos outros — o frontend
-# nao conseguiria fazer proxy para ca. Em dual-stack o `::` tambem aceita
-# conexoes IPv4, entao isso nao quebra o acesso publico nem o docker local.
-CMD ["sh", "-c", "uvicorn main:app --host :: --port ${PORT:-8001}"]
+# Sobe via serve.py: um socket dual-stack (IPv4 + IPv6 no mesmo listener).
+# `uvicorn --host ::` NAO serve: o asyncio forca IPV6_V6ONLY=1 e o dominio
+# publico (que chega por IPv4) passa a responder 502. Ver serve.py.
+CMD ["python", "serve.py", "main:app", "8001"]

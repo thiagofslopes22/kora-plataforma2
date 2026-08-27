@@ -27,6 +27,7 @@ RUN sed -i 's/^camelot-py\[cv\]/camelot-py/' requirements.txt \
     && pip install --no-cache-dir -r requirements.txt \
     && pip install --no-cache-dir opencv-python-headless
 
+COPY serve.py /app/serve.py
 COPY kora_db/ /app/kora_db/
 COPY db/ /app/db/
 COPY backend-auditor/ /app/
@@ -34,8 +35,7 @@ COPY backend-auditor/ /app/
 ENV PYTHONPATH=/app
 
 EXPOSE 8000
-# Bind em `::` (IPv6) e nao 0.0.0.0: a rede privada do Railway e IPv6-only,
-# entao um servico preso a IPv4 fica inalcancavel pelos outros — o frontend
-# nao conseguiria fazer proxy para ca. Em dual-stack o `::` tambem aceita
-# conexoes IPv4, entao isso nao quebra o acesso publico nem o docker local.
-CMD ["sh", "-c", "uvicorn backend.main:app --host :: --port ${PORT:-8000}"]
+# Sobe via serve.py: um socket dual-stack (IPv4 + IPv6 no mesmo listener).
+# `uvicorn --host ::` NAO serve: o asyncio forca IPV6_V6ONLY=1 e o dominio
+# publico (que chega por IPv4) passa a responder 502. Ver serve.py.
+CMD ["python", "serve.py", "backend.main:app", "8000"]
