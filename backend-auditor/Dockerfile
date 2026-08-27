@@ -34,4 +34,8 @@ COPY backend-auditor/ /app/
 ENV PYTHONPATH=/app
 
 EXPOSE 8000
-CMD ["sh", "-c", "uvicorn backend.main:app --host 0.0.0.0 --port ${PORT:-8000}"]
+# Bind em `::` (IPv6) e nao 0.0.0.0: a rede privada do Railway e IPv6-only,
+# entao um servico preso a IPv4 fica inalcancavel pelos outros — o frontend
+# nao conseguiria fazer proxy para ca. Em dual-stack o `::` tambem aceita
+# conexoes IPv4, entao isso nao quebra o acesso publico nem o docker local.
+CMD ["sh", "-c", "uvicorn backend.main:app --host :: --port ${PORT:-8000}"]

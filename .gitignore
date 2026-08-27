@@ -12,3 +12,6 @@ dist/
 *.log
 # resquicio do prototipo: base de usuarios em arquivo, substituida pelo Postgres
 backend-conciliador/users.json
+
+# variaveis prontas p/ colar no Railway — contem segredos
+RAILWAY_VARS_*.txt
