@@ -129,7 +129,7 @@ export default function MunicipiosPage() {
               <Field label="Nome da prefeitura" required>
                 <Input value={form.nome} onChange={(e) => setForm((f) => ({ ...f, nome: e.target.value }))} placeholder="Ex.: Prefeitura Municipal de Paço do Lumiar" />
               </Field>
-              <Field label="Município" required>
+              <Field label="Município ou órgão" required hint="Não precisa estar na base do IBGE — ex.: Ministério Público/MA.">
                 <Input value={form.municipio} onChange={(e) => setForm((f) => ({ ...f, municipio: e.target.value }))} placeholder="Ex.: Paço do Lumiar" />
               </Field>
               <Field label="UF" required className="w-24">

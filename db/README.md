@@ -28,6 +28,7 @@ Prioridade de projeto (nesta ordem): **isolamento correto > leitura > escrita > 
 | 08 | `08_agregados_views.sql` | View do tenant, MV da plataforma, expurgo/retenção |
 | 09 | `09_queries_criticas.sql` | 10 queries com plano esperado |
 | 10 | `10_auditor.sql` | Integração do backend-auditor (13 anexos, quadros Q1–Q27, RIT, inconformidades) |
+| 11 | `11_municipios_personalizados.sql` | Jurisdições fora do IBGE (órgão estadual, consórcio) criadas pelo tenant em `municipios` |
 
 Aplique com `kora_migrator` como dono (os arquivos já fazem `SET ROLE kora_migrator`).
 `CREATE INDEX CONCURRENTLY` deve rodar FORA de transação em produção (ver Migração).
@@ -118,6 +119,11 @@ Pontos que impedem vazamento **mesmo com bug na aplicação**:
 4. **Fail-closed**: sem `app.current_tenant`, `app.tenant_atual()` = NULL e nenhuma
    linha casa.
 5. `escritorio_id` **NOT NULL e imutável** (trigger) — linha não migra de tenant.
+6. `municipios` deixou de ser referência 100% somente-leitura (ver `11`): o tenant
+   pode criar **jurisdições próprias** (órgão estadual, consórcio — o que não está
+   no IBGE). Elas nascem com `escritorio_id` preenchido e a RLS da tabela só as
+   mostra ao escritório que as criou; as linhas do IBGE (`escritorio_id IS NULL`)
+   seguem globais e sem escrita pelo tenant.
 
 O login pré-tenant e os helpers de contexto são `SECURITY DEFINER` **donos de
 `kora_migrator`** e usam *owner-exemption* (as 3 tabelas de autoridade sem `FORCE`).

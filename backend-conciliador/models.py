@@ -51,17 +51,21 @@ def normalizar(s: str) -> str:
 
 
 # ---------------------------------------------------------------------------
-# Referencia global (sem tenant, sem RLS, somente leitura para a app)
+# Referencia global. Somente leitura, exceto `municipios`: alem das linhas do
+# IBGE (escritorio_id NULL), o tenant pode criar jurisdicoes proprias — orgao
+# estadual, consorcio — visiveis so para ele (db/11_municipios_personalizados.sql).
 # ---------------------------------------------------------------------------
 class Municipio(Base):
     __tablename__ = "municipios"
 
     id: Mapped[int] = mapped_column(BigInteger, primary_key=True)
-    codigo_ibge: Mapped[str] = mapped_column(String(7))
+    # Sem codigo IBGE + escritorio_id preenchido = jurisdicao personalizada do tenant.
+    codigo_ibge: Mapped[str | None] = mapped_column(String(7))
     nome: Mapped[str] = mapped_column(Text)
     nome_normalizado: Mapped[str] = mapped_column(Text)
     uf: Mapped[str] = mapped_column(String(2))
     populacao: Mapped[int | None] = mapped_column(Integer)
+    escritorio_id: Mapped[int | None] = mapped_column(BigInteger)
 
 
 class Competencia(Base):

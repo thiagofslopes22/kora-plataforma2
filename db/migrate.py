@@ -50,6 +50,7 @@ MIGRACOES = [
     "07_rls.sql",
     "08_agregados_views.sql",
     "10_auditor.sql",
+    "11_municipios_personalizados.sql",
 ]
 
 TABELA_CONTROLE = """

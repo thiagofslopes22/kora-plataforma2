@@ -264,20 +264,55 @@ _SQL_ENTIDADES = (
 )
 
 
-def _resolver_municipio(db: Session, nome: str, uf: str) -> int:
-    """Entidade agora aponta para o municipio do IBGE, nao para um texto livre."""
+def _resolver_municipio(db: Session, nome: str, uf: str, escritorio_id: int) -> int:
+    """Resolve a jurisdicao da entidade. Nao exige base do IBGE: se o nome nao
+    estiver na referencia (orgao estadual, consorcio, autarquia...), cria uma
+    jurisdicao PERSONALIZADA do proprio escritorio (municipios.escritorio_id),
+    que so este tenant enxerga. Ver db/11_municipios_personalizados.sql."""
+    nome_limpo = (nome or "").strip()
+    if not nome_limpo:
+        raise HTTPException(status_code=422, detail="Informe o município ou órgão da entidade.")
+    uf_norm = (uf or "MA").strip().upper()
+    if len(uf_norm) != 2 or not uf_norm.isalpha():
+        raise HTTPException(status_code=422, detail=f"UF inválida: '{uf}'.")
+
+    params = {
+        "n": normalizar(nome_limpo),
+        "uf": uf_norm,
+        "esc": escritorio_id,
+        "nome": nome_limpo,
+    }
+    # A RLS ja limita o SELECT a referencia global + jurisdicoes deste tenant.
+    # NULLS FIRST: se o nome existe nos dois lados, o IBGE ganha.
     mid = db.execute(
         text(
-            "SELECT id FROM municipios WHERE nome_normalizado = :n AND uf = CAST(:uf AS uf) LIMIT 1"
+            "SELECT id FROM municipios WHERE nome_normalizado = :n AND uf = CAST(:uf AS uf) "
+            "ORDER BY escritorio_id NULLS FIRST LIMIT 1"
         ),
-        {"n": normalizar(nome), "uf": (uf or "MA").upper()},
+        params,
     ).scalar()
-    if not mid:
-        raise HTTPException(
-            status_code=422,
-            detail=f"Município '{nome}/{uf}' não encontrado na base do IBGE.",
-        )
-    return mid
+    if mid:
+        return mid
+
+    novo = db.execute(
+        text(
+            "INSERT INTO municipios (escritorio_id, nome, nome_normalizado, uf) "
+            "VALUES (:esc, :nome, :n, CAST(:uf AS uf)) "
+            "ON CONFLICT (escritorio_id, nome_normalizado, uf) WHERE escritorio_id IS NOT NULL "
+            "DO NOTHING RETURNING id"
+        ),
+        params,
+    ).scalar()
+    if novo:
+        return novo
+    # Corrida: outra requisicao do mesmo escritorio criou entre o SELECT e o INSERT.
+    return db.execute(
+        text(
+            "SELECT id FROM municipios WHERE escritorio_id = :esc "
+            "AND nome_normalizado = :n AND uf = CAST(:uf AS uf)"
+        ),
+        params,
+    ).scalar_one()
 
 
 @app.post("/prefeituras", status_code=201)
@@ -286,7 +321,7 @@ def create_prefeitura(
     admin: UsuarioAutenticado = Depends(require_admin),
     db: Session = Depends(db_tenant),
 ):
-    municipio_id = _resolver_municipio(db, body.municipio, body.uf)
+    municipio_id = _resolver_municipio(db, body.municipio, body.uf, admin.escritorio_id)
     novo_id = db.execute(
         text(
             "INSERT INTO entidades (escritorio_id, municipio_id, tipo, nome, nome_normalizado, cnpj) "
@@ -339,10 +374,10 @@ def get_prefeitura(
 def update_prefeitura(
     prefeitura_id: int,
     body: PrefeituraCreate,
-    _admin: UsuarioAutenticado = Depends(require_admin),
+    admin: UsuarioAutenticado = Depends(require_admin),
     db: Session = Depends(db_tenant),
 ):
-    municipio_id = _resolver_municipio(db, body.municipio, body.uf)
+    municipio_id = _resolver_municipio(db, body.municipio, body.uf, admin.escritorio_id)
     afetadas = db.execute(
         text(
             "UPDATE entidades SET nome = :nome, nome_normalizado = :nn, municipio_id = :mid, "
@@ -810,7 +845,9 @@ def listar_municipios(
     _user: UsuarioAutenticado = Depends(get_current_user),
     db: Session = Depends(db_tenant),
 ):
-    sql = "SELECT id, codigo_ibge, nome, uf FROM municipios WHERE uf = CAST(:uf AS uf)"
+    # A RLS entrega referencia do IBGE + jurisdicoes personalizadas deste tenant.
+    sql = ("SELECT id, codigo_ibge, nome, uf, escritorio_id IS NOT NULL AS personalizado "
+           "FROM municipios WHERE uf = CAST(:uf AS uf)")
     params = {"uf": uf.upper()}
     if busca:
         sql += " AND nome_normalizado LIKE :b"
