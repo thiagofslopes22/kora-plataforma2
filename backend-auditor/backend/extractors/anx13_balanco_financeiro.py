@@ -4,6 +4,8 @@ import re
 import fitz
 import pdfplumber
 
+from backend.extractors._texto import sem_acento
+
 logger = logging.getLogger(__name__)
 
 NUMERO_RE = re.compile(r'-?\d{1,3}(?:\.\d{3})*,\d{2}')
@@ -63,9 +65,9 @@ def _parse_itens(linhas: list[str]) -> list[dict]:
 
 def _row(linhas: list[str], *termos: str, idx_a: int = 0, idx_ant: int = 1) -> dict:
     """Retorna {atual, anterior} da primeira linha COM NÚMEROS que contém todos os termos."""
-    termos_up = [t.upper() for t in termos]
+    termos_up = [sem_acento(t.upper()) for t in termos]
     for line in linhas:
-        upper = line.upper()
+        upper = sem_acento(line.upper())
         if all(t in upper for t in termos_up):
             nums = NUMERO_RE.findall(line)
             if not nums:
@@ -182,11 +184,11 @@ def extrair(pdf_path: str) -> dict:
 
 def _valor_apos_secao(linhas: list[str], marcador: str, *termos: str) -> float:
     """Primeiro valor NÃO ZERO dos termos encontrado APÓS uma linha que contém o marcador."""
-    termos_up = [t.upper() for t in termos]
+    termos_up = [sem_acento(t.upper()) for t in termos]
     dentro = False
     for line in linhas:
-        u = line.upper()
-        if marcador.upper() in u:
+        u = sem_acento(line.upper())
+        if sem_acento(marcador.upper()) in u:
             dentro = True
             continue
         if dentro and all(t in u for t in termos_up):

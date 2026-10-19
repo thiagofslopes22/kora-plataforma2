@@ -4,6 +4,8 @@ import re
 import fitz
 import pdfplumber
 
+from backend.extractors._texto import sem_acento
+
 logger = logging.getLogger(__name__)
 
 NUMERO_RE = re.compile(r'-?\d{1,3}(?:\.\d{3})*,\d{2}')
@@ -34,9 +36,9 @@ def _todas_linhas(pdf_path: str) -> list[str]:
 
 
 def _buscar(linhas: list[str], *termos: str) -> list[float]:
-    termos_up = [t.upper() for t in termos]
+    termos_up = [sem_acento(t.upper()) for t in termos]
     for line in linhas:
-        upper = line.upper()
+        upper = sem_acento(line.upper())
         if all(t in upper for t in termos_up):
             nums = NUMERO_RE.findall(line)
             if nums:

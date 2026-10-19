@@ -9,7 +9,7 @@ from fastapi.responses import FileResponse, JSONResponse
 
 from backend.exporters.excel_exporter import generate_excel
 from backend.extractors.anx10_legislativo import extrair as extrair_anx10, extrair_q04 as extrair_anx10_q04, extrair_q17 as extrair_anx10_q17, extrair_q19 as extrair_anx10_q19, extrair_q21 as extrair_anx10_q21, extrair_q22 as extrair_anx10_q22
-from backend.extractors.anx06_programa_trabalho import extrair_q18 as extrair_anx06_q18, extrair_q20 as extrair_anx06_q20, extrair_subfuncao_func12 as extrair_anx06_q23, extrair_fundeb70_balanco as extrair_anx06_q24, extrair_q25 as extrair_anx06_q25, extrair_q27 as extrair_anx06_q27
+from backend.extractors.anx06_programa_trabalho import formato_incompativel as anx06_formato_incompativel, extrair_q18 as extrair_anx06_q18, extrair_q20 as extrair_anx06_q20, extrair_subfuncao_func12 as extrair_anx06_q23, extrair_fundeb70_balanco as extrair_anx06_q24, extrair_q25 as extrair_anx06_q25, extrair_q27 as extrair_anx06_q27
 from backend.extractors.anx12_resultado import extrair as extrair_anx12
 from backend.extractors.anx08_receitas import extrair as extrair_anx08
 from backend.extractors.anx09_despesas import extrair as extrair_anx09
@@ -51,10 +51,13 @@ def listar_quadros():
     ]
 
 
-def _build_tabelas_status(resultado: dict, enviados: dict) -> list[dict]:
+def _build_tabelas_status(resultado: dict, enviados: dict, file_list: list[dict] | None = None) -> list[dict]:
+    # Documentos enviados mas recusados na validacao (ex.: Anexo 6 no formato errado)
+    recusados = {f["doc_type"]: f["incompativel"] for f in (file_list or []) if f.get("incompativel")}
     tabelas = []
     for chave, cfg in TABELA_CONFIG.items():
-        docs_faltando = [d for d in cfg["docs"] if d not in enviados]
+        docs_faltando = [f"{d} ({recusados[d]})" if d in recusados else d
+                         for d in cfg["docs"] if d not in enviados or d in recusados]
         implementado = chave in EXTRATORES_IMPLEMENTADOS
         tabelas.append({
             "chave": chave,
@@ -69,6 +72,16 @@ def _build_tabelas_status(resultado: dict, enviados: dict) -> list[dict]:
 
 def _extrair_todos(file_list: list[dict]) -> tuple[dict, str, str]:
     """Roda todos os extratores e devolve (resultado, municipio, exercicio)."""
+    # Valida o formato do Anexo 6 antes de extrair: o documento errado nao falha,
+    # gera percentuais absurdos. Marca no file_list (o status mostra o motivo).
+    for f in file_list:
+        if f["doc_type"] == "ANX_06":
+            motivo = anx06_formato_incompativel(f["path"])
+            if motivo:
+                f["incompativel"] = motivo
+                logger.warning("ANX_06 recusado: %s", motivo)
+    file_list = [f for f in file_list if not f.get("incompativel")]
+
     municipio = ""
     exercicio = "2025"
     resultado: dict = {}
@@ -635,7 +648,7 @@ async def gerar(
                 ),
             )
 
-        tabelas = _build_tabelas_status(resultado, enviados)
+        tabelas = _build_tabelas_status(resultado, enviados, file_list)
 
         filepath = generate_excel(resultado, tabelas, municipio, exercicio)
 

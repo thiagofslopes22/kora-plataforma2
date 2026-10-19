@@ -4,6 +4,8 @@ import re
 import fitz
 import pdfplumber
 
+from backend.extractors._texto import sem_acento
+
 logger = logging.getLogger(__name__)
 
 NUMERO_RE = re.compile(r'-?\d{1,3}(?:\.\d{3})*,\d{2}')
@@ -30,8 +32,8 @@ def _buscar_linha(pdf_path: str, *termos: str) -> list[float] | None:
         for page in pdf.pages:
             text = page.extract_text() or ""
             for line in text.splitlines():
-                upper = line.upper()
-                if all(t in upper for t in termos):
+                upper = sem_acento(line.upper())
+                if all(sem_acento(t.upper()) in upper for t in termos):
                     nums = NUMERO_RE.findall(line)
                     if nums:
                         return [_parse(n) for n in nums]
@@ -41,8 +43,16 @@ def _buscar_linha(pdf_path: str, *termos: str) -> list[float] | None:
 def extrair(pdf_path: str) -> dict:
     municipio, exercicio = _extrair_cabecalho(pdf_path)
 
-    # Receita realizada: TOTAL (VII), coluna (c) = índice 2
-    nums_receita = _buscar_linha(pdf_path, "TOTAL (VII)")
+    # Receita realizada: SUBTOTAL COM REFINANCIAMENTO (V), coluna (c) = índice 2.
+    # NAO usar TOTAL (VII) = (V + VI): ele soma o DÉFICIT (VI) que fecha o balanço,
+    # e com déficit a receita "empata" com a despesa e o resultado sai zero.
+    nums_receita = _buscar_linha(pdf_path, "SUBTOTAL COM REFINANCIAMENTO (V)")
+    if not (nums_receita and len(nums_receita) > 2):
+        nums_total = _buscar_linha(pdf_path, "TOTAL (VII)")
+        nums_deficit = _buscar_linha(pdf_path, "DEFICIT (VI)")
+        if nums_total and len(nums_total) > 2:
+            deficit = nums_deficit[2] if nums_deficit and len(nums_deficit) > 2 else 0.0
+            nums_receita = [0.0, 0.0, round(nums_total[2] - deficit, 2)]
     receita_realizada = nums_receita[2] if nums_receita and len(nums_receita) > 2 else 0.0
 
     # Despesa empenhada: SUBTOTAL COM REFINANCIAMENTO (XIII), coluna (g) = índice 2

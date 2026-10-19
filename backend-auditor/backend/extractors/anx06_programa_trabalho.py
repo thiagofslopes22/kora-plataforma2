@@ -291,6 +291,28 @@ def _eh_unidade_fundeb(nome_u: str) -> bool:
     return False
 
 
+def formato_incompativel(pdf_path: str) -> str | None:
+    """Motivo pelo qual o PDF NAO e um Anexo 6 'Programa de Trabalho', ou None se for.
+
+    Os quadros 18/20/23/24/25/27 precisam de Orgao > Unidade > Funcao/Subfuncao > Acao.
+    Alguns sistemas contabeis emitem como 'Anexo 06' o demonstrativo 'Despesa por
+    Funcoes e Categorias Economicas', que so agrupa por funcao — sem subfuncao nem
+    acao. Extrair dele gera percentuais absurdos (ex.: saude negativa).
+    """
+    doc = fitz.open(pdf_path)
+    try:
+        texto = _sem_acento(" ".join(p.get_text("text") for p in doc).upper())
+    finally:
+        doc.close()
+    if "UNIDADE ORCAMENTARIA" in texto:
+        return None
+    if "FUNCOES E CATEGORIAS ECONOMICAS" in texto:
+        return ("formato incompatível: é o 'Despesa por Funções e Categorias Econômicas'; "
+                "envie o Anexo 6 'Programa de Trabalho' (por Órgão/Unidade/Ação)")
+    return ("formato não reconhecido: o Anexo 6 precisa ser o 'Programa de Trabalho' "
+            "(com Órgão e Unidade Orçamentária)")
+
+
 def _sem_acento(s: str) -> str:
     """Normaliza acentos comuns em maiúsculas para comparação tolerante a mojibake do PDF."""
     trocas = str.maketrans('ÁÀÃÂÉÊÍÓÕÔÚÇ', 'AAAAEEIOOOUC')

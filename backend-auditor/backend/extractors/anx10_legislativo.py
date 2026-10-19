@@ -55,7 +55,71 @@ def _extrair_cabecalho(pdf_path: str) -> tuple[str, str]:
     return municipio, exercicio
 
 
+_NUM_TOKEN_RE = re.compile(r'^-?\d{1,3}(?:\.\d{3})*,\d{2}$')
+_COD_TOKEN_RE = re.compile(r'^9?\d{4}\.\d{2}\.\d\.\d\.\d{2}\.\d{2}$')
+_HDR_ARRECADADA_RE = re.compile(r'^(ARRECADAD|REALIZAD)', re.IGNORECASE)
+
+
+def _indexar_por_posicao(pdf_path: str) -> dict[str, float] | None:
+    """Indexa a coluna ARRECADADA pela POSICAO dos numeros na pagina.
+
+    O Anexo 10 deixa em branco as colunas zeradas (Orcada / Arrecadada / Para Mais /
+    Para Menos), entao a ORDEM dos numeros na linha nao diz a coluna: "Orcada + Para
+    Menos" (arrecadada 0) e "Arrecadada + Para Mais" (receita nao prevista) tem os
+    dois 2 numeros. Os valores sao alinhados a direita: agrupamos o x1 de todos os
+    numeros da pagina em colunas e escolhemos a coluna mais proxima do cabecalho
+    "ARRECADADA". Retorna None se nenhum cabecalho for encontrado (layout diferente).
+    """
+    index: dict[str, float] = {}
+    alvo = None  # x1 do cabecalho; vale para as paginas seguintes se faltar
+    achou_cabecalho = False
+    doc = fitz.open(pdf_path)
+    try:
+        for page in doc:
+            words = page.get_text("words")
+            hdr = [w for w in words if _HDR_ARRECADADA_RE.match(w[4])]
+            if hdr:
+                alvo = hdr[0][2]
+                achou_cabecalho = True
+            if alvo is None:
+                continue
+            nums = [w for w in words if _NUM_TOKEN_RE.match(w[4])]
+            if not nums:
+                continue
+            colunas: list[list[float]] = []
+            for x1 in sorted(w[2] for w in nums):
+                if colunas and x1 - colunas[-1][-1] <= 12:
+                    colunas[-1].append(x1)
+                else:
+                    colunas.append([x1])
+            centros = [sum(c) / len(c) for c in colunas]
+            col_arrec = min(range(len(centros)), key=lambda i: abs(centros[i] - alvo))
+            if abs(centros[col_arrec] - alvo) > 40:
+                col_arrec = None  # nenhum numero desta pagina caiu sob o cabecalho
+            for w in words:
+                codigo = w[4]
+                if not _COD_TOKEN_RE.match(codigo) or codigo in index:
+                    continue
+                valor = 0.0
+                if col_arrec is not None:
+                    for n in nums:
+                        if abs(n[1] - w[1]) < 4:
+                            ci = min(range(len(centros)), key=lambda i: abs(centros[i] - n[2]))
+                            if ci == col_arrec:
+                                valor = abs(_parse(n[4].lstrip("-")))
+                                break
+                index[codigo] = valor
+    finally:
+        doc.close()
+    return index if achou_cabecalho and index else None
+
+
 def _indexar(pdf_path: str) -> dict[str, float]:
+    por_posicao = _indexar_por_posicao(pdf_path)
+    if por_posicao is not None:
+        logger.info("ANX10: %d códigos indexados por posição em %s", len(por_posicao), pdf_path)
+        return por_posicao
+    logger.warning("ANX10: cabeçalho 'ARRECADADA' não encontrado em %s — usando leitura por ordem", pdf_path)
     index: dict[str, float] = {}
     with pdfplumber.open(pdf_path) as pdf:
         for page in pdf.pages:
@@ -106,6 +170,21 @@ def _resolver(
     return 0.0
 
 
+def _irrf_codigos(index: dict) -> tuple[str, str]:
+    """(sintetico, principal) do IR que pertence ao municipio (CF art. 158, I).
+
+    O correto e a familia 1113.03 (IR Retido na Fonte). Ha prefeituras que lancam a
+    mesma retencao em 1113.01 (IRPF) — nesse caso usamos 1113.01. Nunca 1113.00,
+    que soma o IRPJ (1113.02).
+    """
+    if "1113.03.0.0.00.00" in index:
+        return "1113.03.0.0.00.00", "1113.03.1.1.00.00"
+    if "1113.01.0.0.00.00" in index:
+        logger.warning("ANX10: sem 1113.03 (IRRF); usando 1113.01 (IRPF) como IR retido na fonte")
+        return "1113.01.0.0.00.00", "1113.01.0.1.00.00"
+    return "1113.03.0.0.00.00", "1113.03.1.1.00.00"
+
+
 def extrair(pdf_path: str) -> dict:
     """Extrai os dados do Anexo 10 e retorna o JSON estruturado do Q1."""
     municipio, exercicio = _extrair_cabecalho(pdf_path)
@@ -117,7 +196,7 @@ def extrair(pdf_path: str) -> dict:
 
     iptu                     = r("iptu")
     itbi                     = r("itbi")
-    irrf                     = r("irrf")
+    irrf                     = r("irrf") or index.get(_irrf_codigos(index)[0], 0.0)
     iss                      = r("iss")
     taxas_poder_policia      = r("taxas_poder_policia")
     taxas_prestacao_servicos = r("taxas_prestacao_servicos")
@@ -397,9 +476,10 @@ def extrair_q19(pdf_path: str) -> dict:
     iss           = r("1114.51.1.1.00.00")
     iss_multas    = max(0.0, round(r("1114.51.0.0.00.00") - iss, 2))
 
-    irrf          = r("1113.03.1.1.00.00") or r("1113.03.0.0.00.00")
+    irrf_sint, irrf_princ = _irrf_codigos(index)
+    irrf          = r(irrf_princ) or r(irrf_sint)
     # Encargos do IRRF não têm linha separada → vai em multas_impostos
-    multas_impostos = max(0.0, round(r("1113.03.0.0.00.00") - irrf, 2))
+    multas_impostos = max(0.0, round(r(irrf_sint) - irrf, 2))
 
     total_receita_impostos = round(
         iptu + iptu_multas +
@@ -504,8 +584,9 @@ def extrair_q17(pdf_path: str) -> dict:
     iptu = r("1112.50.0.0.00.00")
     itbi = r("1112.53.0.0.00.00")
     iss  = r("1114.51.0.0.00.00")
-    # IRRF: apenas 1113.03 (agrega trabalho + outros rendimentos conforme LC 141/2012)
-    irrf = r("1113.03.0.0.00.00")
+    # IRRF: 1113.03 (agrega trabalho + outros rendimentos conforme LC 141/2012),
+    # ou 1113.01 quando a prefeitura lancou a retencao como IRPF
+    irrf = r(_irrf_codigos(index)[0])
 
     total_impostos = round(iptu + itbi + iss + irrf, 2)
 

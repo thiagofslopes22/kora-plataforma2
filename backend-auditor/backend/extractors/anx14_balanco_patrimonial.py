@@ -5,6 +5,8 @@ from collections import defaultdict
 import fitz
 import pdfplumber
 
+from backend.extractors._texto import sem_acento
+
 logger = logging.getLogger(__name__)
 
 NUMERO_RE = re.compile(r'-?\d{1,3}(?:\.\d{3})*,\d{2}')
@@ -85,9 +87,9 @@ def _parse_itens(linhas: list[str]) -> list[dict]:
 
 
 def _buscar(linhas: list[str], *termos: str, idx: int = 0) -> float:
-    termos_up = [t.upper() for t in termos]
+    termos_up = [sem_acento(t.upper()) for t in termos]
     for line in linhas:
-        upper = line.upper()
+        upper = sem_acento(line.upper())
         if all(t in upper for t in termos_up):
             nums = NUMERO_RE.findall(line)
             if len(nums) > idx:
@@ -97,9 +99,9 @@ def _buscar(linhas: list[str], *termos: str, idx: int = 0) -> float:
 
 def _row(linhas: list[str], *termos: str, idx_a: int = 0, idx_ant: int = 1) -> dict:
     """Retorna {atual, anterior} da primeira linha com números que contém todos os termos."""
-    termos_up = [t.upper() for t in termos]
+    termos_up = [sem_acento(t.upper()) for t in termos]
     for line in linhas:
-        upper = line.upper()
+        upper = sem_acento(line.upper())
         if all(t in upper for t in termos_up):
             nums = NUMERO_RE.findall(line)
             if not nums:
