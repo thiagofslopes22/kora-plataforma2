@@ -1,0 +1,17 @@
+# Nunca enviar para o build: segredos, ambientes locais e artefatos regeneraveis
+.git
+.env
+.env.*
+!.env.example
+**/.env
+**/venv
+**/.venv
+**/node_modules
+**/__pycache__
+**/.pytest_cache
+**/dist
+*.log
+*.db
+RAILWAY_VARS_*.txt
+# RITs gerados localmente (podem conter dados de clientes)
+backend-auditor/output/*.xlsx

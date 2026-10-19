@@ -1,0 +1,24 @@
+# Backend Auditor no Fly.io (Sao Paulo).
+# Deploy (da RAIZ do repo):  fly deploy -c fly.auditor.toml
+app = "kora-plataforma-auditor"
+primary_region = "gru"
+
+[build]
+  dockerfile = "backend-auditor/Dockerfile"
+
+[env]
+  PORT = "8000"
+
+# Sem porta publica: acessado pelo frontend via rede privada.
+# Extracao de PDF (camelot/opencv) pede mais memoria.
+[[vm]]
+  size = "shared-cpu-1x"
+  memory = "2gb"
+
+[checks.saude]
+  type = "http"
+  port = 8000
+  path = "/api/health"
+  interval = "30s"
+  timeout = "5s"
+  grace_period = "30s"

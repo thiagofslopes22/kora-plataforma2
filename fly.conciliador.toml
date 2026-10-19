@@ -1,0 +1,26 @@
+# Backend Conciliador no Fly.io (Sao Paulo).
+# Deploy (da RAIZ do repo):  fly deploy -c fly.conciliador.toml
+app = "kora-plataforma-conciliador"
+primary_region = "gru"
+
+[build]
+  dockerfile = "backend-conciliador/Dockerfile"
+
+[env]
+  PORT = "8001"
+  KORA_TOKEN_HORAS = "12"
+  KORA_CORS_ORIGINS = "https://kora-plataforma.fly.dev"
+
+# Sem porta publica: so o frontend (rede privada .internal) fala com ele.
+# Uma maquina sempre ligada — os jobs de download ficam em memoria.
+[[vm]]
+  size = "shared-cpu-1x"
+  memory = "1gb"
+
+[checks.saude]
+  type = "http"
+  port = 8001
+  path = "/health"
+  interval = "30s"
+  timeout = "5s"
+  grace_period = "30s"

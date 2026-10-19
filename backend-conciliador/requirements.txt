@@ -10,5 +10,6 @@ bcrypt>=4.0.0          # so p/ verificar hashes legados do prototipo
 argon2-cffi>=23.1.0    # Argon2id: hash de senha novo (o schema documenta Argon2id)
 sqlalchemy>=2.0.0
 alembic>=1.13.0
-psycopg2-binary>=2.9.9
+psycopg2-binary>=2.9.9   # usado pelos scripts de db/ (migrate, bootstrap)
+psycopg[binary]>=3.1     # driver padrao do SQLAlchemy 2.1 para postgresql://
 pytest

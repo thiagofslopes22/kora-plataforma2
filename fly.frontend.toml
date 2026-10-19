@@ -1,0 +1,31 @@
+# Frontend (nginx + build do Vite) no Fly.io (Sao Paulo). E o unico servico publico:
+# serve o site e faz proxy de /api -> auditor e /conc -> conciliador pela rede privada.
+# Deploy (da RAIZ do repo):  fly deploy -c fly.frontend.toml
+app = "kora-plataforma"
+primary_region = "gru"
+
+[build]
+  dockerfile = "frontend/Dockerfile"
+
+[env]
+  PORT = "8080"
+  AUDITOR_URL = "http://kora-plataforma-auditor.internal:8000"
+  CONCILIADOR_URL = "http://kora-plataforma-conciliador.internal:8001"
+
+[http_service]
+  internal_port = 8080
+  force_https = true
+  auto_stop_machines = "off"
+  auto_start_machines = true
+  min_machines_running = 1
+
+  [[http_service.checks]]
+    interval = "30s"
+    timeout = "5s"
+    grace_period = "10s"
+    method = "GET"
+    path = "/_saude"
+
+[[vm]]
+  size = "shared-cpu-1x"
+  memory = "256mb"
