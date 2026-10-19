@@ -21,8 +21,9 @@ const DOCS = [
   { key: 'anx_14',          code: 'ANX_14',          label: 'Anexo 14 — Balanço Patrimonial',   badge: 'PyMuPDF', kind: 'pdf' },
   { key: 'dfc',             code: 'DFC',             label: 'DFC — Fluxos de Caixa',            badge: 'PyMuPDF', kind: 'pdf' },
   { key: 'loa',             code: 'LOA',             label: 'LOA — Lei Orçamentária Anual',     badge: 'PyMuPDF', kind: 'pdf' },
-  { key: 'rgf2semestre',    code: 'RGF_2SEM',        label: 'RGF 2º Semestre — Pessoal',        badge: 'PyMuPDF', kind: 'pdf' },
-  { key: 'rgf1semestre',    code: 'RGF_1SEM',        label: 'RGF 1º Semestre — Pessoal',        badge: 'PyMuPDF', kind: 'pdf' },
+  { key: 'rgf1quadrimestre', code: 'RGF_1QUAD',      label: 'RGF 1º Quadrimestre',              badge: 'PyMuPDF', kind: 'pdf' },
+  { key: 'rgf2quadrimestre', code: 'RGF_2QUAD',      label: 'RGF 2º Quadrimestre',              badge: 'PyMuPDF', kind: 'pdf' },
+  { key: 'rgf3quadrimestre', code: 'RGF_3QUAD',      label: 'RGF 3º Quadrimestre',              badge: 'PyMuPDF', kind: 'pdf' },
   { key: 'bo_fundeb',       code: 'BO_FUNDEB',       label: 'Balanço Orçamentário — FUNDEB',    badge: 'PyMuPDF', kind: 'pdf' },
   { key: 'ff_saude',        code: 'FF_SAUDE',        label: 'Fundo a Fundo — Saúde (FNS)',      badge: 'Excel',   kind: 'xls' },
 ]

@@ -70,29 +70,31 @@ def _calcular_periodo(dtp: float, rcl: float) -> dict:
 
 
 def extrair_q06(
-    rgf2_path: str,
-    rgf1_path: str | None = None,
+    rgf_final_path: str,
+    rgf_intermediario_path: str | None = None,
     rcl_tce: float | None = None,
 ) -> dict:
     """Q06 — Comportamento da Despesa com Pessoal no Exercício.
 
-    rgf2_path: RGF 2º semestre → DTP da coluna "Apurado pelo TCE"
-    rgf1_path: RGF 1º semestre → coluna "1º Semestre" (opcional; zeros se ausente)
-    rcl_tce:   RCL anual vinda do Quadro 5 (base_calculo_rcl) — substitui a RCL
-               extraída do RGF 2º semestre para a coluna "Apurado pelo TCE"
+    rgf_final_path:         RGF do 3º quadrimestre (ou 2º semestre) → DTP da coluna
+                            "Apurado pelo TCE"
+    rgf_intermediario_path: RGF do 2º quadrimestre (ou 1º semestre) → coluna
+                            "2º Quadrimestre" (opcional; zeros se ausente)
+    rcl_tce:                RCL anual vinda do Quadro 5 (base_calculo_rcl) — substitui a
+                            RCL extraída do RGF final na coluna "Apurado pelo TCE"
     """
-    municipio, exercicio = _extrair_cabecalho(rgf2_path)
+    municipio, exercicio = _extrair_cabecalho(rgf_final_path)
 
-    dtp2, rcl2_rgf = _extrair_dtp_rcl(rgf2_path)
+    dtp_final, rcl_final_rgf = _extrair_dtp_rcl(rgf_final_path)
     # RCL para "Apurado pelo TCE": usa Q5 se disponível, senão cai para o RGF
-    rcl2 = rcl_tce if rcl_tce and rcl_tce > 0 else rcl2_rgf
-    apurado = _calcular_periodo(dtp2, rcl2)
+    rcl_final = rcl_tce if rcl_tce and rcl_tce > 0 else rcl_final_rgf
+    apurado = _calcular_periodo(dtp_final, rcl_final)
 
-    if rgf1_path:
-        dtp1, rcl1 = _extrair_dtp_rcl(rgf1_path)
-        primeiro = _calcular_periodo(dtp1, rcl1)
+    if rgf_intermediario_path:
+        dtp_int, rcl_int = _extrair_dtp_rcl(rgf_intermediario_path)
+        intermediario = _calcular_periodo(dtp_int, rcl_int)
     else:
-        primeiro = {
+        intermediario = {
             "total_despesa": 0.0,
             "receita_corrente_liquida": 0.0,
             "limite_legal_54_pct": 0.0,
@@ -100,8 +102,8 @@ def extrair_q06(
         }
 
     logger.info(
-        "Q6: 1sem dtp=%.2f rcl=%.2f | 2sem dtp=%.2f rcl=%.2f (Q5) pct=%.2f%%",
-        primeiro["total_despesa"], primeiro["receita_corrente_liquida"],
+        "Q6: 2quad dtp=%.2f rcl=%.2f | final dtp=%.2f rcl=%.2f (Q5) pct=%.2f%%",
+        intermediario["total_despesa"], intermediario["receita_corrente_liquida"],
         apurado["total_despesa"], apurado["receita_corrente_liquida"],
         apurado["percentual_apurado"],
     )
@@ -110,7 +112,7 @@ def extrair_q06(
         "municipio": municipio,
         "exercicio": exercicio,
         "quadro_6_despesa_pessoal": {
-            "primeiro_semestre": primeiro,
+            "segundo_quadrimestre": intermediario,
             "apurado_pelo_tce": apurado,
         },
     }

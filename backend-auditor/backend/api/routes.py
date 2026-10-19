@@ -82,15 +82,22 @@ def _extrair_todos(file_list: list[dict]) -> tuple[dict, str, str]:
     path_anx13     = next((f["path"] for f in file_list if f["doc_type"] == "ANX_13"), None)
     path_dfc       = next((f["path"] for f in file_list if f["doc_type"] == "DFC"), None)
     path_loa       = next((f["path"] for f in file_list if f["doc_type"] == "LOA"), None)
-    path_rgf2      = next((f["path"] for f in file_list if f["doc_type"] == "RGF_2SEM"), None)
-    path_rgf1      = next((f["path"] for f in file_list if f["doc_type"] == "RGF_1SEM"), None)
+    def _doc(tipo):
+        return next((f["path"] for f in file_list if f["doc_type"] == tipo), None)
+
+    # RGF quadrimestral (atual) com fallback para o semestral (legado).
+    # final = ultimo periodo do exercicio; intermediario = 2º quad / 1º sem.
+    path_rgf_final = _doc("RGF_3QUAD") or _doc("RGF_2SEM")
+    path_rgf_inter = _doc("RGF_2QUAD") or _doc("RGF_1SEM")
+    # Q7: a tabela do periodo mais recente ja traz todos os anteriores
+    path_rgf_q7    = path_rgf_final or _doc("RGF_2QUAD") or _doc("RGF_1QUAD")
     path_bo_fundeb = next((f["path"] for f in file_list if f["doc_type"] == "BO_FUNDEB"), None)
     path_ff_saude  = next((f["path"] for f in file_list if f["doc_type"] == "FF_SAUDE"), None)
 
-    # Q7 — Dívida Consolidada (RGF 2º semestre) ou vazio para preenchimento manual
-    if path_rgf2:
+    # Q7 — Dívida Consolidada (RGF mais recente) ou vazio para preenchimento manual
+    if path_rgf_q7:
         try:
-            dados_q7 = extrair_q07(path_rgf2)
+            dados_q7 = extrair_q07(path_rgf_q7)
             resultado["quadro_07"] = dados_q7
             if not municipio and dados_q7.get("municipio"):
                 municipio = dados_q7["municipio"]
@@ -173,16 +180,16 @@ def _extrair_todos(file_list: list[dict]) -> tuple[dict, str, str]:
         except Exception as exc:
             logger.exception("Extrator Q5 falhou — detalhes completos:")
 
-    # Q6 — RGF 2º semestre + 1º semestre (opcional) + RCL do Q5
-    if path_rgf2:
+    # Q6 — RGF 3º quad + 2º quad (opcional) + RCL do Q5
+    if path_rgf_final:
         try:
             rcl_q5 = resultado.get("quadro_05", {}).get("despesa_com_pessoal", {}).get("base_calculo_rcl", 0.0)
-            dados_q6 = extrair_q06(path_rgf2, path_rgf1, rcl_tce=rcl_q5)
+            dados_q6 = extrair_q06(path_rgf_final, path_rgf_inter, rcl_tce=rcl_q5)
             resultado["quadro_06"] = dados_q6
             if not municipio and dados_q6.get("municipio"):
                 municipio = dados_q6["municipio"]
             q6p = dados_q6["quadro_6_despesa_pessoal"]
-            logger.info("Q6: 2sem dtp=%.2f rcl_q5=%.2f pct=%.2f%%",
+            logger.info("Q6: final dtp=%.2f rcl_q5=%.2f pct=%.2f%%",
                         q6p["apurado_pelo_tce"]["total_despesa"],
                         q6p["apurado_pelo_tce"]["receita_corrente_liquida"],
                         q6p["apurado_pelo_tce"]["percentual_apurado"] * 100)
@@ -549,8 +556,11 @@ def _uploads_form(
     anx_14:          Optional[UploadFile] = File(None),
     dfc:             Optional[UploadFile] = File(None),
     loa:             Optional[UploadFile] = File(None),
-    rgf2semestre:    Optional[UploadFile] = File(None),
-    rgf1semestre:    Optional[UploadFile] = File(None),
+    rgf1quadrimestre: Optional[UploadFile] = File(None),
+    rgf2quadrimestre: Optional[UploadFile] = File(None),
+    rgf3quadrimestre: Optional[UploadFile] = File(None),
+    rgf2semestre:    Optional[UploadFile] = File(None),   # legado (RGF semestral)
+    rgf1semestre:    Optional[UploadFile] = File(None),   # legado (RGF semestral)
     bo_fundeb:       Optional[UploadFile] = File(None),
     ff_saude:        Optional[UploadFile] = File(None),
 ) -> dict:
@@ -564,6 +574,9 @@ def _uploads_form(
         "ANX_14":          anx_14,
         "DFC":             dfc,
         "LOA":             loa,
+        "RGF_1QUAD":       rgf1quadrimestre,
+        "RGF_2QUAD":       rgf2quadrimestre,
+        "RGF_3QUAD":       rgf3quadrimestre,
         "RGF_2SEM":        rgf2semestre,
         "RGF_1SEM":        rgf1semestre,
         "BO_FUNDEB":       bo_fundeb,
@@ -582,8 +595,11 @@ async def gerar(
     anx_14:          Optional[UploadFile] = File(None),
     dfc:             Optional[UploadFile] = File(None),
     loa:             Optional[UploadFile] = File(None),
-    rgf2semestre:    Optional[UploadFile] = File(None),
-    rgf1semestre:    Optional[UploadFile] = File(None),
+    rgf1quadrimestre: Optional[UploadFile] = File(None),
+    rgf2quadrimestre: Optional[UploadFile] = File(None),
+    rgf3quadrimestre: Optional[UploadFile] = File(None),
+    rgf2semestre:    Optional[UploadFile] = File(None),   # legado (RGF semestral)
+    rgf1semestre:    Optional[UploadFile] = File(None),   # legado (RGF semestral)
     bo_fundeb:       Optional[UploadFile] = File(None),
     ff_saude:        Optional[UploadFile] = File(None),
 ):
@@ -597,6 +613,9 @@ async def gerar(
         "ANX_14":          anx_14,
         "DFC":             dfc,
         "LOA":             loa,
+        "RGF_1QUAD":       rgf1quadrimestre,
+        "RGF_2QUAD":       rgf2quadrimestre,
+        "RGF_3QUAD":       rgf3quadrimestre,
         "RGF_2SEM":        rgf2semestre,
         "RGF_1SEM":        rgf1semestre,
         "BO_FUNDEB":       bo_fundeb,
@@ -649,8 +668,11 @@ async def dados_json(
     anx_14:          Optional[UploadFile] = File(None),
     dfc:             Optional[UploadFile] = File(None),
     loa:             Optional[UploadFile] = File(None),
-    rgf2semestre:    Optional[UploadFile] = File(None),
-    rgf1semestre:    Optional[UploadFile] = File(None),
+    rgf1quadrimestre: Optional[UploadFile] = File(None),
+    rgf2quadrimestre: Optional[UploadFile] = File(None),
+    rgf3quadrimestre: Optional[UploadFile] = File(None),
+    rgf2semestre:    Optional[UploadFile] = File(None),   # legado (RGF semestral)
+    rgf1semestre:    Optional[UploadFile] = File(None),   # legado (RGF semestral)
     bo_fundeb:       Optional[UploadFile] = File(None),
     ff_saude:        Optional[UploadFile] = File(None),
 ):
@@ -665,6 +687,9 @@ async def dados_json(
         "ANX_14":          anx_14,
         "DFC":             dfc,
         "LOA":             loa,
+        "RGF_1QUAD":       rgf1quadrimestre,
+        "RGF_2QUAD":       rgf2quadrimestre,
+        "RGF_3QUAD":       rgf3quadrimestre,
         "RGF_2SEM":        rgf2semestre,
         "RGF_1SEM":        rgf1semestre,
         "BO_FUNDEB":       bo_fundeb,
@@ -776,8 +801,11 @@ async def auditar(
     anx_14:          Optional[UploadFile] = File(None),
     dfc:             Optional[UploadFile] = File(None),
     loa:             Optional[UploadFile] = File(None),
-    rgf2semestre:    Optional[UploadFile] = File(None),
-    rgf1semestre:    Optional[UploadFile] = File(None),
+    rgf1quadrimestre: Optional[UploadFile] = File(None),
+    rgf2quadrimestre: Optional[UploadFile] = File(None),
+    rgf3quadrimestre: Optional[UploadFile] = File(None),
+    rgf2semestre:    Optional[UploadFile] = File(None),   # legado (RGF semestral)
+    rgf1semestre:    Optional[UploadFile] = File(None),   # legado (RGF semestral)
     bo_fundeb:       Optional[UploadFile] = File(None),
     ff_saude:        Optional[UploadFile] = File(None),
 ):
@@ -798,6 +826,9 @@ async def auditar(
         "ANX_14":          anx_14,
         "DFC":             dfc,
         "LOA":             loa,
+        "RGF_1QUAD":       rgf1quadrimestre,
+        "RGF_2QUAD":       rgf2quadrimestre,
+        "RGF_3QUAD":       rgf3quadrimestre,
         "RGF_2SEM":        rgf2semestre,
         "RGF_1SEM":        rgf1semestre,
         "BO_FUNDEB":       bo_fundeb,

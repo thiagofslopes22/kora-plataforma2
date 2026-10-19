@@ -353,7 +353,7 @@
 
   <h4 class="sec">5.1.2.2 Despesa com Pessoal – Restrição Final de Mandato</h4>
   <p>A Lei de Responsabilidade Fiscal (LRF), em seu art. 21, incisos II, III e IV, dispõe que são nulos de pleno direito os atos que impliquem aumento de despesa com pessoal nos 180 dias anteriores ao término do mandato do titular de Poder ou órgão referido no art. 20, bem como aqueles que resultem em aumento dessa despesa mediante parcelas programadas para vigorar após o término do mandato.</p>
-  <p>Conforme demonstrado no Quadro 6, anexo a este relatório, a Despesa Líquida com Pessoal do Município de {{municipio_uf}} alcançou {{pessoal_percentual_1sem}} da Receita Corrente Líquida (RCL) no início do primeiro Semestre de {{exercicio}}, no final do exercício financeiro de {{exercicio}} alcançou {{pessoal_percentual_rcl}}.</p>
+  <p>Conforme demonstrado no Quadro 6, anexo a este relatório, a Despesa Líquida com Pessoal do Município de {{municipio_uf}} alcançou {{pessoal_percentual_2quad}} da Receita Corrente Líquida (RCL) até o 2º quadrimestre de {{exercicio}}, no final do exercício financeiro de {{exercicio}} alcançou {{pessoal_percentual_rcl}}.</p>
   <p>Dessa forma, conclui-se que o Município {{restricao_mandato_situacao}} aumento de despesa com pessoal nos 180 dias anteriores ao término do mandato, ao disposto no art. 21, incisos II, III e IV, da LRF.</p>
 
   <h4 class="sec">5.1.2.3 Dívida Consolidada e Mobiliária</h4>
@@ -706,12 +706,12 @@
   <p class="quadro-titulo">Quadro 6 – Comportamento da Despesa com Pessoal no Exercício</p>
   <p class="quadro-desc">Este quadro demonstra o comportamento da despesa de pessoal no exercício corrente do Município de {{municipio}}.</p>
   <table class="quadro">
-    <thead><tr><th class="centro">1º Semestre (R$)</th><th class="centro">(APURADO PELO TCE) (R$)</th></tr></thead>
+    <thead><tr><th class="centro">2º Quadrimestre (R$)</th><th class="centro">(APURADO PELO TCE) (R$)</th></tr></thead>
     <tbody>
-      <tr><td>Total Despesa — R$ {{q6_total_despesa_1sem}}</td><td>Total Despesa — R$ {{q6_total_despesa_ano}}</td></tr>
-      <tr><td>RECEITA CORRENTE LÍQUIDA — R$ {{q6_rcl_1sem}}</td><td>RECEITA CORRENTE LÍQUIDA — R$ {{rcl_valor}}</td></tr>
-      <tr><td>Despesa de Pessoal EXECUTIVO – Limite Legal - R$ {{q6_limite_1sem}} (54% da RCL - art. 21 II da LRF)</td><td>Despesa de Pessoal EXECUTIVO – Limite Legal - R$ {{q6_limite_ano}} (54% da RCL - art. 21 II da LRF)</td></tr>
-      <tr class="total"><td>Percentual e Valor Apurados — {{pessoal_percentual_1sem}}</td><td>Percentual e Valor Apurados — {{pessoal_percentual_rcl}}</td></tr>
+      <tr><td>Total Despesa — R$ {{q6_total_despesa_2quad}}</td><td>Total Despesa — R$ {{q6_total_despesa_ano}}</td></tr>
+      <tr><td>RECEITA CORRENTE LÍQUIDA — R$ {{q6_rcl_2quad}}</td><td>RECEITA CORRENTE LÍQUIDA — R$ {{rcl_valor}}</td></tr>
+      <tr><td>Despesa de Pessoal EXECUTIVO – Limite Legal - R$ {{q6_limite_2quad}} (54% da RCL - art. 21 II da LRF)</td><td>Despesa de Pessoal EXECUTIVO – Limite Legal - R$ {{q6_limite_ano}} (54% da RCL - art. 21 II da LRF)</td></tr>
+      <tr class="total"><td>Percentual e Valor Apurados — {{pessoal_percentual_2quad}}</td><td>Percentual e Valor Apurados — {{pessoal_percentual_rcl}}</td></tr>
     </tbody>
   </table>
   <p class="fonte">Fonte: Anexos 1, 2, 10, 12 e 13 da Lei n° 4320/64 e Relatório de Gestão Fiscal (RGF).</p>
@@ -721,27 +721,27 @@
   <p class="quadro-desc">Este quadro evidencia se o Município de {{municipio_uf}}, se enquadra nos limites aceitáveis de sua dívida consolidada e mobiliária.</p>
   <table class="quadro">
     <thead>
-      <tr><th>DÍVIDA CONSOLIDADA</th><th class="valor">SALDO DO EXERCÍCIO ANTERIOR</th><th class="valor">Até o 1º Semestre</th><th class="valor">Até o 2º Semestre</th></tr>
+      <tr><th>DÍVIDA CONSOLIDADA</th><th class="valor">SALDO DO EXERCÍCIO ANTERIOR</th><th class="valor">Até o 1º Quadrimestre</th><th class="valor">Até o 2º Quadrimestre</th><th class="valor">Até o 3º Quadrimestre</th></tr>
     </thead>
     <tbody>
-      <tr class="total"><td>DÍVIDA CONSOLIDADA - DC (I)</td><td class="valor">R$ {{q7_dc_anterior}}</td><td class="valor">R$ {{q7_dc_1sem}}</td><td class="valor">R$ {{q7_dc_2sem}}</td></tr>
-      <tr><td>Dívida Mobiliária</td><td class="valor">R$ {{q7_mobiliaria_anterior}}</td><td class="valor">R$ {{q7_mobiliaria_1sem}}</td><td class="valor">R$ {{q7_mobiliaria_2sem}}</td></tr>
-      <tr><td>Dívida Contratual</td><td class="valor">R$ {{q7_contratual_anterior}}</td><td class="valor">R$ {{q7_contratual_1sem}}</td><td class="valor">R$ {{q7_contratual_2sem}}</td></tr>
-      <tr><td>Precatórios posteriores a 05/05/2000 (inclusive) - Vencidos e não pagos</td><td class="valor">R$ {{q7_precatorios_anterior}}</td><td class="valor">R$ {{q7_precatorios_1sem}}</td><td class="valor">R$ {{q7_precatorios_2sem}}</td></tr>
-      <tr><td>Outras Dívidas</td><td class="valor">R$ {{q7_outras_anterior}}</td><td class="valor">R$ {{q7_outras_1sem}}</td><td class="valor">R$ {{q7_outras_2sem}}</td></tr>
-      <tr class="total"><td>DEDUÇÕES (II)¹</td><td class="valor">R$ {{q7_deducoes_anterior}}</td><td class="valor">R$ {{q7_deducoes_1sem}}</td><td class="valor">R$ {{q7_deducoes_2sem}}</td></tr>
-      <tr><td>Disponibilidade de Caixa</td><td class="valor">R$ {{q7_disp_caixa_anterior}}</td><td class="valor">R$ {{q7_disp_caixa_1sem}}</td><td class="valor">R$ {{q7_disp_caixa_2sem}}</td></tr>
-      <tr><td>Disponibilidade de Caixa Bruta</td><td class="valor">R$ {{q7_disp_bruta_anterior}}</td><td class="valor">R$ {{q7_disp_bruta_1sem}}</td><td class="valor">R$ {{q7_disp_bruta_2sem}}</td></tr>
-      <tr><td>(-) Restos a Pagar Processados (Exceto Precatórios)</td><td class="valor">R$ {{q7_rp_proc_anterior}}</td><td class="valor">R$ {{q7_rp_proc_1sem}}</td><td class="valor">R$ {{q7_rp_proc_2sem}}</td></tr>
-      <tr><td>Demais Haveres Financeiros</td><td class="valor">R$ {{q7_haveres_anterior}}</td><td class="valor">R$ {{q7_haveres_1sem}}</td><td class="valor">R$ {{q7_haveres_2sem}}</td></tr>
-      <tr class="total"><td>DÍVIDA CONSOLIDADA LÍQUIDA (DCL) (III) = (I - II)</td><td class="valor">R$ {{q7_dcl_anterior}}</td><td class="valor">R$ {{q7_dcl_1sem}}</td><td class="valor">R$ {{q7_dcl_2sem}}</td></tr>
-      <tr><td>RECEITA CORRENTE LÍQUIDA - RCL</td><td class="valor">R$ {{q7_rcl_anterior}}</td><td class="valor">R$ {{q7_rcl_1sem}}</td><td class="valor">R$ {{q7_rcl_2sem}}</td></tr>
-      <tr><td>(-) Transferências Obrigatórias da União Relativas às Emendas Individuais (art. 166-A, § 1º, da CF) (V)</td><td class="valor">R$ {{q7_transf_emendas_anterior}}</td><td class="valor">R$ {{q7_transf_emendas_1sem}}</td><td class="valor">R$ {{q7_transf_emendas_2sem}}</td></tr>
-      <tr><td>RECEITA CORRENTE LÍQUIDA AJUSTADA PARA CÁLCULO DOS LIMITES DE ENDIVIDAMENTO (VI) = (IV - V)</td><td class="valor">R$ {{q7_rcl_ajustada_anterior}}</td><td class="valor">R$ {{q7_rcl_ajustada_1sem}}</td><td class="valor">R$ {{q7_rcl_ajustada_2sem}}</td></tr>
-      <tr><td>% da DC sobre a RCL (I/RCL)</td><td class="valor">{{q7_perc_dc_anterior}}</td><td class="valor">{{q7_perc_dc_1sem}}</td><td class="valor">{{q7_perc_dc_2sem}}</td></tr>
-      <tr><td>% da DCL sobre a RCL (III/RCL)</td><td class="valor">{{q7_perc_dcl_anterior}}</td><td class="valor">{{q7_perc_dcl_1sem}}</td><td class="valor">{{q7_perc_dcl_2sem}}</td></tr>
-      <tr><td>LIMITE DEFINIDO POR RESOLUÇÃO DO SENADO FEDERAL</td><td class="valor">R$ {{q7_limite_senado_anterior}}</td><td class="valor">R$ {{q7_limite_senado_1sem}}</td><td class="valor">R$ {{q7_limite_senado_2sem}}</td></tr>
-      <tr><td>LIMITE DE ALERTA (inciso III do § 1º do art. 59 da LRF) - %</td><td class="valor">R$ {{q7_limite_alerta_anterior}}</td><td class="valor">R$ {{q7_limite_alerta_1sem}}</td><td class="valor">R$ {{q7_limite_alerta_2sem}}</td></tr>
+      <tr class="total"><td>DÍVIDA CONSOLIDADA - DC (I)</td><td class="valor">R$ {{q7_dc_anterior}}</td><td class="valor">R$ {{q7_dc_1quad}}</td><td class="valor">R$ {{q7_dc_2quad}}</td><td class="valor">R$ {{q7_dc_3quad}}</td></tr>
+      <tr><td>Dívida Mobiliária</td><td class="valor">R$ {{q7_mobiliaria_anterior}}</td><td class="valor">R$ {{q7_mobiliaria_1quad}}</td><td class="valor">R$ {{q7_mobiliaria_2quad}}</td><td class="valor">R$ {{q7_mobiliaria_3quad}}</td></tr>
+      <tr><td>Dívida Contratual</td><td class="valor">R$ {{q7_contratual_anterior}}</td><td class="valor">R$ {{q7_contratual_1quad}}</td><td class="valor">R$ {{q7_contratual_2quad}}</td><td class="valor">R$ {{q7_contratual_3quad}}</td></tr>
+      <tr><td>Precatórios posteriores a 05/05/2000 (inclusive) - Vencidos e não pagos</td><td class="valor">R$ {{q7_precatorios_anterior}}</td><td class="valor">R$ {{q7_precatorios_1quad}}</td><td class="valor">R$ {{q7_precatorios_2quad}}</td><td class="valor">R$ {{q7_precatorios_3quad}}</td></tr>
+      <tr><td>Outras Dívidas</td><td class="valor">R$ {{q7_outras_anterior}}</td><td class="valor">R$ {{q7_outras_1quad}}</td><td class="valor">R$ {{q7_outras_2quad}}</td><td class="valor">R$ {{q7_outras_3quad}}</td></tr>
+      <tr class="total"><td>DEDUÇÕES (II)¹</td><td class="valor">R$ {{q7_deducoes_anterior}}</td><td class="valor">R$ {{q7_deducoes_1quad}}</td><td class="valor">R$ {{q7_deducoes_2quad}}</td><td class="valor">R$ {{q7_deducoes_3quad}}</td></tr>
+      <tr><td>Disponibilidade de Caixa</td><td class="valor">R$ {{q7_disp_caixa_anterior}}</td><td class="valor">R$ {{q7_disp_caixa_1quad}}</td><td class="valor">R$ {{q7_disp_caixa_2quad}}</td><td class="valor">R$ {{q7_disp_caixa_3quad}}</td></tr>
+      <tr><td>Disponibilidade de Caixa Bruta</td><td class="valor">R$ {{q7_disp_bruta_anterior}}</td><td class="valor">R$ {{q7_disp_bruta_1quad}}</td><td class="valor">R$ {{q7_disp_bruta_2quad}}</td><td class="valor">R$ {{q7_disp_bruta_3quad}}</td></tr>
+      <tr><td>(-) Restos a Pagar Processados (Exceto Precatórios)</td><td class="valor">R$ {{q7_rp_proc_anterior}}</td><td class="valor">R$ {{q7_rp_proc_1quad}}</td><td class="valor">R$ {{q7_rp_proc_2quad}}</td><td class="valor">R$ {{q7_rp_proc_3quad}}</td></tr>
+      <tr><td>Demais Haveres Financeiros</td><td class="valor">R$ {{q7_haveres_anterior}}</td><td class="valor">R$ {{q7_haveres_1quad}}</td><td class="valor">R$ {{q7_haveres_2quad}}</td><td class="valor">R$ {{q7_haveres_3quad}}</td></tr>
+      <tr class="total"><td>DÍVIDA CONSOLIDADA LÍQUIDA (DCL) (III) = (I - II)</td><td class="valor">R$ {{q7_dcl_anterior}}</td><td class="valor">R$ {{q7_dcl_1quad}}</td><td class="valor">R$ {{q7_dcl_2quad}}</td><td class="valor">R$ {{q7_dcl_3quad}}</td></tr>
+      <tr><td>RECEITA CORRENTE LÍQUIDA - RCL</td><td class="valor">R$ {{q7_rcl_anterior}}</td><td class="valor">R$ {{q7_rcl_1quad}}</td><td class="valor">R$ {{q7_rcl_2quad}}</td><td class="valor">R$ {{q7_rcl_3quad}}</td></tr>
+      <tr><td>(-) Transferências Obrigatórias da União Relativas às Emendas Individuais (art. 166-A, § 1º, da CF) (V)</td><td class="valor">R$ {{q7_transf_emendas_anterior}}</td><td class="valor">R$ {{q7_transf_emendas_1quad}}</td><td class="valor">R$ {{q7_transf_emendas_2quad}}</td><td class="valor">R$ {{q7_transf_emendas_3quad}}</td></tr>
+      <tr><td>RECEITA CORRENTE LÍQUIDA AJUSTADA PARA CÁLCULO DOS LIMITES DE ENDIVIDAMENTO (VI) = (IV - V)</td><td class="valor">R$ {{q7_rcl_ajustada_anterior}}</td><td class="valor">R$ {{q7_rcl_ajustada_1quad}}</td><td class="valor">R$ {{q7_rcl_ajustada_2quad}}</td><td class="valor">R$ {{q7_rcl_ajustada_3quad}}</td></tr>
+      <tr><td>% da DC sobre a RCL (I/RCL)</td><td class="valor">{{q7_perc_dc_anterior}}</td><td class="valor">{{q7_perc_dc_1quad}}</td><td class="valor">{{q7_perc_dc_2quad}}</td><td class="valor">{{q7_perc_dc_3quad}}</td></tr>
+      <tr><td>% da DCL sobre a RCL (III/RCL)</td><td class="valor">{{q7_perc_dcl_anterior}}</td><td class="valor">{{q7_perc_dcl_1quad}}</td><td class="valor">{{q7_perc_dcl_2quad}}</td><td class="valor">{{q7_perc_dcl_3quad}}</td></tr>
+      <tr><td>LIMITE DEFINIDO POR RESOLUÇÃO DO SENADO FEDERAL</td><td class="valor">R$ {{q7_limite_senado_anterior}}</td><td class="valor">R$ {{q7_limite_senado_1quad}}</td><td class="valor">R$ {{q7_limite_senado_2quad}}</td><td class="valor">R$ {{q7_limite_senado_3quad}}</td></tr>
+      <tr><td>LIMITE DE ALERTA (inciso III do § 1º do art. 59 da LRF) - %</td><td class="valor">R$ {{q7_limite_alerta_anterior}}</td><td class="valor">R$ {{q7_limite_alerta_1quad}}</td><td class="valor">R$ {{q7_limite_alerta_2quad}}</td><td class="valor">R$ {{q7_limite_alerta_3quad}}</td></tr>
     </tbody>
   </table>
   <p class="fonte">Fonte: Relatório de Gestão Fiscal (RGF).</p>

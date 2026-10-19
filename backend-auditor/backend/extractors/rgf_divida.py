@@ -33,38 +33,40 @@ def _extrair_cabecalho(pdf_path: str) -> tuple[str, str]:
     return municipio, exercicio
 
 
-def _linhas_tabela23(pdf_path: str) -> list[str]:
-    """Retorna somente as linhas da seção Tabela 2.3 do RGF."""
+def _linhas_tabela_dcl(pdf_path: str) -> tuple[list[str], bool]:
+    """Retorna as linhas da tabela da Divida Consolidada Liquida e se o RGF e quadrimestral.
+
+    Semestral:     "RGF-Anexo 02 | Tabela 2.3" — colunas Anterior / 1º Sem / 2º Sem.
+    Quadrimestral: "RGF-Anexo 02 | Tabela 2.0" — colunas Anterior / 1º / 2º / 3º Quad.
+    """
     todas = _todas_linhas(pdf_path)
-    start = 0
+    quadrimestral = any("QUADRIMESTRE" in l.upper() and "PER" in l.upper() for l in todas[:15])
+    start = None
     end = len(todas)
     for i, line in enumerate(todas):
         up = line.upper()
-        if start == 0 and "2.3" in line and "CONSOLIDADA" in up:
-            start = i
-        elif start > 0 and ("TABELA 2.4" in up or ("TABELA 3" in up)):
+        if start is None:
+            if ("TABELA 2.0" in up and "CONSOLIDADA" in up) or ("2.3" in line and "CONSOLIDADA" in up):
+                start = i
+        elif "TABELA 2.4" in up or "TABELA 2.1" in up or "TABELA 3" in up:
             end = i
             break
-    return todas[start:end]
+    return todas[start or 0:end], quadrimestral
 
 
-def _buscar_3vals(linhas: list[str], *termos: str) -> tuple[float, float, float]:
-    """Localiza a primeira linha com todos os termos e retorna os 3 primeiros números.
-    Se a linha não tem números (linha quebrada pelo PDF), verifica a linha seguinte.
+def _buscar_vals(linhas: list[str], n: int, *termos: str) -> tuple[float, ...]:
+    """Localiza a primeira linha com todos os termos e retorna os `n` primeiros numeros.
+    Se a linha nao tem numeros suficientes (linha quebrada pelo PDF), verifica a seguinte.
     """
     termos_up = [t.upper() for t in termos]
     for i, line in enumerate(linhas):
         upper = line.upper()
         if all(t in upper for t in termos_up):
-            nums = NUMERO_RE.findall(line)
-            if len(nums) >= 3:
-                return _parse(nums[0]), _parse(nums[1]), _parse(nums[2])
-            # Linha quebrada: valores na próxima linha
-            if i + 1 < len(linhas):
-                nums_next = NUMERO_RE.findall(linhas[i + 1])
-                if len(nums_next) >= 3:
-                    return _parse(nums_next[0]), _parse(nums_next[1]), _parse(nums_next[2])
-    return 0.0, 0.0, 0.0
+            for candidata in (line, linhas[i + 1] if i + 1 < len(linhas) else ""):
+                nums = NUMERO_RE.findall(candidata)
+                if len(nums) >= n:
+                    return tuple(_parse(x) for x in nums[:n])
+    return (0.0,) * n
 
 
 # Mapeamento campo → termos de busca (sem acentos para resistir a encoding garbled)
@@ -90,40 +92,53 @@ _CAMPOS: list[tuple[str, list[str]]] = [
 ]
 
 
-def extrair_q07(rgf2_path: str) -> dict:
+def extrair_q07(rgf_path: str) -> dict:
     """Q07 — Dívida Consolidada e Mobiliária.
 
-    Fonte: RGF-Anexo 02 | Tabela 2.3 do relatório do 2º semestre.
-    A tabela já traz as 3 colunas: Exercício Anterior / 1º Semestre / 2º Semestre.
+    Fonte: RGF-Anexo 02 do ULTIMO periodo do exercicio — a tabela ja traz o saldo
+    do exercicio anterior e todos os periodos ate o de referencia.
+
+      Quadrimestral (Tabela 2.0, 3º quadrimestre): Anterior / 1º / 2º / 3º Quad.
+      Semestral     (Tabela 2.3, 2º semestre):     Anterior / 1º / 2º Sem. O template
+        agora e quadrimestral: o 2º semestre (fim do ano) vai na coluna do 3º quad,
+        o 1º semestre na do 2º quad, e a do 1º quad fica zerada.
 
     Percentuais retornados como valor bruto (ex: 15.76) — o template usa formato
     0.00% (Excel nativo) e o template_filler divide por 100 antes de gravar.
     """
-    municipio, exercicio = _extrair_cabecalho(rgf2_path)
-    ll = _linhas_tabela23(rgf2_path)
+    municipio, exercicio = _extrair_cabecalho(rgf_path)
+    ll, quadrimestral = _linhas_tabela_dcl(rgf_path)
 
+    ncols = 4 if quadrimestral else 3
     ant: dict = {}
-    p1: dict = {}
-    p2: dict = {}
+    q1: dict = {}
+    q2: dict = {}
+    q3: dict = {}
 
     for campo, termos in _CAMPOS:
-        v0, v1, v2 = _buscar_3vals(ll, *termos)
-        ant[campo] = v0
-        p1[campo] = v1
-        p2[campo] = v2
+        vals = _buscar_vals(ll, ncols, *termos)
+        if quadrimestral:
+            ant[campo], q1[campo], q2[campo], q3[campo] = vals
+        else:
+            ant[campo], q2[campo], q3[campo] = vals
+            q1[campo] = 0.0
 
     logger.info(
-        "Q7: DCL ant=%.2f 1sem=%.2f 2sem=%.2f | %%DCL/RCL 2sem=%.2f%%",
+        "Q7 (%s): DCL ant=%.2f 1q=%.2f 2q=%.2f 3q=%.2f | %%DCL/RCL final=%.2f%%",
+        "quadrimestral" if quadrimestral else "semestral",
         ant["divida_consolidada_liquida_dcl"],
-        p1["divida_consolidada_liquida_dcl"],
-        p2["divida_consolidada_liquida_dcl"],
-        p2["percentual_dcl_sobre_rcl"],
+        q1["divida_consolidada_liquida_dcl"],
+        q2["divida_consolidada_liquida_dcl"],
+        q3["divida_consolidada_liquida_dcl"],
+        q3["percentual_dcl_sobre_rcl"],
     )
 
     return {
         "municipio": municipio,
         "exercicio": exercicio,
+        "periodicidade": "quadrimestral" if quadrimestral else "semestral",
         "saldo_exercicio_anterior": ant,
-        "ate_1_semestre":           p1,
-        "ate_2_semestre":           p2,
+        "ate_1_quadrimestre":       q1,
+        "ate_2_quadrimestre":       q2,
+        "ate_3_quadrimestre":       q3,
     }

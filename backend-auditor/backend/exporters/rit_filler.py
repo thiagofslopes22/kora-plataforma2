@@ -281,7 +281,7 @@ def build_context(
     ctx["q5_ded_piso_enfermagem"]   = _num(_g(ded5, "parcela_dedutivel_piso_enfermeiro"))
     ctx["q5_despesa_liquida_rp"]    = _num(_g(dp, "despesa_liquida_pessoal_restos_pagar"))
     # Restrição de mandato / regime especial (manuais)
-    ctx["pessoal_percentual_1sem"]  = m("dp_pct_inicio_sem", "N/D")
+    ctx["pessoal_percentual_2quad"] = m("dp_pct_inicio_sem", "N/D")
     ctx["pessoal_percentual_2021"]  = m("pessoal_pct_2021", "N/D")
     ctx["restricao_mandato_situacao"] = m("dp_restricao_mandato", "não realizou")
     ctx["regime_especial_necessidade"] = m("regime_especial_necessidade", "não havendo")
@@ -290,22 +290,23 @@ def build_context(
 
     # ── Quadro 6 — Comportamento da Despesa com Pessoal ──────────────────────
     q6 = _g(resultado, "quadro_06", "quadro_6_despesa_pessoal", default={}) or {}
-    q6s1 = q6.get("primeiro_semestre", {}) if isinstance(q6.get("primeiro_semestre"), dict) else {}
+    q6q2 = q6.get("segundo_quadrimestre", {}) if isinstance(q6.get("segundo_quadrimestre"), dict) else {}
     q6an = q6.get("apurado_pelo_tce", {}) if isinstance(q6.get("apurado_pelo_tce"), dict) else {}
-    ctx["q6_total_despesa_1sem"] = _num(_g(q6s1, "total_despesa"))
-    ctx["q6_total_despesa_ano"]  = _num(_g(q6an, "total_despesa"))
-    ctx["q6_rcl_1sem"]           = _num(_g(q6s1, "receita_corrente_liquida"))
-    ctx["q6_limite_1sem"]        = _num(_g(q6s1, "limite_legal_54_pct"))
-    ctx["q6_limite_ano"]         = _num(_g(q6an, "limite_legal_54_pct"))
-    _p6s1 = _g(q6s1, "percentual_apurado")
-    if ctx["pessoal_percentual_1sem"] in ("", "N/D") and _p6s1 is not None:
-        ctx["pessoal_percentual_1sem"] = _pctbr(_p6s1 * 100)
+    ctx["q6_total_despesa_2quad"] = _num(_g(q6q2, "total_despesa"))
+    ctx["q6_total_despesa_ano"]   = _num(_g(q6an, "total_despesa"))
+    ctx["q6_rcl_2quad"]           = _num(_g(q6q2, "receita_corrente_liquida"))
+    ctx["q6_limite_2quad"]        = _num(_g(q6q2, "limite_legal_54_pct"))
+    ctx["q6_limite_ano"]          = _num(_g(q6an, "limite_legal_54_pct"))
+    _p6q2 = _g(q6q2, "percentual_apurado")
+    if ctx["pessoal_percentual_2quad"] in ("", "N/D") and _p6q2 is not None:
+        ctx["pessoal_percentual_2quad"] = _pctbr(_p6q2 * 100)
 
     # ── Quadro 7 — Dívida Consolidada ────────────────────────────────────────
     q7 = resultado.get("quadro_07", {}) or {}
     for suf, chave in (("anterior", "saldo_exercicio_anterior"),
-                       ("1sem", "ate_1_semestre"),
-                       ("2sem", "ate_2_semestre")):
+                       ("1quad", "ate_1_quadrimestre"),
+                       ("2quad", "ate_2_quadrimestre"),
+                       ("3quad", "ate_3_quadrimestre")):
         p = q7.get(chave, {}) if isinstance(q7.get(chave), dict) else {}
         ctx[f"q7_dc_{suf}"]          = _num(_g(p, "divida_consolidada_dc"))
         ctx[f"q7_mobiliaria_{suf}"]  = _num(_g(p, "divida_mobiliaria"))
