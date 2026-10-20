@@ -149,7 +149,7 @@ def _processar_pagina(linhas: list[str]) -> dict | None:
 
             total_acao = _parse_br(nums[-1]) if nums else 0.0
 
-            pos_fim = len(sufixo)
+            pos_fim = m_acao.end()
             if nums:
                 # Usa a posição do PRIMEIRO número (não do último) para delimitar a
                 # descrição: quando "Atividades" e "Total" saem com o mesmo valor
@@ -472,6 +472,30 @@ def _classificar_fundeb70(acao: dict) -> str:
     return 'NAO_CLASSIFICADO'
 
 
+def _eh_unidade_educacao(nome_u: str) -> bool:
+    nu = nome_u.upper()
+    return 'EDUCA' in nu or 'ENSINO' in nu or 'SEMED' in nu
+
+
+def _fundeb_por_rotulo(dados: dict) -> bool:
+    """True quando o ANX_06 não tem unidade orçamentária própria do FUNDEB.
+
+    Alguns municípios (ex.: Magalhães de Almeida) executam o FUNDEB dentro da própria
+    Secretaria de Educação, identificando as ações só pelo rótulo ("... (70%)"). Nesse
+    caso a unidade FUNDEB é a de Educação e só entram as ações rotuladas 70%/30%
+    (próprio ou herdado do programa) — as demais (salário-educação, PNATE, merenda…)
+    são de outras fontes e ficam fora.
+    """
+    return not any(_eh_unidade_fundeb(u.get('unidade_nome', '')) for u in dados.get('unidades', []))
+
+
+def _acao_eh_fundeb(u: dict, acao: dict, por_rotulo: bool) -> bool:
+    if not por_rotulo:
+        return _eh_unidade_fundeb(u.get('unidade_nome', ''))
+    return (_eh_unidade_educacao(u.get('unidade_nome', ''))
+            and _classificar_fundeb70(acao) in ('FUNDEB_70', 'FUNDEB_30'))
+
+
 def _coletar_fundeb70(dados: dict) -> dict:
     """Coleta e classifica todas as ações das unidades FUNDEB (Passos 1-3 do prompt).
 
@@ -485,11 +509,17 @@ def _coletar_fundeb70(dados: dict) -> dict:
     descricoes: dict[str, str] = {}
     total_geral_unidades = 0.0
 
+    por_rotulo = _fundeb_por_rotulo(dados)
     for u in dados.get('unidades', []):
-        if not _eh_unidade_fundeb(u.get('unidade_nome', '')):
-            continue
-        total_geral_unidades = round(total_geral_unidades + u.get('total_geral', 0.0), 2)
+        if not por_rotulo:
+            if not _eh_unidade_fundeb(u.get('unidade_nome', '')):
+                continue
+            total_geral_unidades = round(total_geral_unidades + u.get('total_geral', 0.0), 2)
         for acao in u.get('acoes', []):
+            if por_rotulo:
+                if not _acao_eh_fundeb(u, acao, True):
+                    continue
+                total_geral_unidades = round(total_geral_unidades + acao.get('total', 0.0), 2)
             cod = acao.get('codigo', '')
             val = acao.get('total', 0.0)
             categoria = _classificar_fundeb70(acao)
@@ -702,9 +732,10 @@ def extrair_q25(anx06_path: str) -> dict:
     municipio = dados.get('municipio', '')
     exercicio = dados.get('exercicio', '')
 
+    por_rotulo = _fundeb_por_rotulo(dados)
     unidades_fundeb = [
         u.get('unidade_nome', '') for u in dados.get('unidades', [])
-        if _eh_unidade_fundeb(u.get('unidade_nome', ''))
+        if any(_acao_eh_fundeb(u, a, por_rotulo) for a in u.get('acoes', []))
     ]
 
     buckets: dict[str, dict] = {
@@ -922,8 +953,11 @@ def extrair_q27(anx06_path: str, anx10_at_path: str = None) -> dict:
     det_infantil: dict[str, float] = {}
     det_capital:  dict[str, float] = {}
 
+    por_rotulo = _fundeb_por_rotulo(dados)
     for u in dados.get('unidades', []):
-        if not _eh_unidade_fundeb(u.get('unidade_nome', '')):
+        if not por_rotulo and not _eh_unidade_fundeb(u.get('unidade_nome', '')):
+            continue
+        if por_rotulo and not _eh_unidade_educacao(u.get('unidade_nome', '')):
             continue
         for acao in u.get('acoes', []):
             cod   = acao.get('codigo', '')
@@ -987,6 +1021,14 @@ def extrair_q18(anx06_path: str, anx10_path: str, base_calculo: float = 0.0) -> 
     # (fora do Fundo). Para as demais subfunções (301-306), a Secretaria fica de fora
     # para evitar dupla contagem das ações finalísticas já lançadas no Fundo.
     sf: dict[str, float] = {s: 0.0 for s in ('301', '302', '303', '304', '305', '306', '122')}
+
+    def _eh_fundo(nome: str) -> bool:
+        nu = nome.upper()
+        return ('FUNDO' in nu and 'SAUDE' in _sem_acento(nu)) or 'FMS' in nu
+
+    # Sem unidade "Fundo Municipal de Saúde" (ex.: Magalhães de Almeida executa tudo na
+    # Secretaria), as subfunções 301-306 vêm da Secretaria — não há o que contar em dobro.
+    tem_fundo = any(_eh_fundo(u['unidade_nome']) for u in dados['unidades'])
     for u in dados['unidades']:
         nome_u = u['unidade_nome'].upper()
         # "SAÚDE" chega acentuado (Ú = U+00DA) — comparar sem acento para não depender
@@ -1007,7 +1049,7 @@ def extrair_q18(anx06_path: str, anx10_path: str, base_calculo: float = 0.0) -> 
             if len(parts) < 2 or parts[0] != '10' or parts[1] not in sf:
                 continue
             subfunc = parts[1]
-            if subfunc != '122' and not eh_fundo_saude:
+            if subfunc != '122' and not eh_fundo_saude and tem_fundo:
                 continue  # 301-306: apenas o Fundo, para evitar dupla contagem
             sf[subfunc] = round(sf[subfunc] + acao['total'], 2)
 
@@ -1110,13 +1152,16 @@ def extrair_subfuncao_func12(anx06_path: str) -> dict:
     fundeb: dict[str, float] = {sf: 0.0 for sf in SUBFUNC_FUNDEB}
     observacoes: list[str] = []
 
+    por_rotulo = _fundeb_por_rotulo(dados)
     for u in dados.get('unidades', []):
         nome_u = u.get('unidade_nome', '').upper()
-        eh_semed  = ('EDUCA' in nome_u or 'ENSINO' in nome_u or 'SEMED' in nome_u) and 'FUNDEB' not in nome_u
-        eh_fundeb = 'FUNDEB' in nome_u
-        if not (eh_semed or eh_fundeb):
+        eh_semed_u  = ('EDUCA' in nome_u or 'ENSINO' in nome_u or 'SEMED' in nome_u) and 'FUNDEB' not in nome_u
+        eh_fundeb_u = 'FUNDEB' in nome_u
+        if not (eh_semed_u or eh_fundeb_u):
             continue
         for acao in u.get('acoes', []):
+            eh_fundeb = eh_fundeb_u or (por_rotulo and _acao_eh_fundeb(u, acao, True))
+            eh_semed  = eh_semed_u and not eh_fundeb
             parts = acao.get('codigo', '').split('.')
             if len(parts) < 2 or parts[0] != '12':
                 continue
