@@ -169,8 +169,8 @@ def _eh_demonstrativo_por_fonte(pdf_path: str) -> bool:
 
 def _extrair_demonstrativo_por_fonte(pdf_path: str) -> dict:
     """Lê o Demonstrativo por Fonte pela posição das colunas e devolve a mesma estrutura do
-    Anexo 02 (órgãos + itens). O valor de cada elemento é a coluna LIQUIDADO — este
-    demonstrativo não tem coluna de Empenhado."""
+    Anexo 02 consolidado (órgão '00' + itens). O valor de cada elemento é a coluna LIQUIDADO —
+    este demonstrativo não tem coluna de Empenhado."""
     doc = fitz.open(pdf_path)
     acum: dict[tuple[str, str], float] = defaultdict(float)
     total_doc = None
@@ -208,30 +208,37 @@ def _extrair_demonstrativo_por_fonte(pdf_path: str) -> dict:
             acum[(poder[:2], elemento)] += _parse_br(vals[0][4])
     doc.close()
 
-    orgaos: dict[str, dict] = {}
-    itens: list[dict] = []
-    for (orgao, elemento), valor in sorted(acum.items()):
-        o = orgaos.setdefault(orgao, {
-            'nome': _NOMES_PODER.get(orgao, f'ÓRGÃO {orgao}'), 'total': 0.0,
-            'despesas_correntes': 0.0, 'pessoal_encargos': 0.0, 'outras_despesas_correntes': 0.0,
-            'despesas_capital': 0.0, 'investimentos': 0.0, 'amortizacao_divida': 0.0,
-        })
+    def _novo_orgao(nome: str) -> dict:
+        return {'nome': nome, 'total': 0.0,
+                'despesas_correntes': 0.0, 'pessoal_encargos': 0.0, 'outras_despesas_correntes': 0.0,
+                'despesas_capital': 0.0, 'investimentos': 0.0, 'amortizacao_divida': 0.0}
+
+    # O Quadro 5 usa o município CONSOLIDADO (Legislativo + Executivo), como no Anexo 02
+    # da Lei 4.320 — que não separa os Poderes. A abertura por Poder fica em 'poderes'.
+    consolidado = _novo_orgao('CONSOLIDADO')
+    poderes: dict[str, dict] = {}
+    por_elemento: dict[str, float] = defaultdict(float)
+    for (poder, elemento), valor in sorted(acum.items()):
+        p = poderes.setdefault(poder, _novo_orgao(_NOMES_PODER.get(poder, f'ÓRGÃO {poder}')))
         for prefixo, campo in CAMPOS_ORGAO.items():
             if elemento == prefixo or elemento.startswith(prefixo + '.'):
-                o[campo] = round(o[campo] + valor, 2)
-        itens.append({
-            'orgao_codigo': orgao, 'orgao_nome': o['nome'], 'codigo': elemento,
-            'descricao': '', 'valor': round(valor, 2), 'nivel': elemento.count('.') + 1,
-        })
-    for o in orgaos.values():
+                p[campo] = round(p[campo] + valor, 2)
+                consolidado[campo] = round(consolidado[campo] + valor, 2)
+        por_elemento[elemento] += valor
+    for o in (consolidado, *poderes.values()):
         o['total'] = round(o['despesas_correntes'] + o['despesas_capital'], 2)
+    orgaos = {'00': consolidado}
+    itens = [{
+        'orgao_codigo': '00', 'orgao_nome': 'CONSOLIDADO', 'codigo': elemento,
+        'descricao': '', 'valor': round(valor, 2), 'nivel': elemento.count('.') + 1,
+    } for elemento, valor in sorted(por_elemento.items())]
 
     total_geral = round(sum(o['total'] for o in orgaos.values()), 2)
     if total_doc is not None and abs(total_doc - total_geral) > 0.01:
         logger.warning("ANX_02 (demonstrativo por fonte): soma dos elementos %.2f ≠ Total do documento %.2f",
                        total_geral, total_doc)
-    logger.info("ANX_02 (demonstrativo por fonte, coluna Liquidado): %s",
-                {k: (v['nome'], v['pessoal_encargos']) for k, v in orgaos.items()})
+    logger.info("ANX_02 (demonstrativo por fonte, coluna Liquidado): consolidado pessoal=%.2f; por Poder: %s",
+                consolidado['pessoal_encargos'], {k: (v['nome'], v['pessoal_encargos']) for k, v in poderes.items()})
     return {
         'municipio':   '',
         'exercicio':   '',
@@ -240,6 +247,7 @@ def _extrair_demonstrativo_por_fonte(pdf_path: str) -> dict:
         'total_geral': total_geral,
         'total_documento': total_doc,
         'itens':       itens,
+        'poderes':     poderes,
         'formato':     'demonstrativo_por_fonte',
     }
 
