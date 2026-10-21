@@ -363,6 +363,7 @@ _RUBRICAS_FUNDEB70_EDUC_SUBFUNCAO = {
 
 _ROTULO_30_RE = re.compile(r'3\s*0\s*%')
 _ROTULO_70_RE = re.compile(r'7\s*0\s*%')
+_REMUN_RE = re.compile(r'\bREMUN')
 
 
 def _classificar_rubrica_fundeb70_educ(
@@ -391,13 +392,19 @@ def _classificar_rubrica_fundeb70_educ(
     rótulo do próprio município já diz que aquele valor não é do balde dos 70%.
     """
     d = _sem_acento(descricao.upper())
+    # Remuneração aparece abreviada em vários municípios ("REMUN. DOS PROFIS. DA EDUC.
+    # BÁSICA (70%)", Magalhães de Almeida) — exigir "REMUNERACAO" + "DOCENTE" por extenso
+    # jogava essas ações na conta agregada de manutenção.
+    eh_remuneracao = bool(_REMUN_RE.search(d)) and (
+        'DOCENTE' in d or 'PROFIS' in d or 'MAGISTERIO' in d
+    )
     rotulado_70 = bool(_ROTULO_70_RE.search(d)) or forcar_agregado
     rotulado_30_only = bool(_ROTULO_30_RE.search(d)) and not _ROTULO_70_RE.search(d)
     if rotulado_30_only:
         return None, False
 
     if subfuncao == '361':
-        if 'REMUNERACAO' in d and ('DOCENTE' in d or 'PROFISSIONAIS DO ENSINO' in d):
+        if eh_remuneracao:
             return 'FUND_70_REMUN_DOCENTES_FUNDAMENTAL', True
         if 'TEMPO INTEGRAL' in d:
             return 'FUND_70_TEMPO_INTEGRAL_FUNDAMENTAL', True
@@ -410,7 +417,7 @@ def _classificar_rubrica_fundeb70_educ(
         return None, False
 
     if subfuncao == '365':
-        if 'REMUNERACAO' in d and ('DOCENTE' in d or 'PROFISSIONAIS DO ENSINO' in d):
+        if eh_remuneracao:
             return 'FUND_70_REMUN_DOCENTES_INFANTIL', True
         if 'TEMPO INTEGRAL' in d:
             return 'FUND_70_TEMPO_INTEGRAL_INFANTIL', True

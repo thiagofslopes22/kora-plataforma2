@@ -1,5 +1,6 @@
 import re
 import logging
+from collections import defaultdict
 
 import fitz  # PyMuPDF
 
@@ -146,10 +147,110 @@ def formatar_texto(pdf_path: str) -> str:
     return "\n".join(out)
 
 
+_ELEMENTO_RE    = re.compile(r'^\d\.\d\.\d{2}\.\d{2}(?:\.\d{2})?$')
+_PODER_ORGAO_RE = re.compile(r'^\d{4}$')
+_VALOR_RE       = re.compile(r'^-?\d{1,3}(?:\.\d{3})*,\d{2}$')
+# Primeiros 2 dígitos da coluna "Poder/Órgão" = Poder (padrão TCE/MA)
+_NOMES_PODER    = {'01': 'PODER LEGISLATIVO', '02': 'PODER EXECUTIVO'}
+
+
+def _eh_demonstrativo_por_fonte(pdf_path: str) -> bool:
+    """'Demonstrativo Nº 3 — Despesa segundo a Categoria Econômica por Fonte de Recursos'
+    (IN TCE/MA 083): uma linha por Poder/Órgão × Unidade × Elemento × Fonte, com colunas
+    Dotação Inicial | Créditos Adicionais | Dotação Atualizada | Liquidado | Pago. Alguns
+    municípios (ex.: Magalhães de Almeida) enviam este no lugar do Anexo 02 da Lei 4.320."""
+    doc = fitz.open(pdf_path)
+    try:
+        texto = doc[0].get_text('text').upper()
+    finally:
+        doc.close()
+    return 'POR FONTE DE RECURSOS' in texto and 'LIQUIDADO' in texto and 'ELEMENTO' in texto
+
+
+def _extrair_demonstrativo_por_fonte(pdf_path: str) -> dict:
+    """Lê o Demonstrativo por Fonte pela posição das colunas e devolve a mesma estrutura do
+    Anexo 02 (órgãos + itens). O valor de cada elemento é a coluna LIQUIDADO — este
+    demonstrativo não tem coluna de Empenhado."""
+    doc = fitz.open(pdf_path)
+    acum: dict[tuple[str, str], float] = defaultdict(float)
+    total_doc = None
+    x_liq = None
+    for page in doc:
+        words = page.get_text('words')
+        for w in words:
+            if w[4].upper() == 'LIQUIDADO':
+                x_liq = w[2]
+        if x_liq is None:
+            continue
+        # Agrupa palavras por linha (tolerância de 3px no topo)
+        linhas: list[list] = []
+        for w in sorted(words, key=lambda w: w[1]):
+            if linhas and w[1] - linhas[-1][0][1] <= 3:
+                linhas[-1].append(w)
+            else:
+                linhas.append([w])
+        for ws in linhas:
+            ws.sort(key=lambda w: w[0])
+            textos = [w[4] for w in ws]
+            if textos and textos[0].upper() == 'TOTAL':
+                vals = [w for w in ws if _VALOR_RE.match(w[4])]
+                if vals:
+                    total_doc = _parse_br(min(vals, key=lambda w: abs(w[2] - x_liq))[4])
+                continue
+            poder = next((t for t in textos if _PODER_ORGAO_RE.match(t)), None)
+            elemento = next((t for t in textos if _ELEMENTO_RE.match(t)), None)
+            if not (poder and elemento):
+                continue
+            # Valor da coluna Liquidado = número alinhado à direita sob o cabeçalho
+            vals = [w for w in ws if _VALOR_RE.match(w[4]) and abs(w[2] - x_liq) < 25]
+            if not vals:
+                continue
+            acum[(poder[:2], elemento)] += _parse_br(vals[0][4])
+    doc.close()
+
+    orgaos: dict[str, dict] = {}
+    itens: list[dict] = []
+    for (orgao, elemento), valor in sorted(acum.items()):
+        o = orgaos.setdefault(orgao, {
+            'nome': _NOMES_PODER.get(orgao, f'ÓRGÃO {orgao}'), 'total': 0.0,
+            'despesas_correntes': 0.0, 'pessoal_encargos': 0.0, 'outras_despesas_correntes': 0.0,
+            'despesas_capital': 0.0, 'investimentos': 0.0, 'amortizacao_divida': 0.0,
+        })
+        for prefixo, campo in CAMPOS_ORGAO.items():
+            if elemento == prefixo or elemento.startswith(prefixo + '.'):
+                o[campo] = round(o[campo] + valor, 2)
+        itens.append({
+            'orgao_codigo': orgao, 'orgao_nome': o['nome'], 'codigo': elemento,
+            'descricao': '', 'valor': round(valor, 2), 'nivel': elemento.count('.') + 1,
+        })
+    for o in orgaos.values():
+        o['total'] = round(o['despesas_correntes'] + o['despesas_capital'], 2)
+
+    total_geral = round(sum(o['total'] for o in orgaos.values()), 2)
+    if total_doc is not None and abs(total_doc - total_geral) > 0.01:
+        logger.warning("ANX_02 (demonstrativo por fonte): soma dos elementos %.2f ≠ Total do documento %.2f",
+                       total_geral, total_doc)
+    logger.info("ANX_02 (demonstrativo por fonte, coluna Liquidado): %s",
+                {k: (v['nome'], v['pessoal_encargos']) for k, v in orgaos.items()})
+    return {
+        'municipio':   '',
+        'exercicio':   '',
+        'periodo':     '',
+        'orgaos':      orgaos,
+        'total_geral': total_geral,
+        'total_documento': total_doc,
+        'itens':       itens,
+        'formato':     'demonstrativo_por_fonte',
+    }
+
+
 def extrair(pdf_path: str) -> dict:
     """
     Extrai o Anexo 02 e retorna estrutura completa com órgãos, totais e itens.
     """
+    if _eh_demonstrativo_por_fonte(pdf_path):
+        return _extrair_demonstrativo_por_fonte(pdf_path)
+
     linhas_raw = _agrupar_linhas(pdf_path)
     municipio, exercicio, periodo = _extrair_cabecalho(linhas_raw)
 
