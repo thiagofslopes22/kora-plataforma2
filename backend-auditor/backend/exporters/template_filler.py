@@ -109,7 +109,9 @@ def fill_template(template_path: Path, dados: dict) -> openpyxl.Workbook:
             cell.alignment = Alignment(horizontal="right")
         else:
             cell.value = str(valor)
-            cell.alignment = Alignment(horizontal="left")
+            # Texto (ex.: rótulo de período no cabeçalho) mantém o alinhamento do template
+            if not cell.alignment.horizontal:
+                cell.alignment = Alignment(horizontal="left")
 
         preenchidos += 1
 

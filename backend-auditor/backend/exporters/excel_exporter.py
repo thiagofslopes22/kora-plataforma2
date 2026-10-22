@@ -439,7 +439,8 @@ def _write_status_sheet(ws, tabelas: list[dict], resultado: dict,
             num,
             chave,
             tabela["descricao"],
-            ", ".join(tabela["docs_necessarios"]) or "—",
+            (", ".join(tabela["docs_necessarios"])
+             + "".join(f" (ou {', '.join(alt)})" for alt in tabela.get("docs_alternativos", []))) or "—",
             status_txt,
             obs,
         ]

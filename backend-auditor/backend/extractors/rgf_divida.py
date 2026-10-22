@@ -137,6 +137,10 @@ def extrair_q07(rgf_path: str) -> dict:
         "municipio": municipio,
         "exercicio": exercicio,
         "periodicidade": "quadrimestral" if quadrimestral else "semestral",
+        # Cabeçalho das 3 colunas do exercício no template/RIT
+        "rotulos": ({"col_1": "Até o 1º Quadrimestre", "col_2": "Até o 2º Quadrimestre", "col_3": "Até o 3º Quadrimestre"}
+                    if quadrimestral else
+                    {"col_1": "—", "col_2": "Até o 1º Semestre", "col_3": "Até o 2º Semestre"}),
         "saldo_exercicio_anterior": ant,
         "ate_1_quadrimestre":       q1,
         "ate_2_quadrimestre":       q2,

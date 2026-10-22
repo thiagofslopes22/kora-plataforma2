@@ -353,7 +353,7 @@
 
   <h4 class="sec">5.1.2.2 Despesa com Pessoal – Restrição Final de Mandato</h4>
   <p>A Lei de Responsabilidade Fiscal (LRF), em seu art. 21, incisos II, III e IV, dispõe que são nulos de pleno direito os atos que impliquem aumento de despesa com pessoal nos 180 dias anteriores ao término do mandato do titular de Poder ou órgão referido no art. 20, bem como aqueles que resultem em aumento dessa despesa mediante parcelas programadas para vigorar após o término do mandato.</p>
-  <p>Conforme demonstrado no Quadro 6, anexo a este relatório, a Despesa Líquida com Pessoal do Município de {{municipio_uf}} alcançou {{pessoal_percentual_2quad}} da Receita Corrente Líquida (RCL) até o 2º quadrimestre de {{exercicio}}, no final do exercício financeiro de {{exercicio}} alcançou {{pessoal_percentual_rcl}}.</p>
+  <p>Conforme demonstrado no Quadro 6, anexo a este relatório, a Despesa Líquida com Pessoal do Município de {{municipio_uf}} alcançou {{pessoal_percentual_2quad}} da Receita Corrente Líquida (RCL) {{q6_periodo_texto}} de {{exercicio}}, no final do exercício financeiro de {{exercicio}} alcançou {{pessoal_percentual_rcl}}.</p>
   <p>Dessa forma, conclui-se que o Município {{restricao_mandato_situacao}} aumento de despesa com pessoal nos 180 dias anteriores ao término do mandato, ao disposto no art. 21, incisos II, III e IV, da LRF.</p>
 
   <h4 class="sec">5.1.2.3 Dívida Consolidada e Mobiliária</h4>
@@ -706,7 +706,7 @@
   <p class="quadro-titulo">Quadro 6 – Comportamento da Despesa com Pessoal no Exercício</p>
   <p class="quadro-desc">Este quadro demonstra o comportamento da despesa de pessoal no exercício corrente do Município de {{municipio}}.</p>
   <table class="quadro">
-    <thead><tr><th class="centro">2º Quadrimestre (R$)</th><th class="centro">(APURADO PELO TCE) (R$)</th></tr></thead>
+    <thead><tr><th class="centro">{{q6_rotulo_periodo}}</th><th class="centro">(APURADO PELO TCE) (R$)</th></tr></thead>
     <tbody>
       <tr><td>Total Despesa — R$ {{q6_total_despesa_2quad}}</td><td>Total Despesa — R$ {{q6_total_despesa_ano}}</td></tr>
       <tr><td>RECEITA CORRENTE LÍQUIDA — R$ {{q6_rcl_2quad}}</td><td>RECEITA CORRENTE LÍQUIDA — R$ {{rcl_valor}}</td></tr>
@@ -721,7 +721,7 @@
   <p class="quadro-desc">Este quadro evidencia se o Município de {{municipio_uf}}, se enquadra nos limites aceitáveis de sua dívida consolidada e mobiliária.</p>
   <table class="quadro">
     <thead>
-      <tr><th>DÍVIDA CONSOLIDADA</th><th class="valor">SALDO DO EXERCÍCIO ANTERIOR</th><th class="valor">Até o 1º Quadrimestre</th><th class="valor">Até o 2º Quadrimestre</th><th class="valor">Até o 3º Quadrimestre</th></tr>
+      <tr><th>DÍVIDA CONSOLIDADA</th><th class="valor">SALDO DO EXERCÍCIO ANTERIOR</th><th class="valor">{{q7_rotulo_1}}</th><th class="valor">{{q7_rotulo_2}}</th><th class="valor">{{q7_rotulo_3}}</th></tr>
     </thead>
     <tbody>
       <tr class="total"><td>DÍVIDA CONSOLIDADA - DC (I)</td><td class="valor">R$ {{q7_dc_anterior}}</td><td class="valor">R$ {{q7_dc_1quad}}</td><td class="valor">R$ {{q7_dc_2quad}}</td><td class="valor">R$ {{q7_dc_3quad}}</td></tr>

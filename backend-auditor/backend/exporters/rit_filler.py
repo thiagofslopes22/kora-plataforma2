@@ -290,7 +290,12 @@ def build_context(
 
     # ── Quadro 6 — Comportamento da Despesa com Pessoal ──────────────────────
     q6 = _g(resultado, "quadro_06", "quadro_6_despesa_pessoal", default={}) or {}
-    q6q2 = q6.get("segundo_quadrimestre", {}) if isinstance(q6.get("segundo_quadrimestre"), dict) else {}
+    # RGF semestral: 1ª coluna = 1º semestre. Planilhas antigas guardavam em "primeiro_semestre".
+    q6_sem = (_g(resultado, "quadro_06", "periodicidade") == "semestral") or "primeiro_semestre" in q6
+    ctx["q6_rotulo_periodo"] = "1º Semestre (R$)" if q6_sem else "2º Quadrimestre (R$)"
+    ctx["q6_periodo_texto"]  = "até o 1º semestre" if q6_sem else "até o 2º quadrimestre"
+    _q6int = q6.get("segundo_quadrimestre") or q6.get("primeiro_semestre")
+    q6q2 = _q6int if isinstance(_q6int, dict) else {}
     q6an = q6.get("apurado_pelo_tce", {}) if isinstance(q6.get("apurado_pelo_tce"), dict) else {}
     ctx["q6_total_despesa_2quad"] = _num(_g(q6q2, "total_despesa"))
     ctx["q6_total_despesa_ano"]   = _num(_g(q6an, "total_despesa"))
@@ -302,7 +307,17 @@ def build_context(
         ctx["pessoal_percentual_2quad"] = _pctbr(_p6q2 * 100)
 
     # ── Quadro 7 — Dívida Consolidada ────────────────────────────────────────
-    q7 = resultado.get("quadro_07", {}) or {}
+    q7 = dict(resultado.get("quadro_07", {}) or {})
+    # Planilhas antigas (RGF semestral) guardavam "ate_1_semestre"/"ate_2_semestre"
+    if "ate_1_semestre" in q7 and "ate_2_quadrimestre" not in q7:
+        q7["ate_2_quadrimestre"] = q7.get("ate_1_semestre")
+        q7["ate_3_quadrimestre"] = q7.get("ate_2_semestre")
+        q7.setdefault("periodicidade", "semestral")
+    _rot7 = q7.get("rotulos") if isinstance(q7.get("rotulos"), dict) else (
+        {"col_1": "—", "col_2": "Até o 1º Semestre", "col_3": "Até o 2º Semestre"}
+        if q7.get("periodicidade") == "semestral" else
+        {"col_1": "Até o 1º Quadrimestre", "col_2": "Até o 2º Quadrimestre", "col_3": "Até o 3º Quadrimestre"})
+    ctx["q7_rotulo_1"], ctx["q7_rotulo_2"], ctx["q7_rotulo_3"] = _rot7["col_1"], _rot7["col_2"], _rot7["col_3"]
     for suf, chave in (("anterior", "saldo_exercicio_anterior"),
                        ("1quad", "ate_1_quadrimestre"),
                        ("2quad", "ate_2_quadrimestre"),

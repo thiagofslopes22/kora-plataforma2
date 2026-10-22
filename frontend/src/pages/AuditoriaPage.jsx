@@ -24,6 +24,8 @@ const DOCS = [
   { key: 'rgf1quadrimestre', code: 'RGF_1QUAD',      label: 'RGF 1º Quadrimestre',              badge: 'PyMuPDF', kind: 'pdf' },
   { key: 'rgf2quadrimestre', code: 'RGF_2QUAD',      label: 'RGF 2º Quadrimestre',              badge: 'PyMuPDF', kind: 'pdf' },
   { key: 'rgf3quadrimestre', code: 'RGF_3QUAD',      label: 'RGF 3º Quadrimestre',              badge: 'PyMuPDF', kind: 'pdf' },
+  { key: 'rgf1semestre',     code: 'RGF_1SEM',       label: 'RGF 1º Semestre (se semestral)',   badge: 'PyMuPDF', kind: 'pdf' },
+  { key: 'rgf2semestre',     code: 'RGF_2SEM',       label: 'RGF 2º Semestre (se semestral)',   badge: 'PyMuPDF', kind: 'pdf' },
   { key: 'bo_fundeb',       code: 'BO_FUNDEB',       label: 'Balanço Orçamentário — FUNDEB',    badge: 'PyMuPDF', kind: 'pdf' },
   { key: 'ff_saude',        code: 'FF_SAUDE',        label: 'Fundo a Fundo — Saúde (FNS)',      badge: 'Excel',   kind: 'xls' },
 ]
@@ -53,7 +55,9 @@ export default function AuditoriaPage() {
 
   const quadrosStatus = useMemo(() => {
     return quadros.map((q) => {
-      const faltando = (q.docs_necessarios || []).filter((c) => !selectedCodes.has(c))
+      // RGF: quadrimestral (docs_necessarios) ou semestral (docs_alternativos)
+      const altOk = (q.docs_alternativos || []).some((alt) => alt.every((c) => selectedCodes.has(c)))
+      const faltando = altOk ? [] : (q.docs_necessarios || []).filter((c) => !selectedCodes.has(c))
       const ready = q.implementado && faltando.length === 0
       return { ...q, faltando, ready }
     })

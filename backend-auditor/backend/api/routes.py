@@ -45,6 +45,7 @@ def listar_quadros():
             "chave": chave,
             "descricao": cfg["descricao"],
             "docs_necessarios": cfg["docs"],
+            "docs_alternativos": cfg.get("docs_alternativos", []),
             "implementado": chave in EXTRATORES_IMPLEMENTADOS,
         }
         for chave, cfg in TABELA_CONFIG.items()
@@ -58,11 +59,16 @@ def _build_tabelas_status(resultado: dict, enviados: dict, file_list: list[dict]
     for chave, cfg in TABELA_CONFIG.items():
         docs_faltando = [f"{d} ({recusados[d]})" if d in recusados else d
                          for d in cfg["docs"] if d not in enviados or d in recusados]
+        # Modelo alternativo completo (ex.: RGF semestral no lugar do quadrimestral)
+        if docs_faltando and any(all(d in enviados and d not in recusados for d in alt)
+                                 for alt in cfg.get("docs_alternativos", [])):
+            docs_faltando = []
         implementado = chave in EXTRATORES_IMPLEMENTADOS
         tabelas.append({
             "chave": chave,
             "descricao": cfg["descricao"],
             "docs_necessarios": cfg["docs"],
+            "docs_alternativos": cfg.get("docs_alternativos", []),
             "docs_faltando": docs_faltando,
             "pode_gerar": chave in resultado,
             "prompt_existe": implementado,

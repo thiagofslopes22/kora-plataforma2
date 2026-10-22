@@ -69,6 +69,16 @@ def _calcular_periodo(dtp: float, rcl: float) -> dict:
     }
 
 
+def _periodicidade(pdf_path: str) -> str:
+    """'semestral' ou 'quadrimestral', pelo 'Período de referência' do RGF."""
+    doc = fitz.open(pdf_path)
+    try:
+        texto = doc[0].get_text("text").upper()
+    finally:
+        doc.close()
+    return "semestral" if "SEMESTRE" in texto and "QUADRIMESTRE" not in texto else "quadrimestral"
+
+
 def extrair_q06(
     rgf_final_path: str,
     rgf_intermediario_path: str | None = None,
@@ -108,9 +118,13 @@ def extrair_q06(
         apurado["percentual_apurado"],
     )
 
+    periodicidade = _periodicidade(rgf_intermediario_path or rgf_final_path)
     return {
         "municipio": municipio,
         "exercicio": exercicio,
+        "periodicidade": periodicidade,
+        # Rótulo da 1ª coluna: o RGF intermediário é o 2º quadrimestre ou o 1º semestre
+        "rotulo_periodo": "2º Quadrimestre (R$)" if periodicidade == "quadrimestral" else "1º Semestre (R$)",
         "quadro_6_despesa_pessoal": {
             "segundo_quadrimestre": intermediario,
             "apurado_pelo_tce": apurado,
