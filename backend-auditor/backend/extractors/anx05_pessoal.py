@@ -5,6 +5,7 @@ import fitz
 import pdfplumber
 
 from backend.extractors.anx02_despesas import extrair as extrair_anx02
+from backend.extractors._texto import busca_exercicio
 
 logger = logging.getLogger(__name__)
 
@@ -35,7 +36,7 @@ def _extrair_exercicio(anx10_path: str) -> str:
     doc = fitz.open(anx10_path)
     text = doc[0].get_text("text").upper()
     doc.close()
-    m = re.search(r"EXERC[IÍ]CIO[^\d]*(\d{4})", text)
+    m = busca_exercicio(text)
     return m.group(1) if m else ""
 
 

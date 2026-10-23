@@ -9,6 +9,7 @@ Fonte das duas deduções do Quadro 5 que não saem do ANX_02/ANX_10:
     Complementar ao piso da enfermagem, aplicado o fator legal do exercício (2025: 91%).
 """
 import logging
+import re
 import unicodedata
 
 import openpyxl
@@ -35,6 +36,20 @@ def _norm(s) -> str:
     txt = unicodedata.normalize('NFKD', str(s))
     txt = ''.join(c for c in txt if not unicodedata.combining(c))
     return txt.upper().strip()
+
+
+# Abreviações comuns em nomes de município: os anexos podem trazer "GOV. LUIZ ROCHA"
+# enquanto a planilha do FNS traz "GOVERNADOR LUIZ ROCHA".
+_ABREVIACOES = {
+    'GOV': 'GOVERNADOR', 'PRES': 'PRESIDENTE', 'STA': 'SANTA', 'STO': 'SANTO', 'S': 'SAO',
+    'SR': 'SENHOR', 'DR': 'DOUTOR', 'CEL': 'CORONEL', 'MAL': 'MARECHAL', 'ENG': 'ENGENHEIRO',
+    'PE': 'PADRE', 'FR': 'FREI', 'D': 'DOM', 'N': 'NOVA',
+}
+
+
+def _norm_municipio(s) -> str:
+    tokens = re.sub(r'[^A-Z0-9 ]', ' ', _norm(s)).split()
+    return ' '.join(_ABREVIACOES.get(t, t) for t in tokens)
 
 
 def _num(x) -> float:
@@ -85,7 +100,15 @@ def extrair(xlsx_path: str, municipio: str = '', exercicio: str = '') -> dict:
         )
 
     col_valor = cols.get('valor_liquido', cols.get('valor_total'))
-    muni_alvo = _norm(municipio)
+    muni_alvo = _norm_municipio(municipio)
+    if muni_alvo and 'municipio' in cols:
+        nomes = {_norm_municipio(r[cols['municipio']])
+                 for r in ws.iter_rows(min_row=header_row + 1, values_only=True)
+                 if r and len(r) > cols['municipio'] and r[cols['municipio']]}
+        if muni_alvo not in nomes and len(nomes) == 1:
+            logger.warning("FF_SAUDE: município %r não aparece na planilha; usando o único município dela (%s).",
+                           municipio, next(iter(nomes)))
+            muni_alvo = next(iter(nomes))
 
     agentes = 0.0
     piso_bruto = 0.0
@@ -95,7 +118,7 @@ def extrair(xlsx_path: str, municipio: str = '', exercicio: str = '') -> dict:
         if not row or len(row) <= col_valor:
             continue
         if muni_alvo and 'municipio' in cols:
-            if _norm(row[cols['municipio']]) != muni_alvo:
+            if _norm_municipio(row[cols['municipio']]) != muni_alvo:
                 continue
         acao = _norm(row[cols['acao']])
         if 'acao_detalhada' in cols:

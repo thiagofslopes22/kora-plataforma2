@@ -5,7 +5,7 @@ from collections import defaultdict
 import fitz
 import pdfplumber
 
-from backend.extractors._texto import sem_acento
+from backend.extractors._texto import busca_exercicio, sem_acento
 
 logger = logging.getLogger(__name__)
 
@@ -25,7 +25,7 @@ def _extrair_cabecalho(pdf_path: str) -> tuple[str, str]:
     text = doc[0].get_text("text").upper()
     doc.close()
     m_mun = re.search(r"PREFEITURA MUNICIPAL DE (.+)", text)
-    m_ano = re.search(r"EXERC[IÍ]CIO[^\d]*(\d{4})", text)
+    m_ano = busca_exercicio(text)
     municipio = m_mun.group(1).strip() if m_mun else ""
     exercicio = m_ano.group(1) if m_ano else ""
     return municipio, exercicio

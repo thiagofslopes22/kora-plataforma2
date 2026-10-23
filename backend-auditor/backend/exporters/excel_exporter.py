@@ -176,6 +176,9 @@ def _avaliar_quadro(chave: str, dados: dict) -> tuple[str, str]:
     """Avalia o quadro contra limites legais.
     Retorna (nivel, mensagem): nivel = 'ok' | 'alerta' | 'irregular'.
     """
+    # Q11 sai mesmo sem a LOA (lado BO), mas as colunas da LOA ficam vazias — avisar.
+    if chave == 'quadro_11' and isinstance(dados, dict) and dados.get('receita_prevista_loa') is None:
+        return 'alerta', 'LOA não enviada (ou não lida) — colunas da LOA vazias; preencher manualmente'
     rules = _STATUS_RULES.get(chave)
     if not rules:
         return 'ok', ''

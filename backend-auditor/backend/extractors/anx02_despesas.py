@@ -264,6 +264,7 @@ def extrair(pdf_path: str) -> dict:
 
     orgaos: dict[str, dict] = {}
     orgao_atual: str | None = None
+    preenchidos: set[tuple[str, str]] = set()
     itens: list[dict] = []
 
     for linha_raw in linhas_raw:
@@ -306,9 +307,12 @@ def extrair(pdf_path: str) -> dict:
         codigo = m_codigo.group(1)
         nivel  = codigo.count('.') + 1
 
-        # Atualiza campo do órgão para os códigos-chave
-        if codigo in CAMPOS_ORGAO and orgao_atual in orgaos:
+        # Atualiza campo do órgão para os códigos-chave. Vale a 1ª ocorrência: alguns
+        # sistemas repetem o cabeçalho do órgão nas seções "por unidade/subunidade"
+        # (ex.: Governador Luiz Rocha) e o "3.1" de cada unidade sobrescrevia o total do órgão.
+        if codigo in CAMPOS_ORGAO and orgao_atual in orgaos and (orgao_atual, codigo) not in preenchidos:
             orgaos[orgao_atual][CAMPOS_ORGAO[codigo]] = valor
+            preenchidos.add((orgao_atual, codigo))
 
         # Descrição: texto entre o código e o último número
         pos_fim_codigo = len(codigo)
