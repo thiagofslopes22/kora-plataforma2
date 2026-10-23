@@ -15,7 +15,7 @@ const DOCS = [
   { key: 'anx_10_atual',    code: 'ANX_10_ATUAL',    label: 'Anexo 10 — Receita (Atual)',       badge: 'PyMuPDF', kind: 'pdf' },
   { key: 'anx_10_anterior', code: 'ANX_10_ANTERIOR', label: 'Anexo 10 — Receita (Anterior)',    badge: 'PyMuPDF', kind: 'pdf' },
   { key: 'anx_12',          code: 'ANX_12',          label: 'Anexo 12 — Balanço Orçamentário',  badge: 'Camelot', kind: 'pdf' },
-  { key: 'anx_06',          code: 'ANX_06',          label: 'Anexo 06 — Programa de Trabalho',  badge: 'PyMuPDF', kind: 'pdf' },
+  { key: 'anx_06',          code: 'ANX_06',          label: 'Anexo 06 — Programa de Trabalho ou Despesa por Funções', badge: 'PyMuPDF', kind: 'pdf' },
   { key: 'anx_02',          code: 'ANX_02',          label: 'Anexo 02 — Natureza da Despesa',   badge: 'PyMuPDF', kind: 'pdf' },
   { key: 'anx_13',          code: 'ANX_13',          label: 'Anexo 13 — Balanço Financeiro',    badge: 'PyMuPDF', kind: 'pdf' },
   { key: 'anx_14',          code: 'ANX_14',          label: 'Anexo 14 — Balanço Patrimonial',   badge: 'PyMuPDF', kind: 'pdf' },

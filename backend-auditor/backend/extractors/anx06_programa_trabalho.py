@@ -5,6 +5,10 @@ from collections import defaultdict
 import fitz  # PyMuPDF
 import pdfplumber
 
+from backend.extractors.anx06_funcoes import (
+    eh_formato_funcoes, extrair as extrair_funcoes, total_funcao,
+)
+
 logger = logging.getLogger(__name__)
 
 NUMERO_RE = re.compile(r'\d{1,3}(?:\.\d{3})*,\d{2}')
@@ -304,13 +308,10 @@ def formato_incompativel(pdf_path: str) -> str | None:
         texto = _sem_acento(" ".join(p.get_text("text") for p in doc).upper())
     finally:
         doc.close()
-    if "UNIDADE ORCAMENTARIA" in texto:
-        return None
-    if "FUNCOES E CATEGORIAS ECONOMICAS" in texto:
-        return ("formato incompatível: é o 'Despesa por Funções e Categorias Econômicas'; "
-                "envie o Anexo 6 'Programa de Trabalho' (por Órgão/Unidade/Ação)")
-    return ("formato não reconhecido: o Anexo 6 precisa ser o 'Programa de Trabalho' "
-            "(com Órgão e Unidade Orçamentária)")
+    if "UNIDADE ORCAMENTARIA" in texto or "FUNCOES E CATEGORIAS ECONOMICAS" in texto:
+        return None  # 'Programa de Trabalho' ou 'Despesa por Funções' (anx06_funcoes)
+    return ("formato não reconhecido: envie o Anexo 6 'Programa de Trabalho' ou o "
+            "'Despesa por Funções e Categorias Econômicas'")
 
 
 def _sem_acento(s: str) -> str:
@@ -1018,7 +1019,14 @@ def extrair_q27(anx06_path: str, anx10_at_path: str = None) -> dict:
 
 def extrair_q18(anx06_path: str, anx10_path: str, base_calculo: float = 0.0) -> dict:
     """Extrai dados para Q18 — Despesas com Ações e Serviços de Saúde."""
-    dados = extrair(anx06_path)
+    # Formato 'Despesa por Funções': não há subfunção — o total vem da Função 10.
+    total_funcao_10 = None
+    if eh_formato_funcoes(anx06_path):
+        fun = extrair_funcoes(anx06_path)
+        dados = {'municipio': '', 'exercicio': fun['exercicio'], 'unidades': []}
+        total_funcao_10 = total_funcao(fun, '10')
+    else:
+        dados = extrair(anx06_path)
     municipio = dados.get('municipio', '')
     exercicio = dados.get('exercicio', '')
 
@@ -1074,6 +1082,8 @@ def extrair_q18(anx06_path: str, anx10_path: str, base_calculo: float = 0.0) -> 
         vigilancia_epidemiologica + alimentacao_nutricao + outras_subfuncoes,
         2,
     )
+    if total_funcao_10 is not None:
+        total_despesas_saude = total_funcao_10
 
     # Deduções: recursos SUS (ANX_10)
     sus_corrente = _sus_arrecadada(anx10_path, '1713.00.0.0.00.00')
@@ -1137,6 +1147,10 @@ def extrair_q18(anx06_path: str, anx10_path: str, base_calculo: float = 0.0) -> 
         'sus_corrente_1713':                    sus_corrente,
         'sus_capital_2411':                     sus_capital,
         'situacao':                             situacao,
+        'formato_anexo6':                       'funcoes' if total_funcao_10 is not None else 'programa_trabalho',
+        'observacao': ("Anexo 6 no formato 'Despesa por Funções': o documento não detalha subfunção — "
+                       "o total é o da Função 10 (Saúde) e as linhas por subfunção ficam zeradas."
+                       if total_funcao_10 is not None else ''),
     }
 
 
@@ -1148,7 +1162,13 @@ def extrair_subfuncao_func12(anx06_path: str) -> dict:
     FUNDEB: subfunções 361, 365, 366, 367
     Soma das ações individuais por subfunção = total consolidado da subfunção.
     """
-    dados = extrair(anx06_path)
+    total_funcao_12 = None
+    if eh_formato_funcoes(anx06_path):
+        fun = extrair_funcoes(anx06_path)
+        dados = {'municipio': '', 'exercicio': fun['exercicio'], 'unidades': []}
+        total_funcao_12 = total_funcao(fun, '12')
+    else:
+        dados = extrair(anx06_path)
     municipio = dados.get('municipio', '')
     exercicio = dados.get('exercicio', '')
 
@@ -1201,6 +1221,10 @@ def extrair_subfuncao_func12(anx06_path: str) -> dict:
     semed_subtotal  = round(sum(semed.values()), 2)
     fundeb_subtotal = round(sum(fundeb.values()), 2)
     total_geral     = round(semed_subtotal + fundeb_subtotal, 2)
+    if total_funcao_12 is not None:
+        total_geral = total_funcao_12
+        observacoes.append("Anexo 6 no formato 'Despesa por Funções': o documento não detalha subfunção nem "
+                           "separa SEMED/FUNDEB — só o total da Função 12 (Educação).")
 
     logger.info(
         "ANX06 Q23: semed=%.2f (122=%.2f 361=%.2f 362=%.2f 365=%.2f 367=%.2f 306=%.2f) "
@@ -1227,6 +1251,7 @@ def extrair_subfuncao_func12(anx06_path: str) -> dict:
         'fundeb_subtotal':       fundeb_subtotal,
         # Total geral
         'total_geral_funcao_12': total_geral,
+        'formato_anexo6':        'funcoes' if total_funcao_12 is not None else 'programa_trabalho',
         # Achados: campos zerados ou desvios relevantes na composição SEMED/FUNDEB
         'observacoes':           observacoes,
     }
@@ -1265,6 +1290,8 @@ def extrair_q20(anx06_path: str, anx10_at_path: str, base_calculo_bruta: float =
     # MDE = FUNDEB + SEMED (linhas 5 + 8; 1º quadrimestre e infantil ficam em 0).
     educacao_infantil  = 0.0
     ensino_fundamental = semed_total
+    if q23.get('formato_anexo6') == 'funcoes':
+        ensino_fundamental = q23['total_geral_funcao_12']
     total_fundeb_primeiro_quadrimestre = 0.0
     total_mde = round(
         fundeb_total + total_fundeb_primeiro_quadrimestre + educacao_infantil + ensino_fundamental,

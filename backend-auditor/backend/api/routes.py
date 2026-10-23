@@ -8,7 +8,8 @@ from fastapi import APIRouter, File, HTTPException, UploadFile
 from fastapi.responses import FileResponse, JSONResponse
 
 from backend.exporters.excel_exporter import generate_excel
-from backend.extractors.anx10_legislativo import extrair as extrair_anx10, extrair_q04 as extrair_anx10_q04, extrair_q17 as extrair_anx10_q17, extrair_q19 as extrair_anx10_q19, extrair_q21 as extrair_anx10_q21, extrair_q22 as extrair_anx10_q22
+from backend.extractors.anx10_legislativo import _indexar as anx10_indexar, extrair as extrair_anx10, extrair_q04 as extrair_anx10_q04, extrair_q17 as extrair_anx10_q17, extrair_q19 as extrair_anx10_q19, extrair_q21 as extrair_anx10_q21, extrair_q22 as extrair_anx10_q22
+from backend.extractors.anx06_funcoes import eh_formato_funcoes as anx06_eh_formato_funcoes
 from backend.extractors.anx06_programa_trabalho import formato_incompativel as anx06_formato_incompativel, extrair_q18 as extrair_anx06_q18, extrair_q20 as extrair_anx06_q20, extrair_subfuncao_func12 as extrair_anx06_q23, extrair_fundeb70_balanco as extrair_anx06_q24, extrair_q25 as extrair_anx06_q25, extrair_q27 as extrair_anx06_q27
 from backend.extractors.anx12_resultado import extrair as extrair_anx12
 from backend.extractors.anx08_receitas import extrair as extrair_anx08
@@ -55,10 +56,13 @@ def listar_quadros():
 def _build_tabelas_status(resultado: dict, enviados: dict, file_list: list[dict] | None = None) -> list[dict]:
     # Documentos enviados mas recusados na validacao (ex.: Anexo 6 no formato errado)
     recusados = {f["doc_type"]: f["incompativel"] for f in (file_list or []) if f.get("incompativel")}
+    # Documento aceito, mas que não serve para um quadro específico (ex.: Anexo 6 por Funções no Q24)
+    limitados = {(f["doc_type"], q): motivo for f in (file_list or []) for q, motivo in f.get("limita", {}).items()}
     tabelas = []
     for chave, cfg in TABELA_CONFIG.items():
-        docs_faltando = [f"{d} ({recusados[d]})" if d in recusados else d
-                         for d in cfg["docs"] if d not in enviados or d in recusados]
+        docs_faltando = [f"{d} ({recusados[d]})" if d in recusados else
+                         f"{d} ({limitados[(d, chave)]})" if (d, chave) in limitados else d
+                         for d in cfg["docs"] if d not in enviados or d in recusados or (d, chave) in limitados]
         # Modelo alternativo completo (ex.: RGF semestral no lugar do quadrimestral)
         if docs_faltando and any(all(d in enviados and d not in recusados for d in alt)
                                  for alt in cfg.get("docs_alternativos", [])):
@@ -86,7 +90,27 @@ def _extrair_todos(file_list: list[dict]) -> tuple[dict, str, str]:
             if motivo:
                 f["incompativel"] = motivo
                 logger.warning("ANX_06 recusado: %s", motivo)
+            elif anx06_eh_formato_funcoes(f["path"]):
+                # 'Despesa por Funções': sem subfunção/ação → Q18/Q20/Q23 saem pelo total da
+                # função; os quadros que dependem de ações rotuladas não podem ser montados.
+                f["formato"] = "funcoes"
+                motivo_acao = ("formato 'Despesa por Funções' não identifica as ações {}; "
+                               "envie o Anexo 6 'Programa de Trabalho' para este quadro")
+                f["limita"] = {
+                    "quadro_24": motivo_acao.format("do FUNDEB 70%"),
+                    "quadro_25": motivo_acao.format("do FUNDEB 70%"),
+                    "quadro_27": motivo_acao.format("do VAAT"),
+                }
+        elif f["doc_type"] in ("ANX_10_ATUAL", "ANX_10_ANTERIOR"):
+            # Sem nenhum código de receita lido (PDF escaneado/formato desconhecido) os quadros
+            # sairiam todos zerados e marcados como gerados.
+            if not anx10_indexar(f["path"]):
+                f["incompativel"] = ("não foi possível ler os códigos de receita — o PDF parece escaneado "
+                                     "(imagem) ou está em formato não reconhecido; envie o Anexo 10 gerado "
+                                     "pelo sistema contábil")
+                logger.warning("%s recusado: nenhum código de receita lido", f["doc_type"])
     file_list = [f for f in file_list if not f.get("incompativel")]
+    anx06_limita = next((f.get("limita", {}) for f in file_list if f["doc_type"] == "ANX_06"), {})
 
     municipio = ""
     exercicio = "2025"
@@ -284,7 +308,7 @@ def _extrair_todos(file_list: list[dict]) -> tuple[dict, str, str]:
             logger.warning("Extrator Q22 falhou (%s)", exc)
 
     # Q24 — ANX_06 (+ ANX_10_ATUAL + BO_FUNDEB para receita de aplicação financeira na base)
-    if path_anx06:
+    if path_anx06 and "quadro_24" not in anx06_limita:
         try:
             dados_q24 = extrair_anx06_q24(path_anx06, path_anx10_at, path_bo_fundeb)
             resultado["quadro_24"] = dados_q24
@@ -310,7 +334,7 @@ def _extrair_todos(file_list: list[dict]) -> tuple[dict, str, str]:
             logger.warning("Extrator Q23 falhou (%s)", exc)
 
     # Q25 — ANX_06
-    if path_anx06:
+    if path_anx06 and "quadro_25" not in anx06_limita:
         try:
             dados_q25 = extrair_anx06_q25(path_anx06)
             resultado["quadro_25"] = dados_q25
@@ -321,7 +345,7 @@ def _extrair_todos(file_list: list[dict]) -> tuple[dict, str, str]:
             logger.warning("Extrator Q25 falhou (%s)", exc)
 
     # Q27 — ANX_06 (+ ANX_10_ATUAL)
-    if path_anx06:
+    if path_anx06 and "quadro_27" not in anx06_limita:
         try:
             dados_q27 = extrair_anx06_q27(path_anx06, path_anx10_at)
             resultado["quadro_27"] = dados_q27
