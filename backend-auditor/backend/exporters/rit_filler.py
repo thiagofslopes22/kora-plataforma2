@@ -144,11 +144,12 @@ def build_context(
     ctx["q1_divida_ativa"]           = _num(_g(rt, "divida_ativa_tributaria"))
     ctx["q1_multas_juros"]           = _num(_g(rt, "multas_juros_tributos"))
     ctx["q1_iluminacao_publica"]     = _num(_g(rt, "cosip"))
-    ctx["q1_transf_estado"]          = _num(_g(te, "subtotal"))
+    # Mesmo subtotal do Excel (Estado = ICMS + IPVA; CIDE e IPI ficam no bloco da União)
+    ctx["q1_transf_estado"]          = _num(_g(te, "subtotal_repasse") if _g(te, "subtotal_repasse") is not None else _g(te, "subtotal"))
     ctx["q1_cp_ipva"]                = _num(_g(te, "ipva"))
     ctx["q1_cp_icms"]                = _num(_g(te, "icms"))
     ctx["q1_icms_desoneracao"]       = _num(_g(te, "icms_desoneracao"))
-    ctx["q1_transf_uniao"]           = _num(_g(tu, "subtotal"))
+    ctx["q1_transf_uniao"]           = _num(_g(tu, "subtotal_repasse") if _g(tu, "subtotal_repasse") is not None else _g(tu, "subtotal"))
     ctx["q1_cide"]                   = _num(_g(te, "cide"))
     ctx["q1_cp_itr"]                 = _num(_g(tu, "itr"))
     ctx["q1_cp_fpm"]                 = _num(_g(tu, "fpm_total"))
@@ -170,6 +171,10 @@ def build_context(
     res_val = _g(ro, "resultado", default=0.0)
     ctx["resultado_orcamentario_situacao"] = _g(ro, "situacao", default="N/D")
     ctx["resultado_execucao_texto"] = "superávit" if (res_val or 0) >= 0 else "déficit"
+    deficitario = (res_val or 0) < 0
+    ctx["resultado_cumprimento"] = "descumpriu" if deficitario else "cumpriu"
+    ctx["resultado_deficit_texto"] = ("constatando-se déficit orçamentário" if deficitario
+                                      else "não se constatando déficit orçamentário")
 
     # ── Quadro 8 — Balanço Orçamentário Receitas ─────────────────────────────
     q8 = resultado.get("quadro_08", {})
@@ -191,8 +196,15 @@ def build_context(
     _q8("superavit_financeiro", "superavit")
     _q8("reabertura_creditos_adicionais", "reabertura")
     total_q8 = q8.get("total", {})
-    ctx["receita_realizada"]  = _num(_g(total_q8, "realizada_c"))
-    ctx["receita_arrecadada"] = _num(_g(total_q8, "realizada_c"))
+    # A linha TOTAL (VII) do BO soma o DÉFICIT (VI) de equilíbrio; a receita realizada é a
+    # do Quadro 3 (= SUBTOTAL COM REFINANCIAMENTO (V)), como no Excel.
+    rec_real = _g(ro, "receita_realizada")
+    if rec_real is None:
+        rec_real = _g(q8.get("subtotal_com_refinanciamento") or {}, "realizada_c")
+    if rec_real is None:
+        rec_real = _g(total_q8, "realizada_c")
+    ctx["receita_realizada"]  = _num(rec_real)
+    ctx["receita_arrecadada"] = _num(rec_real)
     ctx["orcamento_atualizado_de"]   = _num(_g(total_q8, "prevista_inicial_a"))
     ctx["orcamento_atualizado_para"] = _num(_g(total_q8, "prevista_atualizada_b"))
     ctx["loa_receita_prevista"]   = _num(_g(total_q8, "prevista_inicial_a"))
@@ -233,6 +245,19 @@ def build_context(
     ctx["despesa_empenhada"]     = _num(emp_empenhada)
     ctx["despesa_paga"]          = _num(_g(desp_q9, "paga_h"))
     ctx["loa_dotacao_inicial"]   = _num(_g(desp_q9, "dotacao_inicial_d"))
+    # Os textos que citam a LOA usam o valor da própria LOA (Quadro 11 do Excel) quando
+    # ela foi enviada; o BO só entra como fallback.
+    q11 = resultado.get("quadro_11", {}) or {}
+    rec_loa, desp_loa = _g(q11, "receita_prevista_loa"), _g(q11, "dotacao_inicial_loa")
+    if rec_loa is not None:
+        ctx["loa_receita_prevista"] = _num(rec_loa)
+    if desp_loa is not None:
+        ctx["loa_dotacao_inicial"] = _num(desp_loa)
+    ctx["loa_equilibrio_texto"] = (
+        "caracterizando situação de equilíbrio orçamentário"
+        if ctx["loa_receita_prevista"] == ctx["loa_dotacao_inicial"]
+        else "não caracterizando situação de equilíbrio orçamentário"
+    )
     # A linha TOTAL da tabela detalhada do Q9 herda a mesma inflação do superávit
     # na coluna empenhada — corrige para a despesa empenhada real.
     ctx["q9_total_f"]            = _num(emp_empenhada)
@@ -302,6 +327,8 @@ def build_context(
     ctx["q6_rcl_2quad"]           = _num(_g(q6q2, "receita_corrente_liquida"))
     ctx["q6_limite_2quad"]        = _num(_g(q6q2, "limite_legal_54_pct"))
     ctx["q6_limite_ano"]          = _num(_g(q6an, "limite_legal_54_pct"))
+    _p6an = _g(q6an, "percentual_apurado")
+    ctx["q6_percentual_apurado"] = _pctbr(_p6an * 100) if _p6an is not None else ctx.get("pessoal_percentual_rcl", "N/D")
     _p6q2 = _g(q6q2, "percentual_apurado")
     if ctx["pessoal_percentual_2quad"] in ("", "N/D") and _p6q2 is not None:
         ctx["pessoal_percentual_2quad"] = _pctbr(_p6q2 * 100)
