@@ -67,7 +67,9 @@ def extrair(anx02_path: str, anx10_path: str, ff_saude_path: str = None) -> dict
     TERMOS_EXEC = ("EXEC", "PREFEIT", "MUNICIP")
     TERMOS_LEG  = ("CAMARA", "CÂMARA", "LEGISLAT", "PODER LEGISL")
 
-    exec_cod = next(
+    # Regra de Presidente Dutra para todos: despesa com pessoal do município CONSOLIDADO
+    # (Legislativo + Executivo). Só sem seção consolidada cai no órgão do Executivo.
+    exec_cod = "00" if "00" in r["orgaos"] else next(
         (cod for cod, o in r["orgaos"].items()
          if any(t in o["nome"].upper() for t in TERMOS_EXEC)),
         None,
@@ -138,7 +140,7 @@ def extrair(anx02_path: str, anx10_path: str, ff_saude_path: str = None) -> dict
     return {
         "municipio": municipio,
         "exercicio": exercicio,
-        "orgao": "Executivo",
+        "orgao": "Consolidado" if exec_cod == "00" else "Executivo",
         "despesa_com_pessoal": {
             "pessoal_ativo":                        pessoal_ativo,
             "pessoal_inativo_pensionistas":         pessoal_inativo_pensionistas,

@@ -301,8 +301,17 @@ def extrair(pdf_path: str) -> dict:
 
         # Linha de despesa com código contábil
         m_codigo = CODIGO_RE.match(linha)
-        if not m_codigo or not orgao_atual:
+        if not m_codigo:
             continue
+        if not orgao_atual:
+            # Seção consolidada antes do 1º cabeçalho de órgão (ex.: Governador Luiz Rocha:
+            # consolidado → por órgão → por unidade). Guarda como '00 CONSOLIDADO'.
+            orgao_atual = '00'
+            orgaos.setdefault('00', {
+                'nome': 'CONSOLIDADO', 'total': 0.0,
+                'despesas_correntes': 0.0, 'pessoal_encargos': 0.0, 'outras_despesas_correntes': 0.0,
+                'despesas_capital': 0.0, 'investimentos': 0.0, 'amortizacao_divida': 0.0,
+            })
 
         codigo = m_codigo.group(1)
         nivel  = codigo.count('.') + 1
